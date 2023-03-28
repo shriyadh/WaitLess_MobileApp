@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".discoverpage.Discover">
 
+    <!-- Horizontal Recycler View -->
 
-   <androidx.core.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
        android:layout_width="match_parent"
-       android:layout_height="wrap_content">
+       android:layout_height="wrap_content"
+       android:id="@+id/nested">
 
        <androidx.recyclerview.widget.RecyclerView
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:orientation="horizontal"
            android:id="@+id/stories" />
 
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Vertical Recycler View -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nested" />
 
-</LinearLayout>
+
+</RelativeLayout>

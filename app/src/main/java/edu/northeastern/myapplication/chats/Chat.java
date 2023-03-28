@@ -1,8 +1,10 @@
-package edu.northeastern.myapplication;
+package edu.northeastern.myapplication.chats;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import edu.northeastern.myapplication.R;
 
 public class Chat extends AppCompatActivity {
 
