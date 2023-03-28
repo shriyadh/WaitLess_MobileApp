@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import edu.northeastern.myapplication.discoverpage.Discover;
-import edu.northeastern.myapplication.queue.MainActivityQueue;
+import edu.northeastern.myapplication.queue.QR_Scanner;
+import edu.northeastern.myapplication.queue.Queue_home;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void queue(View view) {
-        Intent intent = new Intent(this, MainActivityQueue.class);
+        Intent intent = new Intent(this, Queue_home.class);
         startActivity(intent);
     }
 

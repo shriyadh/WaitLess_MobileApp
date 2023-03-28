@@ -4,20 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".queue.MainActivityQueue">
-
-    <androidx.camera.view.PreviewView
-        android:id="@+id/activity_main_previewView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    tools:context=".queue.Queue_home">
 
     <Button
-        android:id="@+id/activity_main_qrCodeFoundButton"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="QR Code Found"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_main_previewView"
+        android:layout_marginBottom="103dp"
+        android:onClick="qr_scanner"
+        android:text="@string/join_queue"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

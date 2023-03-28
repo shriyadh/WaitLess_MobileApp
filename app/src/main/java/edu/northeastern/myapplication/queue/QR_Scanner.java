@@ -10,13 +10,11 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Size;
@@ -30,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 
 import edu.northeastern.myapplication.R;
 
-public class MainActivityQueue extends AppCompatActivity {
+public class QR_Scanner extends AppCompatActivity {
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private Button qrCodeFoundButton;
@@ -40,7 +38,7 @@ public class MainActivityQueue extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_queue);
+        setContentView(R.layout.qr_scanner);
 
         previewView = findViewById(R.id.activity_main_previewView);
         qrCodeFoundButton = findViewById(R.id.activity_main_qrCodeFoundButton);
@@ -50,7 +48,7 @@ public class MainActivityQueue extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), qrCode, Toast.LENGTH_SHORT).show();
-                Log.i(MainActivityQueue.class.getSimpleName(), "QR Code Found: " + qrCode);
+                Log.i(QR_Scanner.class.getSimpleName(), "QR Code Found: " + qrCode);
             }
         });
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
@@ -64,7 +62,7 @@ public class MainActivityQueue extends AppCompatActivity {
         } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.CAMERA)) {
-                ActivityCompat.requestPermissions(MainActivityQueue.this,
+                ActivityCompat.requestPermissions(QR_Scanner.this,
                         new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
             } else {
                 ActivityCompat.requestPermissions(this,
@@ -84,7 +82,7 @@ public class MainActivityQueue extends AppCompatActivity {
             } else {
                 // Permission denied, show a message to the user
                 AlertDialog alertDialog =
-                        new AlertDialog.Builder(MainActivityQueue.this).create();
+                        new AlertDialog.Builder(QR_Scanner.this).create();
                 alertDialog.setTitle("Camera permission denied!");
                 alertDialog.setMessage("Please enable camera permissions in your settings to" +
                         " use this feature.");
