@@ -26,4 +26,5 @@
     <string name="legpress">Legpress</string>
     <string name="calf">Calf</string>
     <string name="year">Year</string>
+    <string name="queue">Queue</string>
 </resources>

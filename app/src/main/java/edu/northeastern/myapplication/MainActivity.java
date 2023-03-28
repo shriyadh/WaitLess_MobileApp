@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import edu.northeastern.myapplication.discoverpage.Discover;
+import edu.northeastern.myapplication.queue.MainActivityQueue;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void discover(View view) {
         Intent intent = new Intent(this, Discover.class);
+        startActivity(intent);
+    }
+
+    public void queue(View view) {
+        Intent intent = new Intent(this, MainActivityQueue.class);
         startActivity(intent);
     }
 
