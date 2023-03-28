@@ -24,33 +24,33 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-//        // find all the edit texts
-//        inputEmail = findViewById(R.id.user_email);
-//        inputPassword = findViewById(R.id.user_password);
-//        inputPasswordConfirm = findViewById(R.id.user_password_confirm);
-//        System.out.println("here");
-//        registerButton = findViewById(R.id.register_button);
-//
-//        registerButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Authenticate();
-//            }
-//        });
+        // find all the edit texts
+        inputEmail = findViewById(R.id.user_email);
+        inputPassword = findViewById(R.id.user_password);
+        inputPasswordConfirm = findViewById(R.id.user_password_confirm);
+        System.out.println("here");
+        registerButton = findViewById(R.id.register_button);
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Authenticate();
+            }
+        });
 
     }
-//    public void Authenticate(){
-//        String email = inputEmail.getText().toString();
-//        String passwrd = inputPassword.getText().toString();
-//        String passwrdConfirm = inputPasswordConfirm.getText().toString();
-//
-//        // validate
-//        if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-//            Toast.makeText(this, "Email Verified !", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "Enter valid Email address !", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    public void Authenticate(){
+        String email = inputEmail.getText().toString();
+        String passwrd = inputPassword.getText().toString();
+        String passwrdConfirm = inputPasswordConfirm.getText().toString();
+
+        // validate
+        if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Email Verified !", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Enter valid Email address !", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 
