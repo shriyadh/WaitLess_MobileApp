@@ -8,27 +8,41 @@
 
     <EditText
         android:id="@+id/user_password_confirm"
+
         android:layout_width="262dp"
         android:layout_height="48dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/edit_text_register"
         android:ems="10"
-        android:hint="confirm password"
-        android:inputType="textPersonName"
+        android:autofillHints="password"
+        android:hint="@string/confirm_password"
+        android:inputType="textPersonName|textPassword"
         android:textSize="16sp"
-        tools:layout_editor_absoluteX="72dp"
-        tools:layout_editor_absoluteY="324dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/user_password"
+        app:layout_constraintVertical_bias="0.002" />
 
     <EditText
         android:id="@+id/user_password"
+        android:autofillHints="password"
         android:layout_width="262dp"
         android:layout_height="48dp"
+        android:layout_marginStart="72dp"
         android:background="@drawable/edit_text_register"
         android:ems="10"
         android:hint="@string/password"
-        android:inputType="textPersonName"
+        android:inputType="textPersonName|textPassword"
+        android:textAlignment="textStart"
         android:textSize="16sp"
-        tools:layout_editor_absoluteX="72dp"
-        tools:layout_editor_absoluteY="278dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.398" />
 
     <TextView
         android:id="@+id/text_register"
@@ -45,14 +59,19 @@
 
     <EditText
         android:id="@+id/user_email"
+        android:autofillHints="username"
         android:layout_width="262dp"
         android:layout_height="48dp"
+        android:layout_marginTop="48dp"
         android:background="@drawable/edit_text_register"
         android:ems="10"
         android:hint="@string/email"
-        android:inputType="textPersonName"
+        android:inputType="textPersonName|textEmailSubject"
+        android:textAlignment="textStart"
         android:textSize="16sp"
-        tools:layout_editor_absoluteX="72dp"
-        tools:layout_editor_absoluteY="231dp" />
-        />
+        app:layout_constraintBottom_toTopOf="@+id/user_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_register" />
 </androidx.constraintlayout.widget.ConstraintLayout>
