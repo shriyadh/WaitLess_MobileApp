@@ -8,15 +8,17 @@ public class Profiles {
     private int total_friends;
     private int workouts;
     private long id;
+    private String image;
 
 
-    public Profiles(String username, String bio, int mutual, int total_friends, int workouts, long id) {
+    public Profiles(String username, String bio, String img, int mutual, int total_friends, int workouts, long id) {
         this.username = username;
         this.bio = bio;
         this.mutual = mutual;
         this.total_friends = total_friends;
         this.workouts = workouts;
         this.id = id;
+        this.image = img;
     }
 
     public String getUsername() {

@@ -19,6 +19,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import edu.northeastern.myapplication.R;
+
 public class MessageAdapter extends RecyclerView.Adapter<MessageViewHolder> {
     private List<Message> messageList;
 

@@ -32,6 +32,10 @@ public class Discover extends AppCompatActivity {
 
     public void initProfiles(){
         profilesRecylerView = findViewById(R.id.profiles);
+
+        profiles.add(new Profiles("Shriya", "Hi", "", 1,1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1,1));
+
         profilesRecylerView.setHasFixedSize(true);
         profilesRecylerView.setLayoutManager(new LinearLayoutManager(this));
         //set adapter
@@ -46,6 +50,16 @@ public class Discover extends AppCompatActivity {
 
     public void initStory() {
         storiesRecyclerView = findViewById(R.id.stories);
+        stories.add(new Story(false));
+        stories.add(new Story(false));
+        stories.add(new Story(true));
+        stories.add(new Story(false));
+        stories.add(new Story(true));
+        stories.add(new Story(false));
+        stories.add(new Story(true));
+        stories.add(new Story(true));
+        stories.add(new Story(false));
+
         storiesRecyclerView.setHasFixedSize(true);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         //set adapter
@@ -53,15 +67,7 @@ public class Discover extends AppCompatActivity {
         storiesRecyclerView.setAdapter(storiesAdapter);
         storiesRecyclerView.addItemDecoration(new StoriesDecor(10));
 
-        stories.add(new Story(false));
-        stories.add(new Story(false));
-        stories.add(new Story(true));
-        stories.add(new Story(false));
-        stories.add(new Story(true));
-        stories.add(new Story(false));
-        stories.add(new Story(true));
-        stories.add(new Story(true));
-        stories.add(new Story(false));
+
 
     }
 }
