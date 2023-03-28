@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import edu.northeastern.myapplication.LoginRegister.Login;
+import edu.northeastern.myapplication.LoginRegister.Register;
 import edu.northeastern.myapplication.discoverpage.Discover;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void login(View view) {
-        Intent intent = new Intent(this, Login.class);
+        Intent intent = new Intent(this, Register.class);
         startActivity(intent);
     }
 
