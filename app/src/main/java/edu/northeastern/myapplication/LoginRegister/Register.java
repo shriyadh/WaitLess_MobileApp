@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -19,9 +20,14 @@ import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.net.Authenticator;
+import java.util.Date;
 
 import edu.northeastern.myapplication.R;
 public class Register extends AppCompatActivity {
@@ -115,8 +121,48 @@ public class Register extends AppCompatActivity {
 
     public void addProfile(){
         // grab the current user's id, join date,  email;
-        System.out.println(mAuth.getCurrentUser().getEmail());
-        System.out.println(mAuth.getCurrentUser().getUid());
+        System.out.println(mUser.getEmail());
+        System.out.println(mUser.getUid());
+        Date creationDate = new Date(mUser.getMetadata().getCreationTimestamp());
+        System.out.println(creationDate);
+
+        String email = mUser.getEmail();
+        String uid = mUser.getUid();
+        String dateJoined = String.valueOf(creationDate);
+
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference(); // get the database ref
+        DatabaseReference userName = rootRef.child("profiles").child(uid); // check for user uid
+
+        // user doesnt exist so add to database
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()) {
+                    //create new user
+                    DatabaseReference profilesRef = rootRef.child("profiles");
+
+                    // add a uid node
+                    profilesRef.child(uid);
+
+                    // Get a reference to the uid node under profiles
+                    DatabaseReference uidRef = profilesRef.child(uid);
+
+                    //add joinedDate node
+
+                    uidRef.child("joinDate").setValue(dateJoined);
+
+
+
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("tag", databaseError.getMessage()); //Don't ignore errors!
+            }
+        };
+
+        userName.addListenerForSingleValueEvent(eventListener);
 
     }
 
