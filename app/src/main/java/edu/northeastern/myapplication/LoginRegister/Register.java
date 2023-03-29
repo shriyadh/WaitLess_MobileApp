@@ -148,11 +148,22 @@ public class Register extends AppCompatActivity {
                     DatabaseReference uidRef = profilesRef.child(uid);
 
                     //add joinedDate node
+                    uidRef.child("joinedDate").setValue(dateJoined);
 
-                    uidRef.child("joinDate").setValue(dateJoined);
+                    // add default bio
+                    uidRef.child("profileBio").setValue("Hello! I have just joined WaitLess!");
 
+                    // add to name
+                    uidRef.child("profileName").setValue(email);
 
+                    // add to friends
+                    uidRef.child("friends").setValue("");
 
+                    // add default lifted
+                    uidRef.child("totalLifted").setValue(0);
+
+                    // add workouts node
+                    uidRef.child("workouts");
 
                 }
             }
@@ -161,7 +172,6 @@ public class Register extends AppCompatActivity {
                 Log.d("tag", databaseError.getMessage()); //Don't ignore errors!
             }
         };
-
         userName.addListenerForSingleValueEvent(eventListener);
 
     }
