@@ -25,4 +25,17 @@
         tools:layout_editor_absoluteX="148dp"
         tools:layout_editor_absoluteY="171dp" />
 
+    <!--TODO: Remove Button from Production-->
+    <Button
+        android:id="@+id/buttonMyProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        android:onClick="myProfile"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
