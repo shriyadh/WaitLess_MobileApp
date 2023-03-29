@@ -32,6 +32,7 @@ import java.util.Date;
 import edu.northeastern.myapplication.R;
 public class Register extends AppCompatActivity {
     EditText inputEmail;
+    EditText inputUsername;
     EditText inputPassword;
     EditText inputPasswordConfirm;
 
@@ -47,8 +48,10 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         // find all the edit texts
+
         inputEmail = findViewById(R.id.user_email);
         inputPassword = findViewById(R.id.user_password);
+        inputUsername = findViewById(R.id.username_input);
         inputPasswordConfirm = findViewById(R.id.user_password_confirm);
         System.out.println("here");
         registerButton = findViewById(R.id.register_button);
@@ -153,8 +156,11 @@ public class Register extends AppCompatActivity {
                     // add default bio
                     uidRef.child("profileBio").setValue("Hello! I have just joined WaitLess!");
 
-                    // add to name
-                    uidRef.child("profileName").setValue(email);
+                    // add to username
+                    uidRef.child("profileName").setValue(inputUsername.getText().toString());
+
+                    // add to email
+                    uidRef.child("profileEmail").setValue(email);
 
                     // add to friends
                     uidRef.child("friends").setValue("");
