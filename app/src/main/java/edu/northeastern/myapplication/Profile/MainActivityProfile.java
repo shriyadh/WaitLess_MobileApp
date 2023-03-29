@@ -1,7 +1,5 @@
 package edu.northeastern.myapplication.Profile;
 
-import static java.lang.Thread.sleep;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -100,23 +98,40 @@ public class MainActivityProfile extends AppCompatActivity {
             DatabaseReference profileRef = FirebaseDatabase
                     .getInstance()
                     .getReference("profiles/" + profileId); // TODO: Replace with user's profile id
+            DatabaseReference workoutRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference("workouts/" + profileId); // TODO: Replace with user's profile id
             profileRef.addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     currentProfile = snapshot.getValue(Profile.class);
-                    for (DataSnapshot workoutSnapshot : snapshot.child("workouts").getChildren()) {
+//                    for (DataSnapshot workoutSnapshot : snapshot.child("workouts").getChildren()) {
+//                        workoutList.add(workoutSnapshot.getValue(Workout.class));
+//                    }
+                    loadProfileImage();
+                    loadProfileTextData();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("PROFILE_DATA", "Failed to read profile value.", error.toException());
+                }
+            });
+
+            workoutRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
                         workoutList.add(workoutSnapshot.getValue(Workout.class));
                     }
-                    loadProfileImage();
                     loadProfileGraph();
-                    loadProfileTextData();
                     loadLastWorkout();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Log.w("Profile", "Failed to read value.", error.toException());
+                    Log.w("PROFILE_WORKOUTS", "Failed to read workouts value.", error.toException());
                 }
             });
         }).start();
@@ -136,7 +151,6 @@ public class MainActivityProfile extends AppCompatActivity {
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         numberFormat.setGroupingUsed(true);
         String formattedTotalWeight = numberFormat.format(currentProfile.getTotalLifted());
-
         String formattedTotalWorkouts = numberFormat.format(workoutList.size());
 
 
