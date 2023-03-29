@@ -26,4 +26,7 @@
     <string name="legpress">Legpress</string>
     <string name="calf">Calf</string>
     <string name="year">Year</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
 </resources>

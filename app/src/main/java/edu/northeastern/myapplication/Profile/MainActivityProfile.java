@@ -1,5 +1,6 @@
 package edu.northeastern.myapplication.Profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.Calendar;
 
 import edu.northeastern.myapplication.R;
+import edu.northeastern.myapplication.discoverpage.Discover;
 
 
 // TODO:
@@ -66,6 +68,8 @@ public class MainActivityProfile extends AppCompatActivity implements OnChartVal
         int buttonId = view.getId();
         if (buttonId == profileSettingsButton.getId()) {
             // TODO: Add code to go to profile settings page
+            Intent intent = new Intent(getWindow().getContext(), EditProfile.class);
+            startActivity(intent);
             Log.w("Profile", "Profile Settings button clicked");
         } else if (buttonId == workoutHistoryButton.getId()) {
             // TODO: Add code to go to workout history page
@@ -77,7 +81,7 @@ public class MainActivityProfile extends AppCompatActivity implements OnChartVal
     }
 
     public void loadProfile() {
-        String pid = "-NRVYvTjwCGKqGm9dUIq";
+        String pid = "1";
         new Thread(() -> {
             DatabaseReference profileRef = FirebaseDatabase
                     .getInstance()
@@ -128,7 +132,7 @@ public class MainActivityProfile extends AppCompatActivity implements OnChartVal
             FirebaseStorage
                     .getInstance()
                     .getReference("/profileIcons/")
-                    .child(currentProfile.getProfileId() + ".jpg")
+                    .child("TestImage.jpg")
                     .getDownloadUrl()
                     .addOnSuccessListener(uri -> Glide.with(this)
                             .load(uri)

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import edu.northeastern.myapplication.Profile.MainActivityProfile;
 import edu.northeastern.myapplication.discoverpage.Discover;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void discover(View view) {
         Intent intent = new Intent(this, Discover.class);
+        startActivity(intent);
+    }
+
+    public void profile(View view) {
+        Intent intent = new Intent(this, MainActivityProfile.class);
         startActivity(intent);
     }
 
