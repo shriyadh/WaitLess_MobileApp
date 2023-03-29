@@ -5,10 +5,12 @@ import static android.content.ContentValues.TAG;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -57,6 +59,8 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     // ProgressBar progressBar;
+
+    boolean usernameCreated = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +126,10 @@ public class Login extends AppCompatActivity {
                                         String uid = user1.getUid();
                                         Log.d(TAG, "User created with UID: " + uid);
 
+                                        // get the user's username
+                                        // https://developer.android.com/develop/ui/views/components/dialogs#java
+                                       // askUsername();
+
 //                                        // add to the database
                                           addGoogleProfile();
 
@@ -157,6 +165,29 @@ public class Login extends AppCompatActivity {
                 Authenticate();
             }
         });
+    }
+
+    public void askUsername(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setView(R.layout.signin);
+// Add the buttons
+        builder.setPositiveButton("Register", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                // check to make sure username is fine
+                usernameCreated = true;
+
+            }
+        });
+        builder.setNegativeButton("Go Back", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                //still false
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 
     public void Authenticate() {
@@ -203,6 +234,7 @@ public class Login extends AppCompatActivity {
         FirebaseUser userGoogle = FirebaseAuth.getInstance().getCurrentUser();
         String email = userGoogle.getEmail();
         String uid = userGoogle.getUid();
+        String user = userGoogle.getDisplayName();
         Date creationDate = new Date(userGoogle.getMetadata().getCreationTimestamp());
         String dateJoined = String.valueOf(creationDate);
 
@@ -231,7 +263,7 @@ public class Login extends AppCompatActivity {
                     uidRef.child("profileBio").setValue("Hello! I have just joined WaitLess!");
 
                     // add to username
-                    uidRef.child("profileName").setValue("dummy");
+                    uidRef.child("profileName").setValue(user);
 
                     // add to email
                     uidRef.child("profileEmail").setValue(email);

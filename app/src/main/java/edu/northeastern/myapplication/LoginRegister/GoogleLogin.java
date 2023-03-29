@@ -12,8 +12,6 @@ public class GoogleLogin extends Login {
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_google_login);
