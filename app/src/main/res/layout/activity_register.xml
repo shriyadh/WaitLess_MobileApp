@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login"
+    android:background="@drawable/lifting"
     tools:context=".LoginRegister.Register">
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#99070707"
+        android:background="#B9070707"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
 
@@ -124,25 +124,27 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:textColor="@color/black"
-                android:text="@string/register_now"
                 android:backgroundTint="@color/white"
+                android:onClick="sendToLogin"
+                android:text="@string/register_now"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="@+id/user_password_confirm"
                 app:layout_constraintStart_toStartOf="@+id/user_password_confirm"
                 app:layout_constraintTop_toBottomOf="@+id/user_password_confirm" />
 
-        <TextView
-            android:id="@+id/returning"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Already Have An Account?"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            app:layout_constraintEnd_toEndOf="@+id/register_button"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/register_button"
-            app:layout_constraintTop_toBottomOf="@+id/register_button" />
+            <TextView
+                android:id="@+id/returning"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:onClick="sendToLogin"
+                android:text="Already Have An Account?"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                app:layout_constraintEnd_toEndOf="@+id/register_button"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/register_button"
+                app:layout_constraintTop_toBottomOf="@+id/register_button" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

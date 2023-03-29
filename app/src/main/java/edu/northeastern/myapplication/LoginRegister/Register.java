@@ -93,7 +93,7 @@ public class Register extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(Register.this, "Registered!",Toast.LENGTH_LONG).show();
-                        sendToLogin();
+                        //sendToLogin(View);
                     }
                     else {
                         System.out.println("FAIL"+ task.getException());
@@ -105,7 +105,7 @@ public class Register extends AppCompatActivity {
 
         }
     }
-public void sendToLogin(){
+public void sendToLogin(View v){
     Intent i = new Intent(this, Login.class);
     startActivity(i);
 }
