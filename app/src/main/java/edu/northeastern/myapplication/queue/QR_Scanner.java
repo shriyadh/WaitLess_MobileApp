@@ -12,10 +12,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Size;
 import android.view.View;
@@ -31,7 +34,6 @@ import edu.northeastern.myapplication.R;
 public class QR_Scanner extends AppCompatActivity {
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    private Button qrCodeFoundButton;
     private String qrCode;
     private static final int PERMISSION_REQUEST_CAMERA = 0;
 
@@ -39,18 +41,7 @@ public class QR_Scanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qr_scanner);
-
         previewView = findViewById(R.id.activity_main_previewView);
-        qrCodeFoundButton = findViewById(R.id.activity_main_qrCodeFoundButton);
-        qrCodeFoundButton.setVisibility(View.INVISIBLE);
-
-        qrCodeFoundButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), qrCode, Toast.LENGTH_SHORT).show();
-                Log.i(QR_Scanner.class.getSimpleName(), "QR Code Found: " + qrCode);
-            }
-        });
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         requestCamera();
     }
@@ -135,14 +126,16 @@ public class QR_Scanner extends AppCompatActivity {
                 new QRCodeImageAnalyzer(new QRCodeFoundListener() {
             @Override
             public void onQRCodeFound(String _qrCode) {
+                // pass QR data back to queue home and exit activity
                 qrCode = _qrCode;
-                qrCodeFoundButton.setVisibility(View.VISIBLE);
+                Intent intent = new Intent();
+                intent.putExtra("data", qrCode);
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             }
 
             @Override
-            public void qrCodeNotFound() {
-                qrCodeFoundButton.setVisibility(View.INVISIBLE);
-            }
+            public void qrCodeNotFound() {}
         }));
 
         Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector,
