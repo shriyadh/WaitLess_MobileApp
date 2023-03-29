@@ -1,5 +1,7 @@
 package edu.northeastern.myapplication.LoginRegister;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -9,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +27,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import edu.northeastern.myapplication.R;
 
@@ -61,7 +66,11 @@ public class Login extends AppCompatActivity {
         mUser = mAuth.getCurrentUser();
 
         // google sign in
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        //gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
         gsc = GoogleSignIn.getClient(this,gso);
 
         //Intent i = new Intent(Login.this, GoogleLogin.class);
@@ -73,10 +82,43 @@ public class Login extends AppCompatActivity {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Intent data = result.getData();
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+
                 try {
-                    task.getResult(ApiException.class);
-                    //it works
-                    //naviagte to second actvity
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+
+                    // Check if the user has an account already in the database
+                    String email = account.getEmail();
+
+                    System.out.println(email);
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    System.out.println("HERE1");
+                    if (user != null) {
+                        System.out.println("HERE2");
+
+//                        System.out.println(user.getEmail());
+//                        String uid = user.getUid();
+//                        System.out.println("user is signed in!");
+                        // User is already signed in, navigate to the second activity
+                    } else {
+                        System.out.println("HERE3");
+                        // handle the case where no user is signed in
+                        // Create a new Firebase user account for the signed-in user
+                        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                        FirebaseAuth.getInstance().signInWithCredential(credential)
+                                .addOnCompleteListener(task1 -> {
+                                    if (task1.isSuccessful()) {
+                                        System.out.println("hereeeee");
+                                        // User account created successfully, navigate to the second activity
+                                        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+                                        String uid = user1.getUid();
+                                        Log.d(TAG, "User created with UID: " + uid);
+                                    } else {
+                                        // User account creation failed, display an error message
+                                        Log.w(TAG, "User account creation failed", task.getException());
+
+                                    }
+                                });
+                    }
                 } catch (ApiException e) {
                     Toast.makeText(getApplicationContext(),"cant",Toast.LENGTH_LONG);
                     throw new RuntimeException(e);
