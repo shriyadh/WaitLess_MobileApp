@@ -15,7 +15,7 @@ import edu.northeastern.myapplication.R;
 public class Discover extends AppCompatActivity {
 
     private RecyclerView storiesRecyclerView;
-    private RecyclerView profilesRecylerView;
+    private RecyclerView profilesRecyclerView;
     private ProfilesAdapter profilesAdapter;
     private StoriesAdapter storiesAdapter;
     private List<Profiles> profiles = new ArrayList<>();
@@ -31,21 +31,36 @@ public class Discover extends AppCompatActivity {
     }
 
     public void initProfiles(){
-        profilesRecylerView = findViewById(R.id.profiles);
+        profilesRecyclerView = findViewById(R.id.profiles);
 
-        profiles.add(new Profiles("Shriya", "Hi", "", 1,1,1,1));
-        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1,1));
+        profiles.add(new Profiles("Shriya", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
+        profiles.add(new Profiles("Gino", "Hi", "", 1,1,1));
 
-        profilesRecylerView.setHasFixedSize(true);
-        profilesRecylerView.setLayoutManager(new LinearLayoutManager(this));
+
+        profilesRecyclerView.setHasFixedSize(true);
+        profilesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //set adapter
         profilesAdapter = new ProfilesAdapter(profiles, this);
-        profilesRecylerView.setAdapter(profilesAdapter);
+        profilesRecyclerView.setAdapter(profilesAdapter);
 
         // add divided b/w links
         DividerItemDecoration decor = new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL);
-        profilesRecylerView.addItemDecoration(decor);
+        profilesRecyclerView.addItemDecoration(decor);
     }
 
     public void initStory() {

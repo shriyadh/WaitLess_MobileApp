@@ -25,7 +25,7 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
     @Override
     public ProfilesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.discover_display_profiles, parent, false);
+        View view = layoutInflater.inflate(R.layout.discover_connect, parent, false);
 
         return new ProfilesViewHolder(view, this.listener);    }
 
