@@ -23,6 +23,7 @@ public class Queue_home extends AppCompatActivity {
     private Button join_queue_btn;
     private Button leave_queue_btn;
     private boolean user_in_queue;
+    private String workout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,28 @@ public class Queue_home extends AppCompatActivity {
         leave_queue_btn = findViewById(R.id.leave_queue_btn);
         leave_queue_btn.setVisibility(View.INVISIBLE);
         user_in_queue = false;
+        workout = "";
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean("user_is_in_queue", user_in_queue);
+        savedInstanceState.putString("workout", (String) workout);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        //************
+        // recalc est wait time
+        //************
+
+        user_in_queue = savedInstanceState.getBoolean("user_is_in_queue");
+        user_in_queue = !user_in_queue;
+        workout = savedInstanceState.getString("workout");
+        swap_buttons(workout);
     }
 
     public void qr_scanner(View view) {
@@ -78,6 +101,7 @@ public class Queue_home extends AppCompatActivity {
 
     private void swap_buttons(String data) {
         if (!user_in_queue) {
+            workout = data;
             // update text on screen to queue joined
             in_queue.setText("In Queue: " + data);
             // change queue buttons to 'leave queue'
@@ -88,6 +112,7 @@ public class Queue_home extends AppCompatActivity {
             est_wait.setVisibility(View.VISIBLE);
             user_in_queue = true;
         } else {
+            workout = "";
             // update text on screen to default
             in_queue.setText(getResources()
                     .getString(R.string.use_the_button_below_to_join_a_queue));
