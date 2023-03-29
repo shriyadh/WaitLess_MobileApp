@@ -118,29 +118,29 @@ public class Login extends AppCompatActivity {
         } else if (passwrd.isEmpty()) {
             // check to make sure password is not empty
             inputEmail.setError("Please enter a valid email address!");
-        } else {
-
+        }
+        else {
             // everything checks out
             mAuth.signInWithEmailAndPassword(email, passwrd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Toast.makeText(Login.this, "Real User!", Toast.LENGTH_LONG).show();
-
+                        System.out.println(mAuth.getCurrentUser().getEmail());
+                        System.out.println(mAuth.getCurrentUser().getUid());
                     } else {
                         Toast.makeText(Login.this, "UNReal User!", Toast.LENGTH_LONG).show();
-
                     }
                 }
             });
-
-
         }
     }
+
 
     public void createAccount(View v) {
         Intent i = new Intent(this, Register.class);
         startActivity(i);
     }
+
 
 }

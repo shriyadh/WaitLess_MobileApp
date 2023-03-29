@@ -87,12 +87,15 @@ public class Register extends AppCompatActivity {
             //progressBar.setVisibility(View.VISIBLE);
 
 
+
             // everything checks out
             mAuth.createUserWithEmailAndPassword(email,passwrd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(Register.this, "Registered!",Toast.LENGTH_LONG).show();
+                        // store the user's info in the profiles table in the database
+                        addProfile();
                         //sendToLogin(View);
                     }
                     else {
@@ -105,10 +108,17 @@ public class Register extends AppCompatActivity {
 
         }
     }
-public void sendToLogin(View v){
-    Intent i = new Intent(this, Login.class);
-    startActivity(i);
-}
+    public void sendToLogin(View v){
+        Intent i = new Intent(this, Login.class);
+        startActivity(i);
+    }
+
+    public void addProfile(){
+        // grab the current user's id, join date,  email;
+        System.out.println(mAuth.getCurrentUser().getEmail());
+        System.out.println(mAuth.getCurrentUser().getUid());
+
+    }
 
 
 }
