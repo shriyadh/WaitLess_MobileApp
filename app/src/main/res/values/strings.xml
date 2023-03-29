@@ -27,6 +27,9 @@
     <string name="calf">Calf</string>
     <string name="year">Year</string>
     <string name="queue">Queue</string>
-    <string name="join_queue">Join Queue</string>
-    <string name="in_queue_none">In Queue: None</string>
+    <string name="join_queue">Join A Queue</string>
+    <string name="queue_title">Workout Queue</string>
+    <string name="use_the_button_below_to_join_a_queue">Use the button below to join a queue!</string>
+    <string name="leave_queue">Leave Queue</string>
+    <string name="wait_est_str">Est. wait time: </string>
 </resources>

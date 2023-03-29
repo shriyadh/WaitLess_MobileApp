@@ -7,7 +7,7 @@
     tools:context=".queue.Queue_home">
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/join_queue_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="103dp"
@@ -15,15 +15,59 @@
         android:text="@string/join_queue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_queue" />
+
+    <TextView
+        android:id="@+id/queue_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="@string/queue_title"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/current_queue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
         android:id="@+id/current_queue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="230dp"
-        android:text="@string/in_queue_none"
+        android:text="@string/use_the_button_below_to_join_a_queue"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/join_queue_btn"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/queue_title" />
+
+    <TextView
+        android:id="@+id/wait_est"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wait_est_str"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/leave_queue_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_queue" />
+
+    <Button
+        android:id="@+id/leave_queue_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="103dp"
+        android:onClick="leave_queue"
+        android:text="@string/leave_queue"
+        android:backgroundTint="@color/teal_200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wait_est" />
 </androidx.constraintlayout.widget.ConstraintLayout>
