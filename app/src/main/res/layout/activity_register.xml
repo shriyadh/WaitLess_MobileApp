@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".LoginRegister.Register">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:indeterminate="true"
+        tools:ignore="MissingConstraints" />
+
+
     <EditText
         android:id="@+id/user_password_confirm"
         android:layout_width="262dp"
