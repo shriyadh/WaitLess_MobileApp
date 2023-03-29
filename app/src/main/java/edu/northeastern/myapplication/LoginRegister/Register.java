@@ -135,7 +135,6 @@ public class Register extends AppCompatActivity {
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference(); // get the database ref
         DatabaseReference userName = rootRef.child("profiles").child(uid); // check for user uid
-
         // user doesnt exist so add to database
         ValueEventListener eventListener = new ValueEventListener() {
             @Override

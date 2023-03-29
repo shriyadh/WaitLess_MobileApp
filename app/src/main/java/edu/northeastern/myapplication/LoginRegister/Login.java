@@ -32,10 +32,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Date;
 
 import edu.northeastern.myapplication.R;
 
 public class Login extends AppCompatActivity {
+    GoogleSignInAccount account;
     GoogleSignInOptions gso;
     GoogleSignInClient gsc;
 
@@ -73,18 +81,19 @@ public class Login extends AppCompatActivity {
                 .build();
         gsc = GoogleSignIn.getClient(this,gso);
 
-        //Intent i = new Intent(Login.this, GoogleLogin.class);
+        // Intent i = new Intent(Login.this, GoogleLogin.class);
         //System.out.println(" created intent");
         //startActivity(i);
         //Intent signInIntent = gsc.getSignInIntent();
         // startActivityForResult(signInIntent,1000);
+
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Intent data = result.getData();
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
                 try {
-                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    account = task.getResult(ApiException.class);
 
                     // Check if the user has an account already in the database
                     String email = account.getEmail();
@@ -112,6 +121,11 @@ public class Login extends AppCompatActivity {
                                         FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
                                         String uid = user1.getUid();
                                         Log.d(TAG, "User created with UID: " + uid);
+
+//                                        // add to the database
+                                          addGoogleProfile();
+
+
                                     } else {
                                         // User account creation failed, display an error message
                                         Log.w(TAG, "User account creation failed", task.getException());
@@ -183,6 +197,71 @@ public class Login extends AppCompatActivity {
         Intent i = new Intent(this, Register.class);
         startActivity(i);
     }
+
+    public void addGoogleProfile(){
+        // grab the current user's id, join date,  email;
+        FirebaseUser userGoogle = FirebaseAuth.getInstance().getCurrentUser();
+        String email = userGoogle.getEmail();
+        String uid = userGoogle.getUid();
+        Date creationDate = new Date(userGoogle.getMetadata().getCreationTimestamp());
+        String dateJoined = String.valueOf(creationDate);
+
+
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference(); // get the database ref
+        DatabaseReference userName = rootRef.child("profiles").child(uid); // check for user uid
+
+        // user doesnt exist so add to database
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()) {
+                    //create new user
+                    DatabaseReference profilesRef = rootRef.child("profiles");
+
+                    // add a uid node
+                    profilesRef.child(uid);
+
+                    // Get a reference to the uid node under profiles
+                    DatabaseReference uidRef = profilesRef.child(uid);
+
+                    //add joinedDate node
+                    uidRef.child("joinedDate").setValue(dateJoined);
+
+                    // add default bio
+                    uidRef.child("profileBio").setValue("Hello! I have just joined WaitLess!");
+
+                    // add to username
+                    uidRef.child("profileName").setValue("dummy");
+
+                    // add to email
+                    uidRef.child("profileEmail").setValue(email);
+
+                    // add to friends
+                    uidRef.child("friends").setValue("");
+
+                    // add default lifted
+                    uidRef.child("totalLifted").setValue(0);
+
+                    // add workouts node
+                    uidRef.child("workouts");
+
+                    //workout count
+                    uidRef.child("workout_count").setValue(0);
+
+                    // friends count
+                    uidRef.child("friends_count").setValue(0);
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("tag", databaseError.getMessage()); //Don't ignore errors!
+            }
+        };
+        userName.addListenerForSingleValueEvent(eventListener);
+
+    }
+
 
 
 }
