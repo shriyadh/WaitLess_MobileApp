@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
@@ -61,6 +62,20 @@ public class Discover extends AppCompatActivity {
         DividerItemDecoration decor = new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL);
         profilesRecyclerView.addItemDecoration(decor);
+
+        // set the listener for recycler view
+        RecycleViewClickListener listener = new RecycleViewClickListener() {
+            @Override
+            public void onLinkClick(int position) {
+                // send notification to connect to the user clicked
+                String token_send_notify = profilesLst.get(position).getUser_token();
+                // send notification to this user --> if accepted add to friend list of both, else ignore
+
+
+
+            }
+        };
+        profilesAdapter.setListenerLink(listener);
     }
 
     public void initStory() {

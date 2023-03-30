@@ -21,6 +21,10 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
         this.profiles = profiles;
     }
 
+    public void setListenerLink(RecycleViewClickListener lst) {
+        this.listener = lst;
+    }
+
     @NonNull
     @Override
     public ProfilesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

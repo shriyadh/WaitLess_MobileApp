@@ -1,11 +1,13 @@
 package edu.northeastern.myapplication.discoverpage;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import edu.northeastern.myapplication.R;
@@ -39,6 +41,14 @@ public class ProfilesViewHolder extends RecyclerView.ViewHolder {
                 int pos = getLayoutPosition();
                 if(pos != RecyclerView.NO_POSITION) {
                     lst.onLinkClick(pos);
+
+                    connect_btn.setClickable(false);
+
+                    connect_btn.setText("REQUESTED");
+                    int color = ContextCompat.getColor(view.getContext(), R.color.grey);
+                    connect_btn.setBackgroundColor(color);
+
+
                 }
             }
         });
