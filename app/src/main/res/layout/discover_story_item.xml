@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/outline"
         android:layout_gravity="center"
-        app:cardBackgroundColor="#000000"
+        app:cardBackgroundColor="#B62F2F"
         android:layout_width="55dp"
         android:layout_height="55dp"
         app:cardCornerRadius="27dp">
@@ -22,12 +22,13 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_launcher_foreground" />
+                android:src="@drawable/cry" />
         </androidx.cardview.widget.CardView>
 
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/user_story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/username"

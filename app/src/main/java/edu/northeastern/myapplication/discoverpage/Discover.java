@@ -80,15 +80,15 @@ public class Discover extends AppCompatActivity {
 
     public void initStory() {
         storiesRecyclerView = findViewById(R.id.stories);
-        stories.add(new Story(false));
-        stories.add(new Story(false));
-        stories.add(new Story(true));
-        stories.add(new Story(false));
-        stories.add(new Story(true));
-        stories.add(new Story(false));
-        stories.add(new Story(true));
-        stories.add(new Story(true));
-        stories.add(new Story(false));
+        stories.add(new Story("", false));
+        stories.add(new Story("",false));
+        stories.add(new Story("",true));
+        stories.add(new Story("",false));
+        stories.add(new Story("",true));
+        stories.add(new Story("",false));
+        stories.add(new Story("",true));
+        stories.add(new Story("",true));
+        stories.add(new Story("",false));
 
         storiesRecyclerView.setHasFixedSize(true);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
