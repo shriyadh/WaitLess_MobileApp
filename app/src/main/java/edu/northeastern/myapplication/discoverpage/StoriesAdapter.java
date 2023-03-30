@@ -46,8 +46,6 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesViewHolder> {
             holder.storyOutline.setCardBackgroundColor(context.getResources().getColor(R.color.grey));
 
         }
-
-
     }
 
 

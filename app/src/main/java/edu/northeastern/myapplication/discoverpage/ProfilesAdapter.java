@@ -32,6 +32,13 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ProfilesViewHolder holder, int position) {
         Profiles curr = profiles.get(position);
+        holder.username.setText(curr.getUsername());
+        holder.bio.setText(curr.getBio());
+        holder.friends.setText("FRIENDS \n" + curr.getTotal_friends());
+        holder.workouts.setText("WORKOUTS \n" + curr.getWorkouts());
+
+        //holder.small_icon.set(curr.getUsername());
+        //holder.picture.setText(curr.getUsername());
 
     }
 

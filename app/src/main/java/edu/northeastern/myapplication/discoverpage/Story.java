@@ -11,7 +11,4 @@ public class Story {
     public boolean isSeen(){
         return this.seen;
     }
-    public void setSeen(boolean seen){
-        this.seen = seen;
-    }
 }
