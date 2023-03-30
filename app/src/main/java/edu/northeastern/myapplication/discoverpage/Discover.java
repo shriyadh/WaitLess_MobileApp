@@ -1,5 +1,7 @@
 package edu.northeastern.myapplication.discoverpage;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -7,7 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +36,9 @@ public class Discover extends AppCompatActivity {
     private String loggedInUser;
     private List<Profiles> profilesLst = new ArrayList<>();
     private List<Story> stories = new ArrayList<>();
+
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private ActivityResultLauncher<Intent> cameraLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,25 +78,40 @@ public class Discover extends AppCompatActivity {
                 // send notification to connect to the user clicked
                 String token_send_notify = profilesLst.get(position).getUser_token();
                 // send notification to this user --> if accepted add to friend list of both, else ignore
-
-
-
+                takePicture();
             }
         };
         profilesAdapter.setListenerLink(listener);
+
+        // Initialize the cameraLauncher
+        cameraLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        // The image was captured successfully
+                        // You can retrieve the captured image from the result data
+                        Intent data = result.getData();
+                        if (data != null && data.getExtras() != null) {
+                            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+                            // Do something with the imageBitmap
+                        }
+                    }
+                });
+
+
     }
 
     public void initStory() {
         storiesRecyclerView = findViewById(R.id.stories);
         stories.add(new Story("", false));
-        stories.add(new Story("",false));
-        stories.add(new Story("",true));
-        stories.add(new Story("",false));
-        stories.add(new Story("",true));
-        stories.add(new Story("",false));
-        stories.add(new Story("",true));
-        stories.add(new Story("",true));
-        stories.add(new Story("",false));
+        stories.add(new Story("", false));
+        stories.add(new Story("", true));
+        stories.add(new Story("", false));
+        stories.add(new Story("", true));
+        stories.add(new Story("", false));
+        stories.add(new Story("", true));
+        stories.add(new Story("", true));
+        stories.add(new Story("", false));
 
         storiesRecyclerView.setHasFixedSize(true);
         storiesRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -97,11 +120,12 @@ public class Discover extends AppCompatActivity {
         storiesRecyclerView.setAdapter(storiesAdapter);
         storiesRecyclerView.addItemDecoration(new StoriesDecor(10));
 
+
     }
 
     class fbThread implements Runnable {
         @Override
-        public void run(){
+        public void run() {
             try {
                 runFirebase();
             } catch (DatabaseException e) {
@@ -114,7 +138,6 @@ public class Discover extends AppCompatActivity {
         Discover.fbThread fbThread = new Discover.fbThread();
         new Thread(fbThread).start();
     }
-
 
 
     public void runFirebase() {
@@ -158,4 +181,13 @@ public class Discover extends AppCompatActivity {
         userID.addListenerForSingleValueEvent(eventListener);
     }
 
+
+    private void takePicture() {
+        // Launch the camera activity
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            cameraLauncher.launch(takePictureIntent);
+        }
+
+    }
 }

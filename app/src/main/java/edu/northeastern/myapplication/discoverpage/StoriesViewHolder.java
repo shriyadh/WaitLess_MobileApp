@@ -16,5 +16,6 @@ public class StoriesViewHolder extends RecyclerView.ViewHolder {
         super(view);
         storyOutline = view.findViewById(R.id.outline);
         user = view.findViewById(R.id.user_story);
+
     }
 }
