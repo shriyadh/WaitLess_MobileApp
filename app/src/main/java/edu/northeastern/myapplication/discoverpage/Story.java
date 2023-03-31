@@ -2,16 +2,16 @@ package edu.northeastern.myapplication.discoverpage;
 
 public class Story {
 
-    private boolean seen;
+    private String username;
+    private boolean checkedIn;
 
-    public Story(boolean seen) {
-        this.seen = seen;
+    public Story(String username, boolean checkedIn) {
+        this.username = username;
+        this.checkedIn = checkedIn;
     }
 
-    public boolean isSeen(){
-        return this.seen;
-    }
-    public void setSeen(boolean seen){
-        this.seen = seen;
+    public String getUser() { return this.username; }
+    public boolean isCheckedIn(){
+        return this.checkedIn;
     }
 }

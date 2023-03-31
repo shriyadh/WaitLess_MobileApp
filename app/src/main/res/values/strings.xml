@@ -35,4 +35,9 @@
     <string name="queue_page">Queue</string>
     <string name="chat_page">Chat</string>
     <string name="profile_page">Profile</string>
+    <string name="post_picture">Post_picture</string>
+    <string name="friends_discover">FRIENDS</string>
+    <string name="workouts">WORKOUTS</string>
+    <string name="connect">CONNECT</string>
+    <string name="bio">Bio</string>
 </resources>

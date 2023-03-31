@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -41,12 +42,10 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull StoriesViewHolder holder, int position) {
         Story curr = stories.get(position);
-
-        if(curr.isSeen()) {
-            holder.storyOutline.setCardBackgroundColor(context.getResources().getColor(R.color.grey));
-
+        if(curr.isCheckedIn()) {
+            holder.storyOutline.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green));
         }
-
+        holder.user.setText(stories.get(position).getUser());
 
     }
 

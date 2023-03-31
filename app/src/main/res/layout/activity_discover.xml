@@ -40,8 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stories"
         app:layout_constraintVertical_bias="0.966"
-        />
-
+ />
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -49,7 +48,6 @@
         android:layout_gravity="bottom"
         app:menu="@menu/nav"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
