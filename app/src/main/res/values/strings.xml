@@ -31,4 +31,8 @@
     <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="register_now">Register Now</string>
+    <string name="discover_page">Discover</string>
+    <string name="queue_page">Queue</string>
+    <string name="chat_page">Chat</string>
+    <string name="profile_page">Profile</string>
 </resources>

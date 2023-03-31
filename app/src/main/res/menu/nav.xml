@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_discover"
+        android:icon="@drawable/baseline_dashboard_24"
+        android:title="@string/discover_page" />
+    <item
+        android:id="@+id/navigation_queue"
+        android:icon="@drawable/baseline_queue_24"
+        android:title="@string/queue_page" />
+    <item
+        android:id="@+id/navigation_chat"
+        android:icon="@drawable/baseline_message_24"
+        android:title="@string/chat_page" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/baseline_person_24"
+        android:title="@string/profile_page" />
+</menu>

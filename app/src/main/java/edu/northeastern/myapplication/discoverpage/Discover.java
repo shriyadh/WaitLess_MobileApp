@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
 
 public class Discover extends AppCompatActivity {
@@ -28,6 +31,10 @@ public class Discover extends AppCompatActivity {
 
         initStory();
         initProfiles();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
+
     }
 
     public void initProfiles(){

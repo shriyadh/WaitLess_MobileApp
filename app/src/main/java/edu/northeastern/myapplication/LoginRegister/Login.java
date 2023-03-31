@@ -18,8 +18,6 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -39,10 +37,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.Date;
-
 import edu.northeastern.myapplication.R;
+
+
+
+
+
+
 
 public class Login extends AppCompatActivity {
     GoogleSignInAccount account;
@@ -85,12 +87,6 @@ public class Login extends AppCompatActivity {
                 .build();
         gsc = GoogleSignIn.getClient(this,gso);
 
-        // Intent i = new Intent(Login.this, GoogleLogin.class);
-        //System.out.println(" created intent");
-        //startActivity(i);
-        //Intent signInIntent = gsc.getSignInIntent();
-        // startActivityForResult(signInIntent,1000);
-
         ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Intent data = result.getData();
@@ -108,10 +104,6 @@ public class Login extends AppCompatActivity {
                     if (user != null) {
                         System.out.println("HERE2");
 
-//                        System.out.println(user.getEmail());
-//                        String uid = user.getUid();
-//                        System.out.println("user is signed in!");
-                        // User is already signed in, navigate to the second activity
                     } else {
                         System.out.println("HERE3");
                         // handle the case where no user is signed in
@@ -126,9 +118,6 @@ public class Login extends AppCompatActivity {
                                         String uid = user1.getUid();
                                         Log.d(TAG, "User created with UID: " + uid);
 
-                                        // get the user's username
-                                        // https://developer.android.com/develop/ui/views/components/dialogs#java
-                                       // askUsername();
 
 //                                        // add to the database
                                           addGoogleProfile();
@@ -155,7 +144,6 @@ public class Login extends AppCompatActivity {
 
                 Intent i = gsc.getSignInIntent();
                 launcher.launch(i);
-
             }
         });
 
@@ -167,9 +155,11 @@ public class Login extends AppCompatActivity {
         });
     }
 
+
     public void askUsername(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setView(R.layout.signin);
-// Add the buttons
+
+        // Add the buttons
         builder.setPositiveButton("Register", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
@@ -189,7 +179,6 @@ public class Login extends AppCompatActivity {
         dialog.show();
 
     }
-
     public void Authenticate() {
         Toast.makeText(Login.this, "Here!", Toast.LENGTH_LONG).show();
         System.out.println("in authen");
