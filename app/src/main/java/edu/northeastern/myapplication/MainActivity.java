@@ -9,6 +9,8 @@ import android.view.View;
 import edu.northeastern.myapplication.LoginRegister.Register;
 import edu.northeastern.myapplication.Profile.MainActivityProfile;
 import edu.northeastern.myapplication.discoverpage.Discover;
+import edu.northeastern.myapplication.queue.QR_Scanner;
+import edu.northeastern.myapplication.queue.Queue_home;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
      */
     public void myProfile(View view) {
         Intent intent = new Intent(this, MainActivityProfile.class);
+        startActivity(intent);
+    }
+
+    public void queue(View view) {
+        Intent intent = new Intent(this, Queue_home.class);
         startActivity(intent);
     }
 
