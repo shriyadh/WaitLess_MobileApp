@@ -59,7 +59,7 @@ public class Register extends AppCompatActivity {
 
         // firebase authentication
         mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
+
 
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +104,7 @@ public class Register extends AppCompatActivity {
                     if(task.isSuccessful()){
                         Toast.makeText(Register.this, "Registered!",Toast.LENGTH_LONG).show();
                         // store the user's info in the profiles table in the database
+                        mUser = mAuth.getCurrentUser();
                         addProfile();
                         //sendToLogin(View);
                     }
@@ -140,6 +141,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.exists()) {
+                    System.out.println("HERE");
                     //create new user
                     DatabaseReference profilesRef = rootRef.child("profiles");
 
