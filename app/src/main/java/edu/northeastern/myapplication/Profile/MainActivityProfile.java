@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
 import edu.northeastern.myapplication.Workouts.Workout;
 
@@ -64,6 +66,15 @@ public class MainActivityProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_profile);
+
+        // find navigation view
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        // set selected item to queue
+        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
+        // activate nav listener
+        bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
+
+
 
         profileSettingsButton = findViewById(R.id.imageButtonProfileSettings);
         workoutHistoryButton = findViewById(R.id.buttonWorkoutHistory);

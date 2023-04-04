@@ -48,6 +48,14 @@ public class Discover extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
 
+        // find navigation view
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        // set selected item to queue
+        bottomNavigationView.setSelectedItemId(R.id.navigation_discover);
+        // activate nav listener
+        bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
+
+
         loggedInUser = "Shriya";
 
 
@@ -55,10 +63,6 @@ public class Discover extends AppCompatActivity {
         initStory();
         // set up recycler for profiles
         initProfiles();
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
-
 
         // get data from firebase for profiles
         run_fbThread();

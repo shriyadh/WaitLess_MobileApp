@@ -2,6 +2,7 @@ package edu.northeastern.myapplication.queue;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -10,10 +11,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
 
 public class Queue_home extends AppCompatActivity {
@@ -29,6 +34,13 @@ public class Queue_home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue_home);
+        // find navigation view
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        // set selected item to queue
+        bottomNavigationView.setSelectedItemId(R.id.navigation_queue);
+        // activate nav listener
+        bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
+
 
         in_queue = findViewById(R.id.current_queue);
         est_wait = findViewById(R.id.wait_est);
@@ -45,6 +57,7 @@ public class Queue_home extends AppCompatActivity {
         savedInstanceState.putBoolean("user_is_in_queue", user_in_queue);
         savedInstanceState.putString("workout", (String) workout);
         super.onSaveInstanceState(savedInstanceState);
+
     }
 
     @Override

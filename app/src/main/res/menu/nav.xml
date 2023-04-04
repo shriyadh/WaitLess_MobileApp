@@ -11,9 +11,9 @@
         android:icon="@drawable/baseline_queue_24"
         android:title="@string/queue_page" />
     <item
-        android:id="@+id/navigation_chat"
-        android:icon="@drawable/baseline_message_24"
-        android:title="@string/chat_page" />
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/baseline_notifications_24"
+        android:title="@string/notifications" />
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/baseline_person_24"
