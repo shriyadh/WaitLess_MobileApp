@@ -13,6 +13,7 @@ public class Profile {
     private Integer totalLifted;
     private Integer totalWorkouts;
     private String profileBio;
+    private String imageName;
 
 
     public Profile(String profileName, long joinedDate, Integer totalLifted, Integer totalWorkouts, String profileBio) {
@@ -36,6 +37,13 @@ public class Profile {
         DatabaseReference newProfileRef = profileRef.push();
         setProfileId(newProfileRef.getKey());
         profileRef.push().setValue(this);
+    }
+
+    public void setImageName(String imageId){
+        this.imageName = imageId;
+    }
+    public String getImageName(){
+        return this.imageName;
     }
 
     public String getProfileId() {

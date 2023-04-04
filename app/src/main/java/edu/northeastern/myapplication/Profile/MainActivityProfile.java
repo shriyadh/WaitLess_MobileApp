@@ -1,5 +1,6 @@
 package edu.northeastern.myapplication.Profile;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,6 +83,8 @@ public class MainActivityProfile extends AppCompatActivity {
         int buttonId = view.getId();
         if (buttonId == profileSettingsButton.getId()) {
             // TODO: Add code to go to profile settings page
+            Intent intent = new Intent(getWindow().getContext(), EditProfile.class);
+            startActivity(intent);
             Log.w("Profile", "Profile Settings button clicked");
         } else if (buttonId == workoutHistoryButton.getId()) {
             // TODO: Add code to go to workout history page
