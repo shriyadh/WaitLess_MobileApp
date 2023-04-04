@@ -22,7 +22,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void profile(View view) {
+    // TODO: Remove when done testing
+    /**
+     * This method is called when the user clicks the "My Profile" button
+     */
+    public void myProfile(View view) {
         Intent intent = new Intent(this, MainActivityProfile.class);
         startActivity(intent);
     }
