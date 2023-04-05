@@ -71,7 +71,6 @@ public class MainActivityProfile extends AppCompatActivity {
         loadProfile();
     }
 
-
     public void onClick(View view) {
         int buttonId = view.getId();
         if (buttonId == profileSettingsButton.getId()) {
@@ -88,7 +87,8 @@ public class MainActivityProfile extends AppCompatActivity {
 
     public void loadProfile() {
         new Thread(() -> {
-            workoutList = new ArrayList<>();DatabaseReference profileRef = FirebaseDatabase
+            workoutList = new ArrayList<>();
+            DatabaseReference profileRef = FirebaseDatabase
                     .getInstance()
                     .getReference("profiles/" + profileId); // TODO: Replace with user's profile id
             DatabaseReference workoutRef = FirebaseDatabase
@@ -162,7 +162,6 @@ public class MainActivityProfile extends AppCompatActivity {
         friendCount.setText(formattedNumber);
     }
 
-
     public void loadProfileData() {
         // Get text views
         TextView profileName = findViewById(R.id.textViewProfileName);
@@ -179,7 +178,6 @@ public class MainActivityProfile extends AppCompatActivity {
         profileBio.setText(currentProfile.getProfileBio());
     }
 
-
     public void loadProfileImage() {
         new Thread(() -> {
             // Get profile icon from Firebase Storage and set it to the image view using Glide
@@ -194,7 +192,7 @@ public class MainActivityProfile extends AppCompatActivity {
                             .override(275, 275)
                             .apply(new RequestOptions()
                                     .transform(new CenterCrop(),
-                                    new RoundedCorners(50)))
+                                            new RoundedCorners(50)))
                             .into(profileIcon)).addOnFailureListener(e ->
                             Log.w("Profile", "Failed to load profile image", e));
         }).start();
