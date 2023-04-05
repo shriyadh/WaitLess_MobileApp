@@ -151,28 +151,28 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textViewTotalWeightTitle"
+        android:id="@+id/textViewFriendCountTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="60dp"
-        android:text="@string/weight"
+        android:text="@string/friends"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewTotalWeight"
+        app:layout_constraintStart_toEndOf="@+id/textViewFriendCount"
         app:layout_constraintTop_toBottomOf="@+id/textViewJoinedYear"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textViewTotalWeight"
+        android:id="@+id/textViewFriendCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/weight_lifted"
+        android:text="@string/_0"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +193,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewWorkoutCompleted"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalWeightTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFriendCountTitle"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -208,7 +208,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageViewProfileIcon"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalWeight"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFriendCount"
         app:layout_constraintVertical_bias="0.0" />
 
     <View

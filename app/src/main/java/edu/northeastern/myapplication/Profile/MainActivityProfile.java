@@ -29,26 +29,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
-import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import edu.northeastern.myapplication.R;
 import edu.northeastern.myapplication.Workouts.Workout;
 
-
-// TODO:
-//  - Generates id for Firsebase https://stackoverflow.com/questions/28822054/firebase-how-to-generate-a-unique-numeric-id-for-key
-//  - Potentially transfer over to using FirebaseAuth instead of FirebaseRealtimeDatabase for profiles
 
 public class MainActivityProfile extends AppCompatActivity {
     private Profile currentProfile;
@@ -57,13 +47,17 @@ public class MainActivityProfile extends AppCompatActivity {
     private ImageView profileIcon;
     private BarChart chart;
     private List<Workout> workoutList;
+    private List<Profile> friendList;
 
-    private final String profileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with user's id
+    private String profileId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_profile);
+
+//        profileId = getIntent().getStringExtra("profileId");
+        profileId = "-NRVYvTjwCGKqGm9dUIq";
 
         profileSettingsButton = findViewById(R.id.imageButtonProfileSettings);
         workoutHistoryButton = findViewById(R.id.buttonWorkoutHistory);
@@ -94,23 +88,56 @@ public class MainActivityProfile extends AppCompatActivity {
 
     public void loadProfile() {
         new Thread(() -> {
-            workoutList = new ArrayList<>();
-            DatabaseReference profileRef = FirebaseDatabase
+            workoutList = new ArrayList<>();DatabaseReference profileRef = FirebaseDatabase
                     .getInstance()
                     .getReference("profiles/" + profileId); // TODO: Replace with user's profile id
             DatabaseReference workoutRef = FirebaseDatabase
                     .getInstance()
                     .getReference("workouts/" + profileId); // TODO: Replace with user's profile id
+            DatabaseReference friendRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference("friends/" + profileId); // TODO: Replace with user's profile id
+
+            workoutRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    workoutList = new ArrayList<>();
+                    for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
+                        workoutList.add(workoutSnapshot.getValue(Workout.class));
+                    }
+                    loadWorkoutData();
+                    loadWorkoutGraph();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("PROFILE_WORKOUTS", "Failed to read workouts value.", error.toException());
+                }
+            });
+
+            friendRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    friendList = new ArrayList<>();
+                    for (DataSnapshot friendSnapshot : snapshot.getChildren()) {
+                        friendList.add(friendSnapshot.getValue(Profile.class));
+                    }
+                    loadFriendData();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("PROFILE_FRIENDS", "Failed to read friends value.", error.toException());
+                }
+            });
+
             profileRef.addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     currentProfile = snapshot.getValue(Profile.class);
-//                    for (DataSnapshot workoutSnapshot : snapshot.child("workouts").getChildren()) {
-//                        workoutList.add(workoutSnapshot.getValue(Workout.class));
-//                    }
+                    loadProfileData();
                     loadProfileImage();
-                    loadProfileTextData();
                 }
 
                 @Override
@@ -119,55 +146,41 @@ public class MainActivityProfile extends AppCompatActivity {
                 }
             });
 
-            workoutRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
-                        workoutList.add(workoutSnapshot.getValue(Workout.class));
-                    }
-                    loadProfileGraph();
-                    loadLastWorkout();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.w("PROFILE_WORKOUTS", "Failed to read workouts value.", error.toException());
-                }
-            });
         }).start();
 
     }
 
+    private void loadFriendData() {
+        // Get text view
+        TextView friendCount = findViewById(R.id.textViewFriendCount);
 
-    public void loadProfileTextData() {
+        // Format number to include commas
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        String formattedNumber = numberFormat.format(friendList.size());
+
+        // Set text
+        friendCount.setText(formattedNumber);
+    }
+
+
+    public void loadProfileData() {
         // Get text views
         TextView profileName = findViewById(R.id.textViewProfileName);
         TextView joinedYear = findViewById(R.id.textViewJoinedYear);
-        TextView totalWeight = findViewById(R.id.textViewTotalWeight);
-        TextView workoutCompleted = findViewById(R.id.textViewWorkoutCompleted);
         TextView profileBio = findViewById(R.id.textViewBioDesc);
-
-        // Format total weight and total workouts to include commas
-        NumberFormat numberFormat = NumberFormat.getNumberInstance();
-        numberFormat.setGroupingUsed(true);
-        String formattedTotalWeight = numberFormat.format(currentProfile.getTotalLifted());
-        String formattedTotalWorkouts = numberFormat.format(workoutList.size());
-
-
 
         // Format date from milliseconds to MM/YYYY
         String formattedDate = new SimpleDateFormat("MM/yyyy", Locale.US)
                 .format(currentProfile.getJoinedDate());
 
-
         // Set text
         profileName.setText(currentProfile.getProfileName());
         joinedYear.setText(formattedDate);
-        totalWeight.setText(formattedTotalWeight);
-        workoutCompleted.setText(formattedTotalWorkouts);
         profileBio.setText(currentProfile.getProfileBio());
     }
-        public void loadProfileImage() {
+
+
+    public void loadProfileImage() {
         new Thread(() -> {
             // Get profile icon from Firebase Storage and set it to the image view using Glide
             FirebaseStorage
@@ -187,7 +200,7 @@ public class MainActivityProfile extends AppCompatActivity {
         }).start();
     }
 
-    public void loadProfileGraph() {
+    public void loadWorkoutGraph() {
         int totalChest = 0;
         int totalBack = 0;
         int totalArms = 0;
@@ -230,7 +243,9 @@ public class MainActivityProfile extends AppCompatActivity {
         chart.invalidate();
     }
 
-    public void loadLastWorkout() {
+    public void loadWorkoutData() {
+        // Get text views
+        TextView workoutsCompleted = findViewById(R.id.textViewWorkoutCompleted);
         TextView lastWorkoutDate = findViewById(R.id.textViewLastWorkoutDate);
         TextView workout1 = findViewById(R.id.textViewW1);
         TextView workout2 = findViewById(R.id.textViewW2);
@@ -241,6 +256,12 @@ public class MainActivityProfile extends AppCompatActivity {
         TextView workoutDuration = findViewById(R.id.textViewWorkoutDuration);
 
         if (!workoutList.isEmpty()) {
+            // Format total weight and total workouts to include commas
+            NumberFormat numberFormat = NumberFormat.getNumberInstance();
+            numberFormat.setGroupingUsed(true);
+            String formattedTotalWorkouts = numberFormat.format(workoutList.size());
+            workoutsCompleted.setText(formattedTotalWorkouts);
+
             // Sort workout list based on date reversed
             workoutList.sort(Comparator.comparingLong(Workout::getDate).reversed());
 
