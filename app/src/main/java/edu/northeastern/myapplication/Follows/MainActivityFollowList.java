@@ -1,4 +1,4 @@
-package edu.northeastern.myapplication.Friends;
+package edu.northeastern.myapplication.Follows;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -6,28 +6,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
-import android.util.Pair;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import edu.northeastern.myapplication.Profile.MainActivityProfile;
 import edu.northeastern.myapplication.Profile.Profile;
 import edu.northeastern.myapplication.R;
 
-public class MainActivityFriendsList extends AppCompatActivity {
+public class MainActivityFollowList extends AppCompatActivity {
     private List<String> friendsIdList = new ArrayList<>();
     private String profileId;
     private String currProfileId;
+    private TextView friendsListTitle;
     private RecyclerView friendsRecyclerView;
     private RviewAdapter rviewAdapter;
     private RecyclerView.LayoutManager rLayoutManager;
@@ -44,10 +43,13 @@ public class MainActivityFriendsList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_friends_list);
 
+        friendsListTitle = findViewById(R.id.textViewFollowListTitle);
+
         Intent intent = getIntent();
         profileId = intent.getStringExtra("profileId");
         currProfileId = intent.getStringExtra("currProfileId");
         friendsIdList = intent.getStringArrayListExtra("friendsIdList");
+        getFriendsListTitle();
         createRecyclerView();
     }
 
@@ -60,14 +62,18 @@ public class MainActivityFriendsList extends AppCompatActivity {
         friendsRecyclerView.setHasFixedSize(true);
         rviewAdapter = new RviewAdapter(profileId, friendsIdList);
 
-        FriendsClickListener listener = new FriendsClickListener() {
+        FollowClickListener listener = new FollowClickListener() {
             @Override
             public void onFriendClick(int position) {
                 Log.v("FriendsList", "Friend Clicked: " + position);
+                Intent intent = new Intent(getApplicationContext(), MainActivityProfile.class);
+                intent.putExtra("profileId", friendsIdList.get(position));
+                intent.putExtra("currProfileId", currProfileId);
+                startActivity(intent);
             }
 
             @Override
-            public void onFriendButtonClick(int position) {
+            public void onFollowButtonClick(int position) {
                 ToggleButton button = Objects.requireNonNull(friendsRecyclerView.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.toggleButtonConnected);
                 if (button.isChecked()) {
                     Log.d("FriendsConnection", "Friend Removed: " + position);
@@ -89,5 +95,23 @@ public class MainActivityFriendsList extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(friendsRecyclerView.getContext(),
                 ((LinearLayoutManager) rLayoutManager).getOrientation());
         friendsRecyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void getFriendsListTitle() {
+        FirebaseDatabase.getInstance()
+                .getReference("profiles/" + profileId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DataSnapshot dataSnapshot = task.getResult();
+                        if (dataSnapshot != null) {
+                            Profile profile = dataSnapshot.getValue(Profile.class);
+                            if (profile != null) {
+                                String title = profile.getProfileName() + "'s Followers";
+                                friendsListTitle.setText(title);
+                            }
+                        }
+                    }
+                });
     }
 }

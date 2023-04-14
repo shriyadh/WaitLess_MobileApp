@@ -1,10 +1,7 @@
-package edu.northeastern.myapplication.Friends;
+package edu.northeastern.myapplication.Follows;
 
-import android.graphics.Bitmap;
 import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -20,10 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import edu.northeastern.myapplication.Profile.Profile;
 import edu.northeastern.myapplication.R;
@@ -32,14 +26,14 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
     private String currentUserId = "-NRVYvTjwCGKqGm9dUIq";
     private String profileId;
     private List<String> friendsIdList;
-    private FriendsClickListener listener;
+    private FollowClickListener listener;
 
     public RviewAdapter(String profileId, List<String> friendsIdList) {
         this.profileId = profileId;
         this.friendsIdList = friendsIdList;
     }
 
-    public void setOnFriendsClickListener(FriendsClickListener listener) {
+    public void setOnFriendsClickListener(FollowClickListener listener) {
         this.listener = listener;
     }
 

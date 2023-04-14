@@ -3,15 +3,13 @@ package edu.northeastern.myapplication.Profile;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,11 +35,10 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import edu.northeastern.myapplication.Friends.MainActivityFriendsList;
+import edu.northeastern.myapplication.Follows.MainActivityFollowList;
 import edu.northeastern.myapplication.R;
 import edu.northeastern.myapplication.Workouts.Workout;
 
@@ -49,7 +46,8 @@ import edu.northeastern.myapplication.Workouts.Workout;
 public class MainActivityProfile extends AppCompatActivity {
     private Profile currentProfile;
     private ImageButton profileSettingsButton;
-    private Button workoutHistoryButton, friendsButton;
+    private ToggleButton followButton;
+    private Button workoutListButton, followListButton;
     private ImageView profileIcon;
     private BarChart chart;
     private List<Workout> workoutList;
@@ -63,19 +61,45 @@ public class MainActivityProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_profile);
 
-        profileId = "-NRVYvTjwCGKqGm9dUIq";
-
-
+        followButton = findViewById(R.id.toggleButtonFriendConnect);
+        followButton.setVisibility(View.GONE);
         profileSettingsButton = findViewById(R.id.imageButtonProfileSettings);
-        workoutHistoryButton = findViewById(R.id.buttonWorkoutHistory);
-        friendsButton = findViewById(R.id.buttonFriends);
+        profileSettingsButton.setVisibility(View.GONE);
+        workoutListButton = findViewById(R.id.buttonWorkoutHistory);
+        followListButton = findViewById(R.id.buttonFollowers);
 
         profileIcon = findViewById(R.id.imageViewProfileIcon);
         profileIcon.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.baseline_account_box_24));
 
         chart = findViewById(R.id.barChartTotalWeight);
 
+        profileId = getIntent().getStringExtra("profileId");
+        if (profileId != null && !profileId.equals(currentProfileId)) {
+            followButton.setVisibility(View.VISIBLE);
+            getFollowStatus();
+        } else {
+            profileId = currentProfileId;
+            profileSettingsButton.setVisibility(View.VISIBLE);
+        }
+
         loadProfile();
+    }
+
+    private void getFollowStatus() {
+        FirebaseDatabase.getInstance()
+                .getReference("friends/" + currentProfileId)
+                .child(profileId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        followButton.setChecked(!snapshot.exists());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("Profile", "Failed to read value.", error.toException());
+                    }
+                });
     }
 
     public void onClick(View view) {
@@ -83,13 +107,13 @@ public class MainActivityProfile extends AppCompatActivity {
         if (buttonId == profileSettingsButton.getId()) {
             // TODO: Add code to go to profile settings page
             Log.w("Profile", "Profile Settings button clicked");
-        } else if (buttonId == workoutHistoryButton.getId()) {
+        } else if (buttonId == workoutListButton.getId()) {
             // TODO: Add code to go to workout history page
             Log.w("Profile", "Workout History button clicked");
-        } else if (buttonId == friendsButton.getId()) {
+        } else if (buttonId == followListButton.getId()) {
             // TODO: Add code to go to friends list page
             Log.w("Profile", "Friend List button clicked");
-            Intent intent = new Intent(getApplicationContext(), MainActivityFriendsList.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivityFollowList.class);
             intent.putExtra("profileId", profileId);
             intent.putExtra("currProfileId", currentProfileId);
             if (friendsIdList != null) {
@@ -98,6 +122,18 @@ public class MainActivityProfile extends AppCompatActivity {
                 intent.putStringArrayListExtra("friendsIdList", new ArrayList<>());
             }
             startActivity(intent);
+        } else if (buttonId == followButton.getId()) {
+            new Thread(() -> {
+                DatabaseReference friendRef = FirebaseDatabase
+                        .getInstance()
+                        .getReference("friends")
+                        .child(currentProfileId);
+                if (followButton.isChecked()) {
+                    friendRef.child(profileId).removeValue();
+                } else {
+                    friendRef.child(profileId).setValue(true);
+                }
+            }).start();
         }
     }
 

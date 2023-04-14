@@ -15,7 +15,7 @@
     <string name="_12_31_1900">12/31/1900</string>
     <string name="duration">Duration</string>
     <string name="minutes">minutes</string>
-    <string name="friends">Friends</string>
+    <string name="followers">Followers</string>
     <string name="workout_history">Workout History</string>
     <string name="profile_workout1">Chest</string>
     <string name="profile_workout2">Back</string>
@@ -24,10 +24,10 @@
     <string name="profile_workout5">Legs</string>
     <string name="profile_workout6">Shoulders</string>
     <string name="year">Year</string>
-    <string name="username_s_friends">Username\'s Friends</string>
+    <string name="username_s_follows">Username\'s Followers</string>
     <string name="back_button">Back to Profile</string>
-    <string name="friend_profile_icon">Friend Profile Icon</string>
-    <string name="toggle_friend_connection">Toggle Friend Connection</string>
+    <string name="follow_profile_icon">Follow Profile Icon</string>
+    <string name="toggle_follow_connection">Toggle Follow Connection</string>
     <string name="togglebutton">ToggleButton</string>
     <string name="remove">Remove</string>
     <string name="add">Add</string>

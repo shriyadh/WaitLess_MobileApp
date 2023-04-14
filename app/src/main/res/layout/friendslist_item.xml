@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
-            android:contentDescription="@string/friend_profile_icon" />
+            android:contentDescription="@string/follow_profile_icon" />
 
         <ToggleButton
             android:id="@+id/toggleButtonConnected"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:checked="false"
-            android:contentDescription="@string/toggle_friend_connection"
+            android:contentDescription="@string/toggle_follow_connection"
             android:text="@string/togglebutton"
             android:textOff="@string/remove"
             android:textOn="@string/add"

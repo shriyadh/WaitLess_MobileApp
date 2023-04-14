@@ -1,6 +1,5 @@
-package edu.northeastern.myapplication.Friends;
+package edu.northeastern.myapplication.Follows;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,7 +17,7 @@ public class RviewHolder extends RecyclerView.ViewHolder {
     public ToggleButton friendButton;
 
 
-    public RviewHolder(@NonNull View itemView, final FriendsClickListener listener) {
+    public RviewHolder(@NonNull View itemView, final FollowClickListener listener) {
         super(itemView);
         this.profileName = itemView.findViewById(R.id.textViewFriendsListUsername);
         this.profileIcon = itemView.findViewById(R.id.imageViewFriendsListIcon);
@@ -38,7 +37,7 @@ public class RviewHolder extends RecyclerView.ViewHolder {
             if (listener != null) {
                 int position = getLayoutPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    listener.onFriendButtonClick(position);
+                    listener.onFollowButtonClick(position);
                 }
             }
         });
