@@ -24,4 +24,11 @@
     <string name="profile_workout5">Legs</string>
     <string name="profile_workout6">Shoulders</string>
     <string name="year">Year</string>
+    <string name="username_s_friends">Username\'s Friends</string>
+    <string name="back_button">Back to Profile</string>
+    <string name="friend_profile_icon">Friend Profile Icon</string>
+    <string name="toggle_friend_connection">Toggle Friend Connection</string>
+    <string name="togglebutton">ToggleButton</string>
+    <string name="remove">Remove</string>
+    <string name="add">Add</string>
 </resources>

@@ -1,8 +1,12 @@
 package edu.northeastern.myapplication.Profile;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -33,9 +37,11 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import edu.northeastern.myapplication.Friends.MainActivityFriendsList;
 import edu.northeastern.myapplication.R;
 import edu.northeastern.myapplication.Workouts.Workout;
 
@@ -47,17 +53,18 @@ public class MainActivityProfile extends AppCompatActivity {
     private ImageView profileIcon;
     private BarChart chart;
     private List<Workout> workoutList;
-    private List<Profile> friendList;
+    private List<String> friendsIdList;
 
     private String profileId;
+    private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_profile);
 
-//        profileId = getIntent().getStringExtra("profileId");
         profileId = "-NRVYvTjwCGKqGm9dUIq";
+
 
         profileSettingsButton = findViewById(R.id.imageButtonProfileSettings);
         workoutHistoryButton = findViewById(R.id.buttonWorkoutHistory);
@@ -81,22 +88,33 @@ public class MainActivityProfile extends AppCompatActivity {
             Log.w("Profile", "Workout History button clicked");
         } else if (buttonId == friendsButton.getId()) {
             // TODO: Add code to go to friends list page
-            Log.w("Profile", "Friends button clicked");
+            Log.w("Profile", "Friend List button clicked");
+            Intent intent = new Intent(getApplicationContext(), MainActivityFriendsList.class);
+            intent.putExtra("profileId", profileId);
+            intent.putExtra("currProfileId", currentProfileId);
+            if (friendsIdList != null) {
+                intent.putStringArrayListExtra("friendsIdList", (ArrayList<String>) friendsIdList);
+            } else {
+                intent.putStringArrayListExtra("friendsIdList", new ArrayList<>());
+            }
+            startActivity(intent);
         }
     }
 
     public void loadProfile() {
         new Thread(() -> {
-            workoutList = new ArrayList<>();
             DatabaseReference profileRef = FirebaseDatabase
                     .getInstance()
-                    .getReference("profiles/" + profileId); // TODO: Replace with user's profile id
+                    .getReference("profiles")
+                    .child(profileId); // TODO: Replace with user's profile id
             DatabaseReference workoutRef = FirebaseDatabase
                     .getInstance()
-                    .getReference("workouts/" + profileId); // TODO: Replace with user's profile id
+                    .getReference("workouts")
+                    .child(profileId); // TODO: Replace with user's profile id
             DatabaseReference friendRef = FirebaseDatabase
                     .getInstance()
-                    .getReference("friends/" + profileId); // TODO: Replace with user's profile id
+                    .getReference("friends")
+                    .child(profileId); // TODO: Replace with user's profile id
 
             workoutRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -118,9 +136,9 @@ public class MainActivityProfile extends AppCompatActivity {
             friendRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    friendList = new ArrayList<>();
+                    friendsIdList = new ArrayList<>();
                     for (DataSnapshot friendSnapshot : snapshot.getChildren()) {
-                        friendList.add(friendSnapshot.getValue(Profile.class));
+                        friendsIdList.add(friendSnapshot.getKey());
                     }
                     loadFriendData();
                 }
@@ -156,7 +174,7 @@ public class MainActivityProfile extends AppCompatActivity {
 
         // Format number to include commas
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-        String formattedNumber = numberFormat.format(friendList.size());
+        String formattedNumber = numberFormat.format(friendsIdList.size());
 
         // Set text
         friendCount.setText(formattedNumber);
@@ -183,7 +201,7 @@ public class MainActivityProfile extends AppCompatActivity {
             // Get profile icon from Firebase Storage and set it to the image view using Glide
             FirebaseStorage
                     .getInstance()
-                    .getReference("/profileIcons/")
+                    .getReference("/profileIcons")
                     .child(profileId + ".jpg")
                     .getDownloadUrl()
                     .addOnSuccessListener(uri -> Glide.with(this)
