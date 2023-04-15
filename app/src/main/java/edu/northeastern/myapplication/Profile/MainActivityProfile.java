@@ -40,6 +40,7 @@ import java.util.Locale;
 
 import edu.northeastern.myapplication.Follows.MainActivityFollowList;
 import edu.northeastern.myapplication.R;
+import edu.northeastern.myapplication.Workouts.MainActivityWorkoutList;
 import edu.northeastern.myapplication.Workouts.Workout;
 
 
@@ -54,7 +55,7 @@ public class MainActivityProfile extends AppCompatActivity {
     private List<String> followIdList;
 
     private String profileId;
-    private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq";
+    private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with current user Firebase
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,15 +109,27 @@ public class MainActivityProfile extends AppCompatActivity {
         if (buttonId == profileSettingsButton.getId()) {
             // TODO: Add code to go to profile settings page
             Log.w("Profile", "Profile Settings button clicked");
+
+
         } else if (buttonId == workoutListButton.getId()) {
             // TODO: Add code to go to workout history page
             Log.w("Profile", "Workout History button clicked");
+            Intent intent = new Intent(getApplicationContext(), MainActivityWorkoutList.class);
+            Bundle bundle = new Bundle();
+            if (workoutList != null) {
+                bundle.putParcelableArrayList("workoutList", (ArrayList<Workout>) workoutList);
+            } else {
+                bundle.putParcelableArrayList("workoutList", new ArrayList<>());
+            }
+            intent.putExtras(bundle);
+            intent.putExtra("profileId", profileId);
+            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
+            startActivity(intent);
+
         } else if (buttonId == followListButton.getId()) {
-            // TODO: Add code to go to follow list page
-            Log.w("Profile", "follow List button clicked");
             Intent intent = new Intent(getApplicationContext(), MainActivityFollowList.class);
             intent.putExtra("profileId", profileId);
-            intent.putExtra("currProfileId", currentProfileId);
+            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
             if (followIdList != null) {
                 intent.putStringArrayListExtra("followIdList", (ArrayList<String>) followIdList);
             } else {

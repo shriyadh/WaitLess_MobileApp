@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import edu.northeastern.myapplication.R;
 
-public class RviewHolder extends RecyclerView.ViewHolder {
+public class FollowRviewHolder extends RecyclerView.ViewHolder {
 
     public final TextView profileName;
     public ImageView profileIcon;
     public ToggleButton followButton;
 
 
-    public RviewHolder(@NonNull View itemView, final FollowClickListener listener) {
+    public FollowRviewHolder(@NonNull View itemView, final FollowClickListener listener) {
         super(itemView);
         this.profileName = itemView.findViewById(R.id.textViewFriendsListUsername);
         this.profileIcon = itemView.findViewById(R.id.imageViewFriendsListIcon);

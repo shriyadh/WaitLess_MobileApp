@@ -14,7 +14,6 @@ import android.widget.ToggleButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,7 +27,7 @@ public class MainActivityFollowList extends AppCompatActivity {
     private String currProfileId;
     private TextView followListTitle, noFollowsText;
     private RecyclerView followRecyclerView;
-    private RviewAdapter rviewAdapter;
+    private FollowRviewAdapter followRviewAdapter;
     private RecyclerView.LayoutManager rLayoutManager;
 
     /**
@@ -54,7 +53,6 @@ public class MainActivityFollowList extends AppCompatActivity {
 
         if (followIdList.isEmpty()) {
             noFollowsText.setVisibility(TextView.VISIBLE);
-            followIdList = new ArrayList<>();
         }
 
         getFollowsListTitle();
@@ -66,9 +64,9 @@ public class MainActivityFollowList extends AppCompatActivity {
      */
     private void createRecyclerView() {
         rLayoutManager = new LinearLayoutManager(this);
-        followRecyclerView = findViewById(R.id.followListRecyclerView);
+        followRecyclerView = findViewById(R.id.workoutListRecyclerView);
         followRecyclerView.setHasFixedSize(true);
-        rviewAdapter = new RviewAdapter(profileId, followIdList);
+        followRviewAdapter = new FollowRviewAdapter(profileId, followIdList);
 
         FollowClickListener listener = new FollowClickListener() {
             @Override
@@ -97,29 +95,33 @@ public class MainActivityFollowList extends AppCompatActivity {
 
             }
         };
-        rviewAdapter.setOnFollowsClickListener(listener);
+        followRviewAdapter.setOnFollowsClickListener(listener);
         followRecyclerView.setLayoutManager(rLayoutManager);
-        followRecyclerView.setAdapter(rviewAdapter);
+        followRecyclerView.setAdapter(followRviewAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(followRecyclerView.getContext(),
                 ((LinearLayoutManager) rLayoutManager).getOrientation());
         followRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     private void getFollowsListTitle() {
-        FirebaseDatabase.getInstance()
-                .getReference("profiles/" + profileId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DataSnapshot dataSnapshot = task.getResult();
-                        if (dataSnapshot != null) {
-                            Profile profile = dataSnapshot.getValue(Profile.class);
-                            if (profile != null) {
-                                String title = profile.getProfileName() + "'s Followers";
-                                followListTitle.setText(title);
+        if (profileId.equals(currProfileId)) {
+            followListTitle.setText(R.string.my_followers);
+        } else {
+            FirebaseDatabase.getInstance()
+                    .getReference("profiles/" + profileId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DataSnapshot dataSnapshot = task.getResult();
+                            if (dataSnapshot != null) {
+                                Profile profile = dataSnapshot.getValue(Profile.class);
+                                if (profile != null) {
+                                    String title = profile.getProfileName() + "'s Followers";
+                                    followListTitle.setText(title);
+                                }
                             }
                         }
-                    }
-                });
+                    });
+        }
     }
 }

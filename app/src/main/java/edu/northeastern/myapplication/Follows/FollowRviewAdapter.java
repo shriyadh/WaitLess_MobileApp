@@ -22,13 +22,13 @@ import java.util.List;
 import edu.northeastern.myapplication.Profile.Profile;
 import edu.northeastern.myapplication.R;
 
-public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
+public class FollowRviewAdapter extends RecyclerView.Adapter<FollowRviewHolder>{
     private String currentUserId = "-NRVYvTjwCGKqGm9dUIq";
     private String profileId;
     private List<String> followIdList;
     private FollowClickListener listener;
 
-    public RviewAdapter(String profileId, List<String> followIdList) {
+    public FollowRviewAdapter(String profileId, List<String> followIdList) {
         this.profileId = profileId;
         this.followIdList = followIdList;
     }
@@ -39,13 +39,13 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
 
     @NonNull
     @Override
-    public RviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RviewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.follow_list_item, parent, false),
+    public FollowRviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new FollowRviewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.follow_list_item, parent, false),
                 listener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RviewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FollowRviewHolder holder, int position) {
         if (followIdList.size() > 0) {
             String followId = followIdList.get(position);
             new Thread(() -> {
@@ -61,7 +61,7 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-                                Log.d("RviewAdapter", "onCancelled: " + error.getMessage());
+                                Log.d("FollowRviewAdapter", "onCancelled: " + error.getMessage());
                             }
                         });
 
@@ -79,7 +79,7 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-                                Log.d("RviewAdapter", "onCancelled: " + error.getMessage());
+                                Log.d("FollowRviewAdapter", "onCancelled: " + error.getMessage());
                             }
                         });
                 FirebaseStorage
@@ -95,7 +95,7 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
                                         .transform(new CenterCrop(),
                                                 new RoundedCorners(50)))
                                 .into(holder.profileIcon)).addOnFailureListener(e ->
-                                Log.w("RviewAdapter_ProfileIcon", "Failed to load profile image", e));
+                                Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e));
             }).start();
         }
     }
