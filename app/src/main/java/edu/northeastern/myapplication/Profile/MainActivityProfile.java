@@ -174,8 +174,8 @@ public class MainActivityProfile extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     followIdList = new ArrayList<>();
-                    for (DataSnapshot follownapshot : snapshot.getChildren()) {
-                        followIdList.add(follownapshot.getKey());
+                    for (DataSnapshot followSnapshot : snapshot.getChildren()) {
+                        followIdList.add(followSnapshot.getKey());
                     }
                     loadFollowData();
                 }
@@ -336,6 +336,17 @@ public class MainActivityProfile extends AppCompatActivity {
             workout6.setText(String.valueOf(lastWorkout.getShoulders()));
 
             workoutDuration.setText(String.valueOf(lastWorkout.getDuration()));
+        } else {
+            // Set text
+            workoutsCompleted.setText("0");
+            lastWorkoutDate.setText("N/A");
+            workout1.setText("0");
+            workout2.setText("0");
+            workout3.setText("0");
+            workout4.setText("0");
+            workout5.setText("0");
+            workout6.setText("0");
+            workoutDuration.setText("0");
         }
     }
 }
