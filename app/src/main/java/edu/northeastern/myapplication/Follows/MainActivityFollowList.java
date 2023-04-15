@@ -23,10 +23,10 @@ import edu.northeastern.myapplication.Profile.Profile;
 import edu.northeastern.myapplication.R;
 
 public class MainActivityFollowList extends AppCompatActivity {
-    private List<String> followIdList = new ArrayList<>();
+    private List<String> followIdList;
     private String profileId;
     private String currProfileId;
-    private TextView followListTitle;
+    private TextView followListTitle, noFollowsText;
     private RecyclerView followRecyclerView;
     private RviewAdapter rviewAdapter;
     private RecyclerView.LayoutManager rLayoutManager;
@@ -44,11 +44,19 @@ public class MainActivityFollowList extends AppCompatActivity {
         setContentView(R.layout.activity_main_follow_list);
 
         followListTitle = findViewById(R.id.textViewFollowListTitle);
+        noFollowsText = findViewById(R.id.textViewNoFollowers);
+        noFollowsText.setVisibility(TextView.INVISIBLE);
 
         Intent intent = getIntent();
         profileId = intent.getStringExtra("profileId");
         currProfileId = intent.getStringExtra("currProfileId");
         followIdList = intent.getStringArrayListExtra("followIdList");
+
+        if (followIdList.isEmpty()) {
+            noFollowsText.setVisibility(TextView.VISIBLE);
+            followIdList = new ArrayList<>();
+        }
+
         getFollowsListTitle();
         createRecyclerView();
     }

@@ -31,4 +31,5 @@
     <string name="togglebutton">ToggleButton</string>
     <string name="unfollow">Unfollow</string>
     <string name="follow">Follow</string>
+    <string name="no_followers_yet">No Followers Yet!</string>
 </resources>
