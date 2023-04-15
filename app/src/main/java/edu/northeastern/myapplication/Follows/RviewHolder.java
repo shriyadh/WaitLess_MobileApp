@@ -14,26 +14,26 @@ public class RviewHolder extends RecyclerView.ViewHolder {
 
     public final TextView profileName;
     public ImageView profileIcon;
-    public ToggleButton friendButton;
+    public ToggleButton followButton;
 
 
     public RviewHolder(@NonNull View itemView, final FollowClickListener listener) {
         super(itemView);
         this.profileName = itemView.findViewById(R.id.textViewFriendsListUsername);
         this.profileIcon = itemView.findViewById(R.id.imageViewFriendsListIcon);
-        this.friendButton = itemView.findViewById(R.id.toggleButtonConnected);
+        this.followButton = itemView.findViewById(R.id.toggleButtonFollowItem);
 
 
         itemView.setOnClickListener(view -> {
             if (listener != null) {
                 int position = getLayoutPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    listener.onFriendClick(position);
+                    listener.onFollowClick(position);
                 }
             }
         });
 
-        friendButton.setOnClickListener(view -> {
+        followButton.setOnClickListener(view -> {
             if (listener != null) {
                 int position = getLayoutPosition();
                 if (position != RecyclerView.NO_POSITION) {

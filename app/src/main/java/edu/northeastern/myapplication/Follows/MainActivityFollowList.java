@@ -23,11 +23,11 @@ import edu.northeastern.myapplication.Profile.Profile;
 import edu.northeastern.myapplication.R;
 
 public class MainActivityFollowList extends AppCompatActivity {
-    private List<String> friendsIdList = new ArrayList<>();
+    private List<String> followIdList = new ArrayList<>();
     private String profileId;
     private String currProfileId;
-    private TextView friendsListTitle;
-    private RecyclerView friendsRecyclerView;
+    private TextView followListTitle;
+    private RecyclerView followRecyclerView;
     private RviewAdapter rviewAdapter;
     private RecyclerView.LayoutManager rLayoutManager;
 
@@ -41,15 +41,15 @@ public class MainActivityFollowList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_friends_list);
+        setContentView(R.layout.activity_main_follow_list);
 
-        friendsListTitle = findViewById(R.id.textViewFollowListTitle);
+        followListTitle = findViewById(R.id.textViewFollowListTitle);
 
         Intent intent = getIntent();
         profileId = intent.getStringExtra("profileId");
         currProfileId = intent.getStringExtra("currProfileId");
-        friendsIdList = intent.getStringArrayListExtra("friendsIdList");
-        getFriendsListTitle();
+        followIdList = intent.getStringArrayListExtra("followIdList");
+        getFollowsListTitle();
         createRecyclerView();
     }
 
@@ -58,46 +58,46 @@ public class MainActivityFollowList extends AppCompatActivity {
      */
     private void createRecyclerView() {
         rLayoutManager = new LinearLayoutManager(this);
-        friendsRecyclerView = findViewById(R.id.friendsListRecyclerView);
-        friendsRecyclerView.setHasFixedSize(true);
-        rviewAdapter = new RviewAdapter(profileId, friendsIdList);
+        followRecyclerView = findViewById(R.id.followListRecyclerView);
+        followRecyclerView.setHasFixedSize(true);
+        rviewAdapter = new RviewAdapter(profileId, followIdList);
 
         FollowClickListener listener = new FollowClickListener() {
             @Override
-            public void onFriendClick(int position) {
-                Log.v("FriendsList", "Friend Clicked: " + position);
+            public void onFollowClick(int position) {
+                Log.v("FollowsList", "Follow Clicked: " + position);
                 Intent intent = new Intent(getApplicationContext(), MainActivityProfile.class);
-                intent.putExtra("profileId", friendsIdList.get(position));
+                intent.putExtra("profileId", followIdList.get(position));
                 intent.putExtra("currProfileId", currProfileId);
                 startActivity(intent);
             }
 
             @Override
             public void onFollowButtonClick(int position) {
-                ToggleButton button = Objects.requireNonNull(friendsRecyclerView.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.toggleButtonConnected);
+                ToggleButton button = Objects.requireNonNull(followRecyclerView.findViewHolderForAdapterPosition(position)).itemView.findViewById(R.id.toggleButtonFollowItem);
                 if (button.isChecked()) {
-                    Log.d("FriendsConnection", "Friend Removed: " + position);
+                    Log.d("FollowsConnection", "Follow Removed: " + position);
                     FirebaseDatabase.getInstance()
-                            .getReference("friends/" + currProfileId + "/" + friendsIdList.get(position))
+                            .getReference("follows/" + followIdList.get(position) + "/" + currProfileId)
                             .removeValue();
                 } else {
-                    Log.d("FriendsConnection", "Friend Added: " + position);
+                    Log.d("FollowsConnection", "Follow Added: " + position);
                     FirebaseDatabase.getInstance()
-                            .getReference("friends/" + currProfileId + "/" + friendsIdList.get(position))
+                            .getReference("follows/" + followIdList.get(position) + "/" + currProfileId)
                             .setValue(true);
                 }
 
             }
         };
-        rviewAdapter.setOnFriendsClickListener(listener);
-        friendsRecyclerView.setLayoutManager(rLayoutManager);
-        friendsRecyclerView.setAdapter(rviewAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(friendsRecyclerView.getContext(),
+        rviewAdapter.setOnFollowsClickListener(listener);
+        followRecyclerView.setLayoutManager(rLayoutManager);
+        followRecyclerView.setAdapter(rviewAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(followRecyclerView.getContext(),
                 ((LinearLayoutManager) rLayoutManager).getOrientation());
-        friendsRecyclerView.addItemDecoration(dividerItemDecoration);
+        followRecyclerView.addItemDecoration(dividerItemDecoration);
     }
 
-    private void getFriendsListTitle() {
+    private void getFollowsListTitle() {
         FirebaseDatabase.getInstance()
                 .getReference("profiles/" + profileId)
                 .get()
@@ -108,7 +108,7 @@ public class MainActivityFollowList extends AppCompatActivity {
                             Profile profile = dataSnapshot.getValue(Profile.class);
                             if (profile != null) {
                                 String title = profile.getProfileName() + "'s Followers";
-                                friendsListTitle.setText(title);
+                                followListTitle.setText(title);
                             }
                         }
                     }

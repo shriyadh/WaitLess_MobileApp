@@ -29,6 +29,6 @@
     <string name="follow_profile_icon">Follow Profile Icon</string>
     <string name="toggle_follow_connection">Toggle Follow Connection</string>
     <string name="togglebutton">ToggleButton</string>
-    <string name="remove">Remove</string>
-    <string name="add">Add</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="follow">Follow</string>
 </resources>

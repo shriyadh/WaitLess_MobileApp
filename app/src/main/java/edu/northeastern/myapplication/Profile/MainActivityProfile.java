@@ -51,7 +51,7 @@ public class MainActivityProfile extends AppCompatActivity {
     private ImageView profileIcon;
     private BarChart chart;
     private List<Workout> workoutList;
-    private List<String> friendsIdList;
+    private List<String> followIdList;
 
     private String profileId;
     private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq";
@@ -61,9 +61,10 @@ public class MainActivityProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_profile);
 
-        followButton = findViewById(R.id.toggleButtonFriendConnect);
+        followButton = findViewById(R.id.toggleButtonFollow);
         followButton.setVisibility(View.GONE);
         profileSettingsButton = findViewById(R.id.imageButtonProfileSettings);
+        followButton.setVisibility(View.GONE);
         profileSettingsButton.setVisibility(View.GONE);
         workoutListButton = findViewById(R.id.buttonWorkoutHistory);
         followListButton = findViewById(R.id.buttonFollowers);
@@ -87,8 +88,8 @@ public class MainActivityProfile extends AppCompatActivity {
 
     private void getFollowStatus() {
         FirebaseDatabase.getInstance()
-                .getReference("friends/" + currentProfileId)
-                .child(profileId)
+                .getReference("follows/" + profileId)
+                .child(currentProfileId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -111,27 +112,27 @@ public class MainActivityProfile extends AppCompatActivity {
             // TODO: Add code to go to workout history page
             Log.w("Profile", "Workout History button clicked");
         } else if (buttonId == followListButton.getId()) {
-            // TODO: Add code to go to friends list page
-            Log.w("Profile", "Friend List button clicked");
+            // TODO: Add code to go to follow list page
+            Log.w("Profile", "follow List button clicked");
             Intent intent = new Intent(getApplicationContext(), MainActivityFollowList.class);
             intent.putExtra("profileId", profileId);
             intent.putExtra("currProfileId", currentProfileId);
-            if (friendsIdList != null) {
-                intent.putStringArrayListExtra("friendsIdList", (ArrayList<String>) friendsIdList);
+            if (followIdList != null) {
+                intent.putStringArrayListExtra("followIdList", (ArrayList<String>) followIdList);
             } else {
-                intent.putStringArrayListExtra("friendsIdList", new ArrayList<>());
+                intent.putStringArrayListExtra("followIdList", new ArrayList<>());
             }
             startActivity(intent);
         } else if (buttonId == followButton.getId()) {
             new Thread(() -> {
-                DatabaseReference friendRef = FirebaseDatabase
+                DatabaseReference followStatus = FirebaseDatabase
                         .getInstance()
-                        .getReference("friends")
+                        .getReference("follows/" + profileId)
                         .child(currentProfileId);
                 if (followButton.isChecked()) {
-                    friendRef.child(profileId).removeValue();
+                    followStatus.removeValue();
                 } else {
-                    friendRef.child(profileId).setValue(true);
+                    followStatus.setValue(true);
                 }
             }).start();
         }
@@ -147,9 +148,9 @@ public class MainActivityProfile extends AppCompatActivity {
                     .getInstance()
                     .getReference("workouts")
                     .child(profileId); // TODO: Replace with user's profile id
-            DatabaseReference friendRef = FirebaseDatabase
+            DatabaseReference followRef = FirebaseDatabase
                     .getInstance()
-                    .getReference("friends")
+                    .getReference("follows")
                     .child(profileId); // TODO: Replace with user's profile id
 
             workoutRef.addValueEventListener(new ValueEventListener() {
@@ -169,19 +170,19 @@ public class MainActivityProfile extends AppCompatActivity {
                 }
             });
 
-            friendRef.addValueEventListener(new ValueEventListener() {
+            followRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    friendsIdList = new ArrayList<>();
-                    for (DataSnapshot friendSnapshot : snapshot.getChildren()) {
-                        friendsIdList.add(friendSnapshot.getKey());
+                    followIdList = new ArrayList<>();
+                    for (DataSnapshot follownapshot : snapshot.getChildren()) {
+                        followIdList.add(follownapshot.getKey());
                     }
-                    loadFriendData();
+                    loadFollowData();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Log.w("PROFILE_FRIENDS", "Failed to read friends value.", error.toException());
+                    Log.w("PROFILE_follow", "Failed to read follow value.", error.toException());
                 }
             });
 
@@ -204,16 +205,16 @@ public class MainActivityProfile extends AppCompatActivity {
 
     }
 
-    private void loadFriendData() {
+    private void loadFollowData() {
         // Get text view
-        TextView friendCount = findViewById(R.id.textViewFriendCount);
+        TextView followCount = findViewById(R.id.textViewFollowCount);
 
         // Format number to include commas
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
-        String formattedNumber = numberFormat.format(friendsIdList.size());
+        String formattedNumber = numberFormat.format(followIdList.size());
 
         // Set text
-        friendCount.setText(formattedNumber);
+        followCount.setText(formattedNumber);
     }
 
     public void loadProfileData() {

@@ -25,38 +25,38 @@ import edu.northeastern.myapplication.R;
 public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
     private String currentUserId = "-NRVYvTjwCGKqGm9dUIq";
     private String profileId;
-    private List<String> friendsIdList;
+    private List<String> followIdList;
     private FollowClickListener listener;
 
-    public RviewAdapter(String profileId, List<String> friendsIdList) {
+    public RviewAdapter(String profileId, List<String> followIdList) {
         this.profileId = profileId;
-        this.friendsIdList = friendsIdList;
+        this.followIdList = followIdList;
     }
 
-    public void setOnFriendsClickListener(FollowClickListener listener) {
+    public void setOnFollowsClickListener(FollowClickListener listener) {
         this.listener = listener;
     }
 
     @NonNull
     @Override
     public RviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new RviewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.friendslist_item, parent, false),
+        return new RviewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.follow_list_item, parent, false),
                 listener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RviewHolder holder, int position) {
-        if (friendsIdList.size() > 0) {
-            String friendId = friendsIdList.get(position);
+        if (followIdList.size() > 0) {
+            String followId = followIdList.get(position);
             new Thread(() -> {
-                // Check if friendID is in the list of friends of the current user
+                // Check if followID is in the list of follow of the current user
                 FirebaseDatabase.getInstance()
-                        .getReference("friends/" + currentUserId)
-                        .child(friendId)
+                        .getReference("follows/" + followId)
+                        .child(currentUserId)
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                holder.friendButton.setChecked(!snapshot.exists());
+                                holder.followButton.setChecked(!snapshot.exists());
                             }
 
                             @Override
@@ -67,13 +67,13 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
 
                 FirebaseDatabase.getInstance()
                         .getReference("profiles")
-                        .child(friendId)
+                        .child(followId)
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                Profile friend = snapshot.getValue(Profile.class);
-                                if (friend != null) {
-                                    holder.profileName.setText(friend.getProfileName());
+                                Profile follow = snapshot.getValue(Profile.class);
+                                if (follow != null) {
+                                    holder.profileName.setText(follow.getProfileName());
                                 }
                             }
 
@@ -85,7 +85,7 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
                 FirebaseStorage
                         .getInstance()
                         .getReference("/profileIcons")
-                        .child(friendId + ".jpg")
+                        .child(followId + ".jpg")
                         .getDownloadUrl()
                         .addOnSuccessListener(uri -> Glide.with(holder.itemView.getContext())
                                 .load(uri)
@@ -102,6 +102,6 @@ public class RviewAdapter extends RecyclerView.Adapter<RviewHolder>{
 
     @Override
     public int getItemCount() {
-        return friendsIdList.size();
+        return followIdList.size();
     }
 }
