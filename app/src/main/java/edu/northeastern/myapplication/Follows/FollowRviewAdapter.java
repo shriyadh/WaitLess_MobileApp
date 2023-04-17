@@ -24,8 +24,8 @@ import edu.northeastern.myapplication.Profile.Profile;
 import edu.northeastern.myapplication.R;
 
 public class FollowRviewAdapter extends RecyclerView.Adapter<FollowRviewHolder>{
-    private String currentUserId = "-NRVYvTjwCGKqGm9dUIq";
-    private List<String> followIdList;
+    private final String currentUserId = "-NRVYvTjwCGKqGm9dUIq";
+    private final List<String> followIdList;
     private FollowClickListener listener;
 
     public FollowRviewAdapter(List<String> followIdList) {
