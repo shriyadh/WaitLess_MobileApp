@@ -51,6 +51,7 @@ public class EditProfile extends AppCompatActivity {
 
     private final String profileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with user's id
     public Uri imageUri;
+    private ActivityResultLauncher<String> mGetContent;
 
 
 
@@ -68,6 +69,20 @@ public class EditProfile extends AppCompatActivity {
 
 
         loadProfile();
+
+        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        if (result != null) {
+                            imageUri = result;
+                            profileIcon.setImageURI(imageUri);
+                            uploadtoFirebase();
+                        }
+                    }
+                });
+
+
 //        System.out.println(currentProfile.getProfileId());
     }
 
@@ -170,21 +185,64 @@ public class EditProfile extends AppCompatActivity {
         finish();
     }
 
-   public void uploadNewProfile(View view){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 1);
-   }
+//   public void uploadNewProfile(View view){
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(intent, 1);
+//   }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == RESULT_OK && data.getData() != null){
-            imageUri = data.getData();
-            profileIcon.setImageURI(imageUri);
-            uploadtoFirebase();
-        }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if(requestCode == 1 && resultCode == RESULT_OK && data.getData() != null){
+//            imageUri = data.getData();
+//            profileIcon.setImageURI(imageUri);
+//            uploadtoFirebase();
+//        }
+//    }
+//
+//    public void uploadtoFirebase(){
+//        final String randomKey = UUID.randomUUID().toString();
+//        currentProfile.setImageName(randomKey);
+//        final ProgressDialog pd = new ProgressDialog(this);
+//        pd.setTitle("Image Uploading...");
+//        pd.show();
+//
+//        // run thread to upload picture to firebase storage
+//        new Thread(() -> {
+//            StorageReference storageRef = FirebaseStorage
+//                                            .getInstance()
+//                                            .getReference("/profileIcons/")
+//                                            .child(randomKey);
+//            storageRef.putFile(imageUri)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            pd.dismiss();
+//                            Snackbar.make(findViewById(android.R.id.content), "Image uploaded", Snackbar.LENGTH_LONG).show();
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            pd.dismiss();
+//                            Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_LONG).show();
+//                        }
+//                    })
+//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+//                            double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+//                            pd.setMessage("Progess: " + (int)progressPercent + "%");
+//                        }
+//                    });
+//        }).start();
+//    }
+
+    public void uploadNewProfile(View view){
+        mGetContent.launch("image/*");
     }
 
     public void uploadtoFirebase(){
@@ -194,35 +252,33 @@ public class EditProfile extends AppCompatActivity {
         pd.setTitle("Image Uploading...");
         pd.show();
 
-        // run thread to upload picture to firebase storage
-        new Thread(() -> {
-            StorageReference storageRef = FirebaseStorage
-                                            .getInstance()
-                                            .getReference("/profileIcons/")
-                                            .child(randomKey);
-            storageRef.putFile(imageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            pd.dismiss();
-                            Snackbar.make(findViewById(android.R.id.content), "Image uploaded", Snackbar.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                            pd.setMessage("Progess: " + (int)progressPercent + "%");
-                        }
-                    });
-        }).start();
+        StorageReference storageRef = FirebaseStorage
+                .getInstance()
+                .getReference("/"+profileId+"/")
+                .child(randomKey);
+        storageRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        pd.dismiss();
+                        Snackbar.make(findViewById(android.R.id.content), "Image uploaded", Snackbar.LENGTH_LONG).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        String message = e.getMessage();
+                        Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                        double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                        pd.setMessage("Progess: " + (int)progressPercent + "%");
+                    }
+                });
     }
 
 }
