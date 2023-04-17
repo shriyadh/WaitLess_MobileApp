@@ -2,6 +2,7 @@ package edu.northeastern.myapplication.Workouts;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -58,12 +59,12 @@ public class WorkoutRviewAdapter extends RecyclerView.Adapter<WorkoutRviewHolder
                 .format(workout.getDate()));
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, workout.getChest()));
-        entries.add(new BarEntry(1, workout.getBack()));
-        entries.add(new BarEntry(2, workout.getArms()));
-        entries.add(new BarEntry(3, workout.getAbdominal()));
-        entries.add(new BarEntry(4, workout.getLegs()));
-        entries.add(new BarEntry(5, workout.getShoulders()));
+        entries.add(new BarEntry(0f, workout.getChest()));
+        entries.add(new BarEntry(1f, workout.getBack()));
+        entries.add(new BarEntry(2f, workout.getArms()));
+        entries.add(new BarEntry(3f, workout.getAbdominal()));
+        entries.add(new BarEntry(4f, workout.getLegs()));
+        entries.add(new BarEntry(5f, workout.getShoulders()));
 
         Resources res = holder.itemView.getResources();
         String[] xLabels = res.getStringArray(R.array.workout_names);
@@ -74,18 +75,15 @@ public class WorkoutRviewAdapter extends RecyclerView.Adapter<WorkoutRviewHolder
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
 
 
-        BarDataSet dataSet = new BarDataSet(entries, "Workout History");
-
+        BarDataSet dataSet = new BarDataSet(entries, ("Workout #" + (workoutList.size() - position)));
         BarData barData = new BarData(dataSet);
-
         holder.workoutChart.setData(barData);
-
         dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-
         dataSet.setValueTextColor(Color.BLACK);
-
-        dataSet.setValueTextSize(16f);
+        dataSet.setValueTextSize(15f);
         holder.workoutChart.getDescription().setEnabled(false);
+        holder.workoutChart.getLegend().setEnabled(false);
+        holder.workoutChart.animateY(1500);
 
         // Reload chart
         holder.workoutChart.notifyDataSetChanged();

@@ -23,7 +23,6 @@ public class FollowRviewHolder extends RecyclerView.ViewHolder {
         this.profileIcon = itemView.findViewById(R.id.imageViewFriendsListIcon);
         this.followButton = itemView.findViewById(R.id.toggleButtonFollowItem);
 
-
         itemView.setOnClickListener(view -> {
             if (listener != null) {
                 int position = getLayoutPosition();

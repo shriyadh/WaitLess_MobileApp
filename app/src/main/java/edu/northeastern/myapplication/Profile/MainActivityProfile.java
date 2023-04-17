@@ -287,12 +287,12 @@ public class MainActivityProfile extends AppCompatActivity {
         }
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, totalChest));
-        entries.add(new BarEntry(1, totalBack));
-        entries.add(new BarEntry(2, totalArms));
-        entries.add(new BarEntry(3, totalAbdominal));
-        entries.add(new BarEntry(4, totalLegs));
-        entries.add(new BarEntry(5, totalShoulders));
+        entries.add(new BarEntry(0f, totalChest));
+        entries.add(new BarEntry(1f, totalBack));
+        entries.add(new BarEntry(2f, totalArms));
+        entries.add(new BarEntry(3f, totalAbdominal));
+        entries.add(new BarEntry(4f, totalLegs));
+        entries.add(new BarEntry(5f, totalShoulders));
 
         Resources res = getResources();
         String[] xLabels = res.getStringArray(R.array.workout_names);
@@ -302,18 +302,15 @@ public class MainActivityProfile extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
 
-        BarDataSet dataSet = new BarDataSet(entries, "Workout History");
-
+        BarDataSet dataSet = new BarDataSet(entries, "Total Workout History");
         BarData barData = new BarData(dataSet);
-
         chart.setData(barData);
-
         dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-
         dataSet.setValueTextColor(Color.BLACK);
-
-        dataSet.setValueTextSize(16f);
+        dataSet.setValueTextSize(15f);
         chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.animateY(1500);
 
         // Reload chart
         chart.notifyDataSetChanged();
