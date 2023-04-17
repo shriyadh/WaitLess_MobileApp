@@ -1,5 +1,6 @@
 package edu.northeastern.myapplication.Workouts;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -7,9 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.SimpleDateFormat;
@@ -54,14 +57,22 @@ public class WorkoutRviewAdapter extends RecyclerView.Adapter<WorkoutRviewHolder
         holder.workoutDate.setText(new SimpleDateFormat("MM/dd/yyyy", Locale.US)
                 .format(workout.getDate()));
 
-        // TODO: Set up Chart
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(1f, workout.getChest()));
-        entries.add(new BarEntry(2f, workout.getBack()));
-        entries.add(new BarEntry(3f, workout.getArms()));
-        entries.add(new BarEntry(4f, workout.getAbdominal()));
-        entries.add(new BarEntry(5f, workout.getLegs()));
-        entries.add(new BarEntry(6f, workout.getShoulders()));
+        entries.add(new BarEntry(0, workout.getChest()));
+        entries.add(new BarEntry(1, workout.getBack()));
+        entries.add(new BarEntry(2, workout.getArms()));
+        entries.add(new BarEntry(3, workout.getAbdominal()));
+        entries.add(new BarEntry(4, workout.getLegs()));
+        entries.add(new BarEntry(5, workout.getShoulders()));
+
+        Resources res = holder.itemView.getResources();
+        String[] xLabels = res.getStringArray(R.array.workout_names);
+
+        XAxis xAxis = holder.workoutChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
+
 
         BarDataSet dataSet = new BarDataSet(entries, "Workout History");
 

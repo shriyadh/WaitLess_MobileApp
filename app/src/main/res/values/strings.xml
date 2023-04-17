@@ -17,12 +17,12 @@
     <string name="minutes">minutes</string>
     <string name="followers">Followers</string>
     <string name="workout_history">Workout History</string>
-    <string name="profile_workout1">1. Chest</string>
-    <string name="profile_workout2">2. Back</string>
-    <string name="profile_workout3">3. Arms</string>
-    <string name="profile_workout4">4. Abs</string>
-    <string name="profile_workout5">5. Legs</string>
-    <string name="profile_workout6">6. Shoulders</string>
+    <string name="profile_workout1">Chest</string>
+    <string name="profile_workout2">Back</string>
+    <string name="profile_workout3">Arms</string>
+    <string name="profile_workout4">Abs</string>
+    <string name="profile_workout5">Legs</string>
+    <string name="profile_workout6">Shoulders</string>
     <string name="year">Year</string>
     <string name="username_s_follows">Username\'s Followers</string>
     <string name="back_button">Back to Profile</string>
@@ -38,4 +38,12 @@
     <string name="my_followers">My Followers</string>
     <string name="my_workouts">My Workouts</string>
     <string name="workout">Workout #</string>
+    <string-array name="workout_names">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Arms</item>
+        <item>Abs</item>
+        <item>Legs</item>
+        <item>Shoulders</item>
+    </string-array>
 </resources>
