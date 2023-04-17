@@ -141,8 +141,8 @@ public class Register extends AppCompatActivity {
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference(); // get the database ref
         DatabaseReference userName = rootRef.child("profiles").child(uid); // check for user uid
-        DatabaseReference workouts = rootRef.child("workouts").child(uid); // check for user uid in workouts
-        DatabaseReference follows= rootRef.child("follows").child(uid); // check for user uid in follows
+//        DatabaseReference workouts = rootRef.child("workouts").child(uid); // check for user uid in workouts
+//        DatabaseReference follows= rootRef.child("follows").child(uid); // check for user uid in follows
 
         // user doesn't exist so add to database
         ValueEventListener eventListener1 = new ValueEventListener() {
@@ -167,19 +167,15 @@ public class Register extends AppCompatActivity {
 
                     // create new node for user's UID in workouts table
                     DatabaseReference workoutsRef = rootRef.child("workouts");
-                    workoutsRef.child(uid);
-                    // add default workout
-                    DatabaseReference defaultWorkoutRef = workoutsRef.child(uid);
-                    defaultWorkoutRef.child("workoutName").setValue("My Workout");
-                   // defaultWorkoutRef.child("workoutDescription").setValue("This is my default workout");
+                    workoutsRef.child(uid).setValue("");
+
 
                     // create new node for user's UID in follows table
                     DatabaseReference followsRef = rootRef.child("follows");
-                    followsRef.child(uid);
-                    // add default follower
-                    DatabaseReference defaultFollowerRef = followsRef.child(uid);
-                    defaultFollowerRef.child("followerName").setValue("Follower");
-                   // defaultFollowerRef.child("followerDescription").setValue("This is my default follower");
+                    followsRef.child(uid).setValue("");
+
+
+
                 }
             }
 

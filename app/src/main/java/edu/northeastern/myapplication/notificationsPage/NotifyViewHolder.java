@@ -21,7 +21,7 @@ public class NotifyViewHolder extends RecyclerView.ViewHolder {
     public NotifyViewHolder(@NonNull View view, RecycleViewClickListener lst) {
         super(view);
 
-        notifyImg = view.findViewById(R.id.notificationImg);
+       // notifyImg = view.findViewById(R.id.notificationImg);
         notifyTxt = view.findViewById(R.id.notificationTxtView);
 
     }

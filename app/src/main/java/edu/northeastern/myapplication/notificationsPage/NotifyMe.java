@@ -1,27 +1,18 @@
 package edu.northeastern.myapplication.notificationsPage;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
-import edu.northeastern.myapplication.discoverpage.Profiles;
-import edu.northeastern.myapplication.discoverpage.ProfilesAdapter;
-import edu.northeastern.myapplication.discoverpage.StoriesAdapter;
-import edu.northeastern.myapplication.discoverpage.StoriesDecor;
-import edu.northeastern.myapplication.discoverpage.Story;
 
 public class NotifyMe extends AppCompatActivity {
 

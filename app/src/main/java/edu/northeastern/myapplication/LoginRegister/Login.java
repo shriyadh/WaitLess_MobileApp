@@ -43,9 +43,6 @@ import edu.northeastern.myapplication.R;
 
 
 
-
-
-
 public class Login extends AppCompatActivity {
     GoogleSignInAccount account;
     GoogleSignInOptions gso;
