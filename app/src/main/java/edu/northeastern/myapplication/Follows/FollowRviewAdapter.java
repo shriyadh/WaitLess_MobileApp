@@ -2,6 +2,7 @@ package edu.northeastern.myapplication.Follows;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -24,12 +25,10 @@ import edu.northeastern.myapplication.R;
 
 public class FollowRviewAdapter extends RecyclerView.Adapter<FollowRviewHolder>{
     private String currentUserId = "-NRVYvTjwCGKqGm9dUIq";
-    private String profileId;
     private List<String> followIdList;
     private FollowClickListener listener;
 
-    public FollowRviewAdapter(String profileId, List<String> followIdList) {
-        this.profileId = profileId;
+    public FollowRviewAdapter(List<String> followIdList) {
         this.followIdList = followIdList;
     }
 
@@ -49,21 +48,25 @@ public class FollowRviewAdapter extends RecyclerView.Adapter<FollowRviewHolder>{
         if (followIdList.size() > 0) {
             String followId = followIdList.get(position);
             new Thread(() -> {
-                // Check if followID is in the list of follow of the current user
-                FirebaseDatabase.getInstance()
-                        .getReference("follows/" + followId)
-                        .child(currentUserId)
-                        .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                holder.followButton.setChecked(!snapshot.exists());
-                            }
+                if (followId.equals(currentUserId)) {
+                    holder.followButton.setVisibility(View.GONE);
+                } else {
+                    // Check if followID is in the list of follow of the current user
+                    FirebaseDatabase.getInstance()
+                            .getReference("follows/" + followId)
+                            .child(currentUserId)
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    holder.followButton.setChecked(!snapshot.exists());
+                                }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Log.d("FollowRviewAdapter", "onCancelled: " + error.getMessage());
-                            }
-                        });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Log.d("FollowRviewAdapter", "onCancelled: " + error.getMessage());
+                                }
+                            });
+                }
 
                 FirebaseDatabase.getInstance()
                         .getReference("profiles")

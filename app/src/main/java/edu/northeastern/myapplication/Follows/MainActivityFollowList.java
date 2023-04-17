@@ -25,7 +25,7 @@ public class MainActivityFollowList extends AppCompatActivity {
     private List<String> followIdList;
     private String profileId;
     private String currProfileId;
-    private TextView followListTitle, noFollowsText;
+    private TextView followListTitle;
     private RecyclerView followRecyclerView;
     private FollowRviewAdapter followRviewAdapter;
     private RecyclerView.LayoutManager rLayoutManager;
@@ -43,7 +43,7 @@ public class MainActivityFollowList extends AppCompatActivity {
         setContentView(R.layout.activity_main_follow_list);
 
         followListTitle = findViewById(R.id.textViewFollowListTitle);
-        noFollowsText = findViewById(R.id.textViewNoFollowers);
+        TextView noFollowsText = findViewById(R.id.textViewNoFollowers);
         noFollowsText.setVisibility(TextView.INVISIBLE);
 
         Intent intent = getIntent();
@@ -66,7 +66,7 @@ public class MainActivityFollowList extends AppCompatActivity {
         rLayoutManager = new LinearLayoutManager(this);
         followRecyclerView = findViewById(R.id.workoutListRecyclerView);
         followRecyclerView.setHasFixedSize(true);
-        followRviewAdapter = new FollowRviewAdapter(profileId, followIdList);
+        followRviewAdapter = new FollowRviewAdapter(followIdList);
 
         FollowClickListener listener = new FollowClickListener() {
             @Override
