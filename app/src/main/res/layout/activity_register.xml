@@ -128,7 +128,7 @@
                 android:drawableLeft="@drawable/baseline_person_24"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="username"
+                android:hint="Username"
                 android:inputType="textPersonName|textEmailSubject"
                 android:padding="12dp"
                 android:textAlignment="textStart"
