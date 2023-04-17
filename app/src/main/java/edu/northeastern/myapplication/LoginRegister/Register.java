@@ -142,9 +142,13 @@ public class Register extends AppCompatActivity {
         // grab the current user's id, join date, email;
         System.out.println(mUser.getEmail());
         System.out.println(mUser.getUid());
+//        Date creationDate = new Date(mUser.getMetadata().getCreationTimestamp());
+//        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("MMM/dd/yyyy");
+//        String formattedDate = sdf.format(creationDate);
+
         Date creationDate = new Date(mUser.getMetadata().getCreationTimestamp());
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("MMM/dd/yyyy");
-        String formattedDate = sdf.format(creationDate);
+        long epochTime = creationDate.getTime();
+        String formattedDate = String.valueOf(epochTime);
 
         System.out.println(formattedDate);
 
@@ -184,7 +188,6 @@ public class Register extends AppCompatActivity {
                     // create new node for user's UID in workouts table
                     DatabaseReference workoutsRef = rootRef.child("workouts");
                     workoutsRef.child(uid).setValue("");
-
 
                     // create new node for user's UID in follows table
                     DatabaseReference followsRef = rootRef.child("follows");
