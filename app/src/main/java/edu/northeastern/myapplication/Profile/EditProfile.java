@@ -112,8 +112,8 @@ public class EditProfile extends AppCompatActivity {
             // Get profile icon from Firebase Storage and set it to the image view using Glide
             FirebaseStorage
                     .getInstance()
-                    .getReference(  "/" + profileId + "/profileIcons/")
-                    .child("TestImage.jpeg")
+                    .getReference(  "/profileIcons/")
+                    .child(profileId + ".jpg")
                     .getDownloadUrl()
                     .addOnSuccessListener(uri -> Glide.with(this)
                             .load(uri)
