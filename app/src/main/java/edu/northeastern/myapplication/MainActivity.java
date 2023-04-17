@@ -8,6 +8,7 @@ import android.view.View;
 
 import edu.northeastern.myapplication.LoginRegister.Register;
 import edu.northeastern.myapplication.discoverpage.Discover;
+import edu.northeastern.myapplication.notificationsPage.NotifyMe;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void discover(View view) {
-        Intent intent = new Intent(this, Discover.class);
+        Intent intent = new Intent(this, NotifyMe.class);
         startActivity(intent);
     }
     public void login(View view) {

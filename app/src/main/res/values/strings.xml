@@ -26,6 +26,13 @@
     <string name="legpress">Legpress</string>
     <string name="calf">Calf</string>
     <string name="year">Year</string>
+    <string name="post_picture">Post_picture</string>
+    <string name="friends_discover">FRIENDS</string>
+    <string name="workouts">WORKOUTS</string>
+    <string name="connect">CONNECT</string>
+    <string name="bio">Bio</string>
+    <string name="accept">Accept</string>
+    <string name="deny">Deny</string>
     <string name="register">REGISTER</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
