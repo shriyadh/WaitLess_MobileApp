@@ -22,16 +22,17 @@
             android:name=".LoginRegister.Register"
             android:exported="false" />
         <activity
-            android:name=".Profile.MainActivityProfile"
-            android:exported="false" />
-        <activity
-            android:name=".chats.Chat"
+            android:name=".notificationsPage.NotifyMe"
             android:exported="false"
-            android:label="Chats">
+            android:label="Notifications">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+            android:name=".Profile.MainActivityProfile"
+            android:exported="false" />
+
         <activity
             android:name=".discoverpage.Discover"
             android:exported="false"
