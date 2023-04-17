@@ -3,6 +3,7 @@ package edu.northeastern.myapplication.LoginRegister;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,10 +24,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DatabaseRegistrar;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.net.Authenticator;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import edu.northeastern.myapplication.R;
@@ -123,65 +126,71 @@ public class Register extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void addProfile(){
-        // grab the current user's id, join date,  email;
+    public void addProfile() {
+        // grab the current user's id, join date, email;
         System.out.println(mUser.getEmail());
         System.out.println(mUser.getUid());
         Date creationDate = new Date(mUser.getMetadata().getCreationTimestamp());
-        System.out.println(creationDate);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("MMM/dd/yyyy");
+        String formattedDate = sdf.format(creationDate);
+
+        System.out.println(formattedDate);
 
         String email = mUser.getEmail();
         String uid = mUser.getUid();
-        String dateJoined = String.valueOf(creationDate);
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference(); // get the database ref
         DatabaseReference userName = rootRef.child("profiles").child(uid); // check for user uid
-        // user doesnt exist so add to database
-        ValueEventListener eventListener = new ValueEventListener() {
+        DatabaseReference workouts = rootRef.child("workouts").child(uid); // check for user uid in workouts
+        DatabaseReference follows= rootRef.child("follows").child(uid); // check for user uid in follows
+
+        // user doesn't exist so add to database
+        ValueEventListener eventListener1 = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()) {
+                if (!dataSnapshot.exists()) {
                     System.out.println("HERE");
                     //create new user
                     DatabaseReference profilesRef = rootRef.child("profiles");
-
                     // add a uid node
                     profilesRef.child(uid);
-
                     // Get a reference to the uid node under profiles
                     DatabaseReference uidRef = profilesRef.child(uid);
-
-                    //add joinedDate node
-                    uidRef.child("joinedDate").setValue(dateJoined);
-
+                    // add joinedDate node
+                    uidRef.child("joinedDate").setValue(formattedDate);
                     // add default bio
                     uidRef.child("profileBio").setValue("Hello! I have just joined WaitLess!");
-
                     // add to username
                     uidRef.child("profileName").setValue(inputUsername.getText().toString());
-
                     // add to email
                     uidRef.child("profileEmail").setValue(email);
 
-                    // add to friends
-                    uidRef.child("friends").setValue("");
+                    // create new node for user's UID in workouts table
+                    DatabaseReference workoutsRef = rootRef.child("workouts");
+                    workoutsRef.child(uid);
+                    // add default workout
+                    DatabaseReference defaultWorkoutRef = workoutsRef.child(uid);
+                    defaultWorkoutRef.child("workoutName").setValue("My Workout");
+                   // defaultWorkoutRef.child("workoutDescription").setValue("This is my default workout");
 
-                    // add default lifted
-                    uidRef.child("totalLifted").setValue(0);
-
-                    // add workouts node
-                    uidRef.child("workouts");
-
+                    // create new node for user's UID in follows table
+                    DatabaseReference followsRef = rootRef.child("follows");
+                    followsRef.child(uid);
+                    // add default follower
+                    DatabaseReference defaultFollowerRef = followsRef.child(uid);
+                    defaultFollowerRef.child("followerName").setValue("Follower");
+                   // defaultFollowerRef.child("followerDescription").setValue("This is my default follower");
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.d("tag", databaseError.getMessage()); //Don't ignore errors!
             }
         };
-        userName.addListenerForSingleValueEvent(eventListener);
-
+        userName.addListenerForSingleValueEvent(eventListener1);
     }
+
 
 
 }
