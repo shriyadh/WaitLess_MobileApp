@@ -27,21 +27,14 @@ import edu.northeastern.myapplication.R;
 public class WorkoutRviewAdapter extends RecyclerView.Adapter<WorkoutRviewHolder> {
 
     private List<Workout> workoutList;
-    private WorkoutListener listener;
-
     public WorkoutRviewAdapter(List<Workout> workoutList) {
         this.workoutList = workoutList;
-    }
-
-    public void setOnWorkoutsListener(WorkoutListener listener) {
-        this.listener = listener;
     }
 
     @NonNull
     @Override
     public WorkoutRviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new WorkoutRviewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_list_item, parent, false),
-                listener);
+        return new WorkoutRviewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.workout_list_item, parent, false));
     }
 
     @Override

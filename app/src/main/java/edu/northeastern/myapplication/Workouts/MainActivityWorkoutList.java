@@ -3,6 +3,7 @@ package edu.northeastern.myapplication.Workouts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -49,9 +51,19 @@ public class MainActivityWorkoutList extends AppCompatActivity {
         } else {
             noWorkoutsText.setVisibility(TextView.INVISIBLE);
         }
-
         getWorkoutsListTitle();
         createRecyclerView();
+    }
+
+    @Override
+    protected void onStop() {
+        new Thread(() -> {
+            FirebaseDatabase.getInstance()
+                    .getReference("workouts")
+                    .child(profileId)
+                    .setValue(workoutList);
+        }).start();
+        super.onStop();
     }
 
     private void getWorkoutsListTitle() {
@@ -87,19 +99,39 @@ public class MainActivityWorkoutList extends AppCompatActivity {
         workoutRecyclerView = findViewById(R.id.workoutListRecyclerView);
         workoutRecyclerView.setHasFixedSize(true);
         workoutRviewAdapter = new WorkoutRviewAdapter(workoutList);
-
-//        WorkoutListener listener = new WorkoutListener() {
-//            @Override
-//            public void onSlide(int position) {
-//
-//            }
-//        };
-//        workoutRviewAdapter.setOnWorkoutsListener(listener);
-        workoutRecyclerView.setLayoutManager(rLayoutManager);
         workoutRecyclerView.setAdapter(workoutRviewAdapter);
+        workoutRecyclerView.setLayoutManager(rLayoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(workoutRecyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         workoutRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+                new ItemTouchHelper.SimpleCallback(
+                        0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                    @Override
+                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                        int position = viewHolder.getLayoutPosition();
+                        Workout removedWorkout = workoutList.get(position);
+                        workoutList.remove(position);
+                        workoutRviewAdapter.notifyItemRemoved(position);
+                        Snackbar snackbar = Snackbar
+                                .make(viewHolder.itemView.getRootView(), "Workout deleted", Snackbar.LENGTH_LONG);
+                        snackbar.setAction("UNDO", v -> {
+                            workoutList.add(position, removedWorkout);
+                            workoutRviewAdapter.notifyItemInserted(position);
+                        });
+                        snackbar.show();
+                    }
+                }
+        );
+        if (profileId.equals(currProfileId)) { //TODO: Replace with Firebase Auth
+            itemTouchHelper.attachToRecyclerView(workoutRecyclerView);
+        }
 
     }
 }
