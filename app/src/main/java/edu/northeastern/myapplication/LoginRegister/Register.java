@@ -39,11 +39,18 @@ public class Register extends AppCompatActivity {
     EditText inputPassword;
     EditText inputPasswordConfirm;
 
+    EditText inputFirstName;
+
+    EditText inputLastName;
+
     Button registerButton;
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     ProgressBar progressBar;
+
+    String first;
+    String last;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +58,14 @@ public class Register extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         // find all the edit texts
-
         inputEmail = findViewById(R.id.user_email);
         inputPassword = findViewById(R.id.user_password);
         inputUsername = findViewById(R.id.username_input);
         inputPasswordConfirm = findViewById(R.id.user_password_confirm);
+
+        inputFirstName = findViewById(R.id.first_name);
+        inputLastName = findViewById(R.id.last_name);
+
         System.out.println("here");
         registerButton = findViewById(R.id.register_button);
         progressBar = findViewById(R.id.progressBar);
@@ -80,6 +90,9 @@ public class Register extends AppCompatActivity {
         String email = inputEmail.getText().toString();
         String passwrd = inputPassword.getText().toString();
         String passwrdConfirm = inputPasswordConfirm.getText().toString();
+        first = inputFirstName.getText().toString();
+        last = inputLastName.getText().toString();
+
 
         // validate https://www.geeksforgeeks.org/implement-email-validator-in-android/
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -97,7 +110,6 @@ public class Register extends AppCompatActivity {
         else {
             // https://www.geeksforgeeks.org/progressbar-in-android/
             //progressBar.setVisibility(View.VISIBLE);
-
 
 
             // everything checks out
@@ -164,6 +176,10 @@ public class Register extends AppCompatActivity {
                     uidRef.child("profileName").setValue(inputUsername.getText().toString());
                     // add to email
                     uidRef.child("profileEmail").setValue(email);
+                    // add first name
+                    uidRef.child("firstname").setValue(first);
+                    // add last name
+                    uidRef.child("lastname").setValue(last);
 
                     // create new node for user's UID in workouts table
                     DatabaseReference workoutsRef = rootRef.child("workouts");
@@ -173,7 +189,6 @@ public class Register extends AppCompatActivity {
                     // create new node for user's UID in follows table
                     DatabaseReference followsRef = rootRef.child("follows");
                     followsRef.child(uid).setValue("");
-
 
 
                 }
