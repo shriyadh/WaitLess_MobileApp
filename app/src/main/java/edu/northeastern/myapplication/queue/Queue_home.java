@@ -40,6 +40,7 @@ public class Queue_home extends AppCompatActivity {
     private qjoin_thread qjoin_t;
     private DatabaseReference databaseReference;
     private String set_count;
+    private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class Queue_home extends AppCompatActivity {
         workout = "";
         set_count = "";
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
+        user = "SOME_USER";
     }
 
     @Override
@@ -148,6 +150,13 @@ public class Queue_home extends AppCompatActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Leave",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            DatabaseReference waitlist = FirebaseDatabase.getInstance()
+                                    .getReference("queues/" + workout + "/waiting");
+                            waitlist.child(user).removeValue();
+                        } catch (DatabaseException e) {
+                            e.printStackTrace();
+                        }
                         swap_queue_status("");
                     }
                 });
@@ -194,29 +203,13 @@ public class Queue_home extends AppCompatActivity {
         @Override
         public void run() {
             try {
-//                DatabaseReference workout_ref = databaseReference.child(workout);
-//                DatabaseReference waitList = workout_ref.child("waiting");
                 DatabaseReference waitlist = FirebaseDatabase.getInstance()
                                 .getReference("queues/" + workout + "/waiting");
-
-                waitlist.push().setValue(set_count);
-
-//                waitlist.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        snapshot.getRef().child("zzzzzz").setValue(set_count);
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
+                waitlist.child(user).setValue(set_count);
             } catch (DatabaseException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     public void pos_and_waitTime_updater() {
