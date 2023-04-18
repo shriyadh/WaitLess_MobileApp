@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -261,6 +262,7 @@ public class Queue_home extends AppCompatActivity {
         @Override
         public void run() {
             try {
+                q_list.clear();
                 DatabaseReference workout_queue = FirebaseDatabase.getInstance()
                         .getReference("queues/" + workout + "/" + machine_key);
                 workout_queue.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -289,26 +291,64 @@ public class Queue_home extends AppCompatActivity {
 
     private void find_pos_and_waitTime() {
         Collections.reverse(q_list);
-        int min = Integer.MAX_VALUE;
-        int counter = 1;
-        for (List u : q_list) {
-            String uname = (String) u.get(0);
-            String reps_remaining = (String) u.get(1);
-            if (uname.equals(user)) {
-                if (counter < 4){
-                    is_working_out = true;
-                } else {
-                    wait_time_estimate = min;
-                }
-                break;
-            } else {
-                if (Integer.valueOf(reps_remaining) < min) {
-                    min = Integer.valueOf(reps_remaining);
-                }
-                counter++;
-            }
-        }
-        System.out.println(wait_time_estimate);
+
+
+
+
+//        int numUp = 3; // number of people who can be up at one time
+//        int totalUpTime = 0; // total time that people have been up so far
+//        int nextUpIndex = 0; // index of the next person who will be up
+//        while (q_list.size() > 0) {
+//            int numPeopleUp = Math.min(numUp, q_list.size()); // number of people who will be up in this round
+//            int roundUpTime = 0; // total "up time" for the people who will be up in this round
+//            for (int i = 0; i < numPeopleUp; i++) {
+//                roundUpTime += Integer.valueOf(q_list.get(i).get(1));
+//            }
+//            totalUpTime += roundUpTime; // add the round up time to the total up time
+//            nextUpIndex += numPeopleUp; // increment the index of the next person who will be up
+//            for (int k = 0; k < numPeopleUp; k++) {
+//                q_list.remove(k);
+//            }
+//        }
+//        int timeUntilUp = Integer.valueOf(q_list.get(q_list.size() - 1).get(1)) - totalUpTime; // Calculate the remaining "up time" for person F
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//        int min = Integer.MAX_VALUE;
+//
+//
+//
+//
+//
+//
+//
+//        int counter = 1;
+//        for (List u : q_list) {
+//            String uname = (String) u.get(0);
+//            String reps_remaining = (String) u.get(1);
+//            if (uname.equals(user)) {
+//                if (counter < 4){
+//                    is_working_out = true;
+//                } else {
+//                    wait_time_estimate = min;
+//                }
+//                break;
+//            } else {
+//                if (Integer.valueOf(reps_remaining) < min) {
+//                    min = Integer.valueOf(reps_remaining);
+//                }
+//                counter++;
+//            }
+//        }
+        est_wait.setText("Est. wait time: " + String.valueOf(wait_time_estimate) + " min.");
     }
 
 
