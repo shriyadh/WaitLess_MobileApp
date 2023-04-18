@@ -41,6 +41,7 @@ public class Queue_home extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private String set_count;
     private String user;
+    private String machine_key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,9 +152,10 @@ public class Queue_home extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            DatabaseReference waitlist = FirebaseDatabase.getInstance()
-                                    .getReference("queues/" + workout + "/waiting");
-                            waitlist.child(user).removeValue();
+                            System.out.println(machine_key);
+                            DatabaseReference workout_queue = FirebaseDatabase.getInstance()
+                                    .getReference("queues/" + workout + "/" + machine_key);
+                            workout_queue.child(user).removeValue();
                         } catch (DatabaseException e) {
                             e.printStackTrace();
                         }
@@ -190,6 +192,7 @@ public class Queue_home extends AppCompatActivity {
             join_queue_btn.setVisibility(View.VISIBLE);
             // hide est wait time
             est_wait.setVisibility(View.INVISIBLE);
+            machine_key = "";
             user_in_queue = false;
         }
     }
@@ -203,9 +206,43 @@ public class Queue_home extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                DatabaseReference waitlist = FirebaseDatabase.getInstance()
-                                .getReference("queues/" + workout + "/waiting");
-                waitlist.child(user).setValue(set_count);
+                DatabaseReference workout_to_join = FirebaseDatabase.getInstance()
+                                .getReference("queues/" + workout);
+                workout_to_join.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String best_machine = "1";
+                        int smallest_wait = Integer.MAX_VALUE;
+                        // find machine number with smallest wait time
+                        for (DataSnapshot machine : dataSnapshot.getChildren()) {
+                            String machine_number = machine.getKey().toString();
+                            machine_number = String.valueOf(machine_number
+                                    .charAt(machine_number.length() - 1));
+
+                            int curr_sum = 0;
+                            for (DataSnapshot working_user : machine.getChildren()) {
+                                curr_sum += Integer.valueOf(String.valueOf(working_user.getValue()));
+                            }
+                            if (curr_sum < smallest_wait) {
+                                best_machine = machine_number;
+                                smallest_wait = curr_sum;
+                            }
+                        }
+                        // assign user to smallest wait time machine
+                        DatabaseReference machine_to_join = FirebaseDatabase.getInstance()
+                                .getReference("queues/" + workout + "/" + workout + " " +
+                                                best_machine);
+                        machine_to_join.child(user).setValue(set_count);
+                        machine_key = workout + " " + best_machine;
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle any errors that may occur
+                    }
+                });
+
+//                waitlist.child(user).setValue(set_count);
             } catch (DatabaseException e) {
                 e.printStackTrace();
             }
