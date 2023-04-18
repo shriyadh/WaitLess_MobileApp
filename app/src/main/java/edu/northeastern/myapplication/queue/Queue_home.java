@@ -2,7 +2,6 @@ package edu.northeastern.myapplication.queue;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -24,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import edu.northeastern.myapplication.R;
@@ -42,6 +42,9 @@ public class Queue_home extends AppCompatActivity {
     private String set_count;
     private String user;
     private String machine_key;
+    private boolean is_working_out;
+    private int wait_time_estimate;
+    private List<List<String>> q_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +60,10 @@ public class Queue_home extends AppCompatActivity {
         user_in_queue = false;
         workout = "";
         set_count = "";
+        is_working_out = false;
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
         user = "SOME_USER";
+        q_list = new ArrayList<>();
     }
 
     @Override
@@ -152,7 +157,6 @@ public class Queue_home extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            System.out.println(machine_key);
                             DatabaseReference workout_queue = FirebaseDatabase.getInstance()
                                     .getReference("queues/" + workout + "/" + machine_key);
                             workout_queue.child(user).removeValue();
@@ -234,6 +238,7 @@ public class Queue_home extends AppCompatActivity {
                                                 best_machine);
                         machine_to_join.child(user).setValue(set_count);
                         machine_key = workout + " " + best_machine;
+                        create_queue_list();
                     }
 
                     @Override
@@ -241,15 +246,13 @@ public class Queue_home extends AppCompatActivity {
                         // Handle any errors that may occur
                     }
                 });
-
-//                waitlist.child(user).setValue(set_count);
             } catch (DatabaseException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void pos_and_waitTime_updater() {
+    public void create_queue_list() {
         qt = new qThread();
         new Thread(qt).start();
     }
@@ -258,9 +261,25 @@ public class Queue_home extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                List pos_waitTime = find_pos_and_waitTime();
-                est_wait.setText("Position in Queue: " + pos_waitTime.get(0) + "\n\n" +
-                        "Est. wait time: " + pos_waitTime.get(1) + " min.");
+                DatabaseReference workout_queue = FirebaseDatabase.getInstance()
+                        .getReference("queues/" + workout + "/" + machine_key);
+                workout_queue.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot cur_user : dataSnapshot.getChildren()) {
+                            List u = new ArrayList<>();
+                            u.add(cur_user.getKey().toString());
+                            u.add(cur_user.getValue().toString());
+                            q_list.add(u);
+                        }
+                        find_pos_and_waitTime();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle any errors that may occur
+                    }
+                });
             } catch (DatabaseException e) {
                 e.printStackTrace();
             }
@@ -268,33 +287,28 @@ public class Queue_home extends AppCompatActivity {
 
     }
 
-    private List find_pos_and_waitTime() {
-        List res = new ArrayList();
-        DatabaseReference workout_ref = databaseReference.child(workout);
-
-
-
-
-//        ValueEventListener eventListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(snapshot.exists()) {
-//                    for (DataSnapshot curr : snapshot.getChildren()) {
-//                        System.out.println(curr.toString());
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        };
-
-        res.add(1);
-        res.add(2);
-
-        return res;
+    private void find_pos_and_waitTime() {
+        Collections.reverse(q_list);
+        int min = Integer.MAX_VALUE;
+        int counter = 1;
+        for (List u : q_list) {
+            String uname = (String) u.get(0);
+            String reps_remaining = (String) u.get(1);
+            if (uname.equals(user)) {
+                if (counter < 4){
+                    is_working_out = true;
+                } else {
+                    wait_time_estimate = min;
+                }
+                break;
+            } else {
+                if (Integer.valueOf(reps_remaining) < min) {
+                    min = Integer.valueOf(reps_remaining);
+                }
+                counter++;
+            }
+        }
+        System.out.println(wait_time_estimate);
     }
 
 
