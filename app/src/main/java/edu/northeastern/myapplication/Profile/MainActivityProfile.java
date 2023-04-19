@@ -2,6 +2,7 @@ package edu.northeastern.myapplication.Profile;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -122,6 +123,8 @@ public class MainActivityProfile extends AppCompatActivity {
         int buttonId = view.getId();
         if (buttonId == profileSettingsButton.getId()) {
             // TODO: Add code to go to profile settings page
+            Intent intent = new Intent(getWindow().getContext(), EditProfile.class);
+            startActivity(intent);
             Log.w("Profile", "Profile Settings button clicked");
 
 
@@ -220,6 +223,7 @@ public class MainActivityProfile extends AppCompatActivity {
                     currentProfile = snapshot.getValue(Profile.class);
                     loadProfileData();
                     loadProfileImage();
+                    loadProfileTextData();
                 }
 
                 @Override
@@ -228,6 +232,21 @@ public class MainActivityProfile extends AppCompatActivity {
                 }
             });
 
+            workoutRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
+                        workoutList.add(workoutSnapshot.getValue(Workout.class));
+                    }
+                    loadProfileGraph();
+                    loadLastWorkout();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("PROFILE_WORKOUTS", "Failed to read workouts value.", error.toException());
+                }
+            });
         }).start();
 
     }
@@ -265,7 +284,7 @@ public class MainActivityProfile extends AppCompatActivity {
             // Get profile icon from Firebase Storage and set it to the image view using Glide
             FirebaseStorage
                     .getInstance()
-                    .getReference("/profileIcons")
+                    .getReference("/profileIcons/")
                     .child(profileId + ".jpg")
                     .getDownloadUrl()
                     .addOnSuccessListener(uri -> Glide.with(this)

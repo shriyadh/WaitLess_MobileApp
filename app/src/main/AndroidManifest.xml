@@ -23,6 +23,14 @@
             android:name=".Follows.MainActivityFollowList"
             android:exported="false" />
         <activity
+            android:name=".Profile.EditProfile"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Profile.MainActivityProfile"
             android:name=".RequestsActivity2"
             android:exported="false" />
