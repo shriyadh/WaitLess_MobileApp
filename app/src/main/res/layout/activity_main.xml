@@ -32,7 +32,7 @@
         android:id="@+id/buttonNotify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="discover"
+        android:onClick="notify"
         android:text="Notify"
 
         app:layout_constraintBottom_toBottomOf="parent"
