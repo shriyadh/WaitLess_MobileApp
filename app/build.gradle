@@ -27,6 +27,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -57,7 +60,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     // Add Firebase storage library
     implementation 'com.google.firebase:firebase-storage'
-    // Add Firebase messaging libary
+    // Add Firebase messaging library
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-auth'
     // Add dependency for MPAndroidChart

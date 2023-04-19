@@ -1,6 +1,11 @@
 package edu.northeastern.myapplication.Workouts;
 
-public class Workout {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Workout implements Parcelable {
     private int abdominal;
     private int arms;
     private int back;
@@ -31,6 +36,29 @@ public class Workout {
         this.date = 0;
         this.duration = 0;
     }
+
+    public Workout(Parcel in) {
+        abdominal = in.readInt();
+        arms = in.readInt();
+        back = in.readInt();
+        chest = in.readInt();
+        legs = in.readInt();
+        shoulders = in.readInt();
+        date = in.readLong();
+        duration = in.readInt();
+    }
+
+    public static final Creator<Workout> CREATOR = new Creator<Workout>() {
+        @Override
+        public Workout createFromParcel(Parcel in) {
+            return new Workout(in);
+        }
+
+        @Override
+        public Workout[] newArray(int size) {
+            return new Workout[size];
+        }
+    };
 
     public int getAbdominal() {
         return abdominal;
@@ -94,5 +122,22 @@ public class Workout {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(abdominal);
+        dest.writeInt(arms);
+        dest.writeInt(back);
+        dest.writeInt(chest);
+        dest.writeInt(legs);
+        dest.writeInt(shoulders);
+        dest.writeLong(date);
+        dest.writeInt(duration);
     }
 }

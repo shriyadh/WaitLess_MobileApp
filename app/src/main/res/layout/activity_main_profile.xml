@@ -151,28 +151,28 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textViewTotalWeightTitle"
+        android:id="@+id/textViewFollowCountTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="60dp"
-        android:text="@string/weight"
+        android:text="@string/followers"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textViewTotalWeight"
+        app:layout_constraintStart_toEndOf="@+id/textViewFollowCount"
         app:layout_constraintTop_toBottomOf="@+id/textViewJoinedYear"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textViewTotalWeight"
+        android:id="@+id/textViewFollowCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/weight_lifted"
+        android:text="@string/_0"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +193,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewWorkoutCompleted"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalWeightTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFollowCountTitle"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -208,7 +208,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageViewProfileIcon"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTotalWeight"
+        app:layout_constraintTop_toBottomOf="@+id/textViewFollowCount"
         app:layout_constraintVertical_bias="0.0" />
 
     <View
@@ -267,15 +267,16 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChartTotalWeight"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="275dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTotalWorkoutHistory"
         app:layout_constraintVertical_bias="0.0" />
 
     <View
@@ -298,6 +299,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/last_workout"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/barChartTotalWeight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -545,23 +547,27 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/buttonFriends"
-        android:layout_width="0dp"
+        android:id="@+id/buttonFollowers"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/friends"
+        android:layout_marginTop="8dp"
+        android:onClick="onClick"
+        android:text="@string/followers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonWorkoutHistory"
+        app:layout_constraintStart_toEndOf="@+id/buttonWorkoutHistory"
+        app:layout_constraintTop_toBottomOf="@+id/divider3"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/buttonWorkoutHistory"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="onClick"
         android:text="@string/workout_history"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonFollowers"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3"
         app:layout_constraintVertical_bias="0.0" />
@@ -576,6 +582,40 @@
         app:menu="@menu/nav"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+
+    <ToggleButton
+        android:id="@+id/toggleButtonFollow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="onClick"
+        android:text="ToggleButton"
+        android:textOff="@string/unfollow"
+        android:textOn="@string/follow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewProfileName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewTotalWorkoutHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Total Workout History"
+        android:textAllCaps="true"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/divider3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

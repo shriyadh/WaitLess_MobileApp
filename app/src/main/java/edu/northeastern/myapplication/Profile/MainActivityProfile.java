@@ -1,5 +1,7 @@
 package edu.northeastern.myapplication.Profile;
 
+import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +21,11 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -30,43 +35,40 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
-import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.DateTimeException;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
+import edu.northeastern.myapplication.Follows.MainActivityFollowList;
 import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
+import edu.northeastern.myapplication.Workouts.MainActivityWorkoutList;
 import edu.northeastern.myapplication.Workouts.Workout;
 
-
-// TODO:
-//  - Generates id for Firsebase https://stackoverflow.com/questions/28822054/firebase-how-to-generate-a-unique-numeric-id-for-key
-//  - Potentially transfer over to using FirebaseAuth instead of FirebaseRealtimeDatabase for profiles
 
 public class MainActivityProfile extends AppCompatActivity {
     private Profile currentProfile;
     private ImageButton profileSettingsButton;
-    private Button workoutHistoryButton, friendsButton;
+    private ToggleButton followButton;
+    private Button workoutListButton, followListButton;
     private ImageView profileIcon;
     private BarChart chart;
     private List<Workout> workoutList;
+    private List<String> followIdList;
 
-    private final String profileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with user's id
+    private String profileId;
+    private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with current user Firebase
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_profile);
 
+        followButton = findViewById(R.id.toggleButtonFollow);
+        followButton.setVisibility(View.GONE);
         // find navigation view
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         // set selected item to queue
@@ -77,51 +79,147 @@ public class MainActivityProfile extends AppCompatActivity {
 
 
         profileSettingsButton = findViewById(R.id.imageButtonProfileSettings);
-        workoutHistoryButton = findViewById(R.id.buttonWorkoutHistory);
-        friendsButton = findViewById(R.id.buttonFriends);
+        followButton.setVisibility(View.GONE);
+        profileSettingsButton.setVisibility(View.GONE);
+        workoutListButton = findViewById(R.id.buttonWorkoutHistory);
+        followListButton = findViewById(R.id.buttonFollowers);
 
         profileIcon = findViewById(R.id.imageViewProfileIcon);
         profileIcon.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.baseline_account_box_24));
 
         chart = findViewById(R.id.barChartTotalWeight);
 
+        profileId = getIntent().getStringExtra("profileId");
+        if (profileId != null && !profileId.equals(currentProfileId)) {
+            followButton.setVisibility(View.VISIBLE);
+            getFollowStatus();
+        } else {
+            profileId = currentProfileId;
+            profileSettingsButton.setVisibility(View.VISIBLE);
+        }
+
         loadProfile();
     }
 
+    private void getFollowStatus() {
+        FirebaseDatabase.getInstance()
+                .getReference("follows/" + profileId)
+                .child(currentProfileId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        followButton.setChecked(!snapshot.exists());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("Profile", "Failed to read value.", error.toException());
+                    }
+                });
+    }
 
     public void onClick(View view) {
         int buttonId = view.getId();
         if (buttonId == profileSettingsButton.getId()) {
             // TODO: Add code to go to profile settings page
             Log.w("Profile", "Profile Settings button clicked");
-        } else if (buttonId == workoutHistoryButton.getId()) {
+
+
+        } else if (buttonId == workoutListButton.getId()) {
             // TODO: Add code to go to workout history page
             Log.w("Profile", "Workout History button clicked");
-        } else if (buttonId == friendsButton.getId()) {
-            // TODO: Add code to go to friends list page
-            Log.w("Profile", "Friends button clicked");
+            Intent intent = new Intent(getApplicationContext(), MainActivityWorkoutList.class);
+            Bundle bundle = new Bundle();
+            if (workoutList != null) {
+                bundle.putParcelableArrayList("workoutList", (ArrayList<Workout>) workoutList);
+            } else {
+                bundle.putParcelableArrayList("workoutList", new ArrayList<>());
+            }
+            intent.putExtras(bundle);
+            intent.putExtra("profileId", profileId);
+            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
+            startActivity(intent);
+
+        } else if (buttonId == followListButton.getId()) {
+            Intent intent = new Intent(getApplicationContext(), MainActivityFollowList.class);
+            intent.putExtra("profileId", profileId);
+            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
+            if (followIdList != null) {
+                intent.putStringArrayListExtra("followIdList", (ArrayList<String>) followIdList);
+            } else {
+                intent.putStringArrayListExtra("followIdList", new ArrayList<>());
+            }
+            startActivity(intent);
+        } else if (buttonId == followButton.getId()) {
+            new Thread(() -> {
+                DatabaseReference followStatus = FirebaseDatabase
+                        .getInstance()
+                        .getReference("follows/" + profileId)
+                        .child(currentProfileId);
+                if (followButton.isChecked()) {
+                    followStatus.removeValue();
+                } else {
+                    followStatus.setValue(true);
+                }
+            }).start();
         }
     }
 
     public void loadProfile() {
         new Thread(() -> {
-            workoutList = new ArrayList<>();
             DatabaseReference profileRef = FirebaseDatabase
                     .getInstance()
-                    .getReference("profiles/" + profileId); // TODO: Replace with user's profile id
+                    .getReference("profiles")
+                    .child(profileId); // TODO: Replace with user's profile id
             DatabaseReference workoutRef = FirebaseDatabase
                     .getInstance()
-                    .getReference("workouts/" + profileId); // TODO: Replace with user's profile id
+                    .getReference("workouts")
+                    .child(profileId); // TODO: Replace with user's profile id
+            DatabaseReference followRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference("follows")
+                    .child(profileId); // TODO: Replace with user's profile id
+
+            workoutRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    workoutList = new ArrayList<>();
+                    for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
+                        workoutList.add(workoutSnapshot.getValue(Workout.class));
+                    }
+                    loadWorkoutData();
+                    loadWorkoutGraph();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("PROFILE_WORKOUTS", "Failed to read workouts value.", error.toException());
+                }
+            });
+
+            followRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    followIdList = new ArrayList<>();
+                    for (DataSnapshot followSnapshot : snapshot.getChildren()) {
+                        followIdList.add(followSnapshot.getKey());
+                    }
+                    loadFollowData();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.w("PROFILE_follow", "Failed to read follow value.", error.toException());
+                }
+            });
+
             profileRef.addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     currentProfile = snapshot.getValue(Profile.class);
-//                    for (DataSnapshot workoutSnapshot : snapshot.child("workouts").getChildren()) {
-//                        workoutList.add(workoutSnapshot.getValue(Workout.class));
-//                    }
+                    loadProfileData();
                     loadProfileImage();
-                    loadProfileTextData();
                 }
 
                 @Override
@@ -130,60 +228,44 @@ public class MainActivityProfile extends AppCompatActivity {
                 }
             });
 
-            workoutRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
-                        workoutList.add(workoutSnapshot.getValue(Workout.class));
-                    }
-                    loadProfileGraph();
-                    loadLastWorkout();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.w("PROFILE_WORKOUTS", "Failed to read workouts value.", error.toException());
-                }
-            });
         }).start();
 
     }
 
+    private void loadFollowData() {
+        // Get text view
+        TextView followCount = findViewById(R.id.textViewFollowCount);
 
-    public void loadProfileTextData() {
+        // Format number to include commas
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        String formattedNumber = numberFormat.format(followIdList.size());
+
+        // Set text
+        followCount.setText(formattedNumber);
+    }
+
+    public void loadProfileData() {
         // Get text views
         TextView profileName = findViewById(R.id.textViewProfileName);
         TextView joinedYear = findViewById(R.id.textViewJoinedYear);
-        TextView totalWeight = findViewById(R.id.textViewTotalWeight);
-        TextView workoutCompleted = findViewById(R.id.textViewWorkoutCompleted);
         TextView profileBio = findViewById(R.id.textViewBioDesc);
-
-        // Format total weight and total workouts to include commas
-        NumberFormat numberFormat = NumberFormat.getNumberInstance();
-        numberFormat.setGroupingUsed(true);
-        String formattedTotalWeight = numberFormat.format(currentProfile.getTotalLifted());
-        String formattedTotalWorkouts = numberFormat.format(workoutList.size());
-
-
 
         // Format date from milliseconds to MM/YYYY
         String formattedDate = new SimpleDateFormat("MM/yyyy", Locale.US)
                 .format(currentProfile.getJoinedDate());
 
-
         // Set text
         profileName.setText(currentProfile.getProfileName());
         joinedYear.setText(formattedDate);
-        totalWeight.setText(formattedTotalWeight);
-        workoutCompleted.setText(formattedTotalWorkouts);
         profileBio.setText(currentProfile.getProfileBio());
     }
-        public void loadProfileImage() {
+
+    public void loadProfileImage() {
         new Thread(() -> {
             // Get profile icon from Firebase Storage and set it to the image view using Glide
             FirebaseStorage
                     .getInstance()
-                    .getReference("/profileIcons/")
+                    .getReference("/profileIcons")
                     .child(profileId + ".jpg")
                     .getDownloadUrl()
                     .addOnSuccessListener(uri -> Glide.with(this)
@@ -192,13 +274,13 @@ public class MainActivityProfile extends AppCompatActivity {
                             .override(275, 275)
                             .apply(new RequestOptions()
                                     .transform(new CenterCrop(),
-                                    new RoundedCorners(50)))
+                                            new RoundedCorners(50)))
                             .into(profileIcon)).addOnFailureListener(e ->
                             Log.w("Profile", "Failed to load profile image", e));
         }).start();
     }
 
-    public void loadProfileGraph() {
+    public void loadWorkoutGraph() {
         int totalChest = 0;
         int totalBack = 0;
         int totalArms = 0;
@@ -216,32 +298,39 @@ public class MainActivityProfile extends AppCompatActivity {
         }
 
         List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(1f, totalChest));
-        entries.add(new BarEntry(2f, totalBack));
-        entries.add(new BarEntry(3f, totalArms));
-        entries.add(new BarEntry(4f, totalAbdominal));
-        entries.add(new BarEntry(5f, totalLegs));
-        entries.add(new BarEntry(6f, totalShoulders));
+        entries.add(new BarEntry(0f, totalChest));
+        entries.add(new BarEntry(1f, totalBack));
+        entries.add(new BarEntry(2f, totalArms));
+        entries.add(new BarEntry(3f, totalAbdominal));
+        entries.add(new BarEntry(4f, totalLegs));
+        entries.add(new BarEntry(5f, totalShoulders));
 
-        BarDataSet dataSet = new BarDataSet(entries, "Workout History");
+        Resources res = getResources();
+        String[] xLabels = res.getStringArray(R.array.workout_names);
 
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xLabels));
+
+        BarDataSet dataSet = new BarDataSet(entries, "Total Workout History");
         BarData barData = new BarData(dataSet);
-
         chart.setData(barData);
-
         dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
-
         dataSet.setValueTextColor(Color.BLACK);
-
-        dataSet.setValueTextSize(16f);
+        dataSet.setValueTextSize(15f);
         chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.animateY(1500);
 
         // Reload chart
         chart.notifyDataSetChanged();
         chart.invalidate();
     }
 
-    public void loadLastWorkout() {
+    public void loadWorkoutData() {
+        // Get text views
+        TextView workoutsCompleted = findViewById(R.id.textViewWorkoutCompleted);
         TextView lastWorkoutDate = findViewById(R.id.textViewLastWorkoutDate);
         TextView workout1 = findViewById(R.id.textViewW1);
         TextView workout2 = findViewById(R.id.textViewW2);
@@ -252,6 +341,12 @@ public class MainActivityProfile extends AppCompatActivity {
         TextView workoutDuration = findViewById(R.id.textViewWorkoutDuration);
 
         if (!workoutList.isEmpty()) {
+            // Format total weight and total workouts to include commas
+            NumberFormat numberFormat = NumberFormat.getNumberInstance();
+            numberFormat.setGroupingUsed(true);
+            String formattedTotalWorkouts = numberFormat.format(workoutList.size());
+            workoutsCompleted.setText(formattedTotalWorkouts);
+
             // Sort workout list based on date reversed
             workoutList.sort(Comparator.comparingLong(Workout::getDate).reversed());
 
@@ -273,6 +368,17 @@ public class MainActivityProfile extends AppCompatActivity {
             workout6.setText(String.valueOf(lastWorkout.getShoulders()));
 
             workoutDuration.setText(String.valueOf(lastWorkout.getDuration()));
+        } else {
+            // Set text
+            workoutsCompleted.setText("0");
+            lastWorkoutDate.setText("N/A");
+            workout1.setText("0");
+            workout2.setText("0");
+            workout3.setText("0");
+            workout4.setText("0");
+            workout5.setText("0");
+            workout6.setText("0");
+            workoutDuration.setText("0");
         }
     }
 }

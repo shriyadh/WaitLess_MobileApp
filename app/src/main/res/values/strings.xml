@@ -5,8 +5,6 @@
     <string name="profile_icon">Profile Icon</string>
     <string name="member_since">Joined</string>
     <string name="profile_name">Profile Name</string>
-    <string name="weight">lbs. Lifted</string>
-    <string name="weight_lifted">1,234</string>
     <string name="workouts_completed">Workouts Completed</string>
     <string name="_0">0</string>
     <string name="bio_description">Bio Description</string>
@@ -17,15 +15,37 @@
     <string name="_12_31_1900">12/31/1900</string>
     <string name="duration">Duration</string>
     <string name="minutes">minutes</string>
-    <string name="friends">Friends</string>
+    <string name="followers">Followers</string>
     <string name="workout_history">Workout History</string>
     <string name="profile_workout1">Chest</string>
     <string name="profile_workout2">Back</string>
     <string name="profile_workout3">Arms</string>
-    <string name="profile_workout4">Abdominal</string>
+    <string name="profile_workout4">Abs</string>
     <string name="profile_workout5">Legs</string>
     <string name="profile_workout6">Shoulders</string>
     <string name="year">Year</string>
+    <string name="username_s_follows">Username\'s Followers</string>
+    <string name="back_button">Back to Profile</string>
+    <string name="follow_profile_icon">Follow Profile Icon</string>
+    <string name="toggle_follow_connection">Toggle Follow Connection</string>
+    <string name="togglebutton">ToggleButton</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="follow">Follow</string>
+    <string name="no_followers_yet">No Followers Yet!</string>
+    <string name="username_s_workouts">Username\'s Workouts</string>
+    <string name="no_workouts_yet">No Workouts Yet!</string>
+    <string name="add_workout">Add Workout</string>
+    <string name="my_followers">My Followers</string>
+    <string name="my_workouts">My Workouts</string>
+    <string name="workout">Workout #</string>
+    <string-array name="workout_names">
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Arms</item>
+        <item>Abs</item>
+        <item>Legs</item>
+        <item>Shoulders</item>
+    </string-array>
     <string name="post_picture">Post_picture</string>
     <string name="friends_discover">FRIENDS</string>
     <string name="workouts">WORKOUTS</string>
