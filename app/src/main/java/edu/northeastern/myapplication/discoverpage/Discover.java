@@ -159,6 +159,26 @@ public class Discover extends AppCompatActivity {
     }
 
     public void runFireBaseforOthers(){
+        DatabaseReference followRef = FirebaseDatabase
+                .getInstance()
+                .getReference("follows")
+                .child(loggedInUser); // TODO: Replace with user's profile id
+
+        // add friends list
+        followRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                followIdList = new ArrayList<>();
+                for (DataSnapshot followSnapshot : snapshot.getChildren()) {
+                    followIdList.add(followSnapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("PROFILE_follow", "Failed to read follow value.", error.toException());
+            }
+        });
 
     }
 
@@ -171,10 +191,7 @@ public class Discover extends AppCompatActivity {
                 .getInstance()
                 .getReference("workouts")
                 .child(loggedInUser); // TODO: Replace with user's profile id
-        DatabaseReference followRef = FirebaseDatabase
-                .getInstance()
-                .getReference("follows")
-                .child(loggedInUser); // TODO: Replace with user's profile id
+
 
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
@@ -221,21 +238,6 @@ public class Discover extends AppCompatActivity {
             }
         });*/
 
-        // add friends list
-        followRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                followIdList = new ArrayList<>();
-                for (DataSnapshot followSnapshot : snapshot.getChildren()) {
-                    followIdList.add(followSnapshot.getKey());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("PROFILE_follow", "Failed to read follow value.", error.toException());
-            }
-        });
 
 
 

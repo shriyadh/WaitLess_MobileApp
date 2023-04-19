@@ -11,6 +11,7 @@ import edu.northeastern.myapplication.Profile.MainActivityProfile;
 import edu.northeastern.myapplication.discoverpage.Discover;
 import edu.northeastern.myapplication.queue.QR_Scanner;
 import edu.northeastern.myapplication.queue.Queue_home;
+import edu.northeastern.myapplication.notificationsPage.NotifyMe;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void queue(View view) {
         Intent intent = new Intent(this, Queue_home.class);
+        startActivity(intent);
+    }
+
+    public void notify(View view) {
+        System.out.println("IN main");
+
+        Intent intent = new Intent(this, NotifyMe.class);
+        System.out.println("IN HER11E");
+
         startActivity(intent);
     }
 

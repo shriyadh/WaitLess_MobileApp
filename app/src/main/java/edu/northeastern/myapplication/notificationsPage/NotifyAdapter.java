@@ -50,4 +50,3 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyViewHolder> {
     }
 }
 
-

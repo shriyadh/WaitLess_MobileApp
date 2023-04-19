@@ -26,13 +26,18 @@ public class NotifyMe extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("IN HERE");
+
         setContentView(R.layout.activity_notify_me);
+        System.out.println("IN HERE");
+
         // set up recycler for notifications
         initNotify();
 
     }
 
     public void initNotify(){
+        System.out.println("IN HERE");
         notifyRecyclerView = findViewById(R.id.notificationsBar);
         notifications.add(new Notification("Shriya", "200"));
         notifications.add(new Notification("Mariah",  "200"));
@@ -49,6 +54,7 @@ public class NotifyMe extends AppCompatActivity {
         DividerItemDecoration decor = new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL);
         notifyRecyclerView.addItemDecoration(decor);
+        System.out.println("IN END");
 
     }
 }
