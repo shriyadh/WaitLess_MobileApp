@@ -23,7 +23,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void notify(View view) {
+        System.out.println("IN main");
+
         Intent intent = new Intent(this, NotifyMe.class);
+        System.out.println("IN HER11E");
+
         startActivity(intent);
     }
 
