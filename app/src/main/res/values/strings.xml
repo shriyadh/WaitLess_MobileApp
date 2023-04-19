@@ -51,6 +51,7 @@
     <string name="workouts">WORKOUTS</string>
     <string name="connect">CONNECT</string>
     <string name="bio">Bio</string>
+    <string name="follow">FOLLOW</string>
     <string name="accept">Accept</string>
     <string name="deny">Deny</string>
     <string name="register">REGISTER</string>

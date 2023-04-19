@@ -44,7 +44,7 @@ public class ProfilesViewHolder extends RecyclerView.ViewHolder {
 
                     connect_btn.setClickable(false);
 
-                    connect_btn.setText("REQUESTED");
+                    connect_btn.setText("FOLLOWING");
                     int color = ContextCompat.getColor(view.getContext(), R.color.grey);
                     connect_btn.setBackgroundColor(color);
 
