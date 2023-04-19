@@ -19,14 +19,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
 import android.util.Log;
 import android.util.Size;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import edu.northeastern.myapplication.R;
@@ -141,4 +145,5 @@ public class QR_Scanner extends AppCompatActivity {
         Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector,
                                                         preview, imageAnalysis);
     }
+
 }
