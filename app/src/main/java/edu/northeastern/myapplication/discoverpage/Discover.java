@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +37,9 @@ public class Discover extends AppCompatActivity {
     private String loggedInUser;
     private List<Profiles> profilesLst = new ArrayList<>();
     private List<Story> stories = new ArrayList<>();
+    private List<String> workoutList;
+    private List<String> followIdList;
+
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ActivityResultLauncher<Intent> cameraLauncher;
@@ -45,7 +49,7 @@ public class Discover extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
 
-        loggedInUser = "Shriya";
+        loggedInUser = "1h9cxdj4GJeRFGawmUpk990Zg8b2";
 
 
         // set up recycler for stories
@@ -128,6 +132,7 @@ public class Discover extends AppCompatActivity {
         public void run() {
             try {
                 runFirebase();
+                runFireBaseforOthers();
             } catch (DatabaseException e) {
                 e.printStackTrace();
             }
@@ -137,18 +142,31 @@ public class Discover extends AppCompatActivity {
     private void run_fbThread() {
         Discover.fbThread fbThread = new Discover.fbThread();
         new Thread(fbThread).start();
+
+
     }
 
+    public void runFireBaseforOthers(){
+
+    }
 
     public void runFirebase() {
 
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
         DatabaseReference userID = databaseReference.child("profiles");
 
+        DatabaseReference workoutRef = FirebaseDatabase
+                .getInstance()
+                .getReference("workouts")
+                .child(loggedInUser); // TODO: Replace with user's profile id
+        DatabaseReference followRef = FirebaseDatabase
+                .getInstance()
+                .getReference("follows")
+                .child(loggedInUser); // TODO: Replace with user's profile id
+
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 if (snapshot.exists()) {
 
                     for (DataSnapshot userData : snapshot.getChildren()) {
@@ -157,29 +175,60 @@ public class Discover extends AppCompatActivity {
 
                             String username = userData.child("profileName").getValue().toString();
                             String bio = userData.child("profileBio").getValue().toString();
-                            String friends = userData.child("friends_count").getValue().toString();
-                            String workouts = userData.child("workout_count").getValue().toString();
+                            //String friends = userData.child("friends_count").getValue().toString();
+                            //String workouts = userData.child("workout_count").getValue().toString();
                             String token = userData.getKey();
 
-                            Profiles newUser = new Profiles(username, bio, "", friends, workouts, token);
+                            Profiles newUser = new Profiles(username, bio, token);
                             profilesLst.add(newUser);
-
                         }
                     }
-
                 }
                 profilesAdapter.notifyItemRangeInserted(0, profilesLst.size());
                 profilesRecyclerView.scrollToPosition(0);
             }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        userID.addListenerForSingleValueEvent(eventListener);
+
+        // add workout list
+      /*  workoutRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                workoutList = new ArrayList<>();
+                for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
+                    workoutList.add(workoutSnapshot.getValue(Workout.class));
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("PROFILE_WORKOUTS", "Failed to read workouts value.", error.toException());
+            }
+        });*/
+
+        // add friends list
+        followRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                followIdList = new ArrayList<>();
+                for (DataSnapshot followSnapshot : snapshot.getChildren()) {
+                    followIdList.add(followSnapshot.getKey());
+                }
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.w("PROFILE_follow", "Failed to read follow value.", error.toException());
             }
+        });
 
-        };
-        userID.addListenerForSingleValueEvent(eventListener);
+
+
     }
+
 
 
     private void takePicture() {
