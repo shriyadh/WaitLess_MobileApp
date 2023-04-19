@@ -32,8 +32,10 @@
         </activity>
         <activity
             android:name=".Profile.MainActivityProfile"
-            android:name=".RequestsActivity2"
+
             android:exported="false" />
+        <activity  android:name=".RequestsActivity2"
+            android:exported="false"/>
 
         <activity
             android:name=".queue.Queue_home"
@@ -60,10 +62,10 @@
             android:name=".LoginRegister.Register"
             android:exported="false" />
         <activity
-            android:name=".notificationsPage.NotifyMe"
+
             android:name=".discoverpage.Discover"
             android:exported="false"
-            android:label="Notifications">
+
             android:label="Discover">
             <meta-data
                 android:name="android.app.lib_name"
@@ -72,6 +74,16 @@
         <activity
             android:name=".Profile.MainActivityProfile"
             android:exported="false" />
+        <activity
+
+            android:name=".notificationsPage.NotifyMe"
+            android:exported="false"
+
+            android:label="Notifications">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
 
 
         <activity

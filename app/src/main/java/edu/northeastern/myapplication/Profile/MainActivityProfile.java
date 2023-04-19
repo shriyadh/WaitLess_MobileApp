@@ -223,7 +223,7 @@ public class MainActivityProfile extends AppCompatActivity {
                     currentProfile = snapshot.getValue(Profile.class);
                     loadProfileData();
                     loadProfileImage();
-                    loadProfileTextData();
+                    //loadProfileTextData();
                 }
 
                 @Override
@@ -238,8 +238,8 @@ public class MainActivityProfile extends AppCompatActivity {
                     for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
                         workoutList.add(workoutSnapshot.getValue(Workout.class));
                     }
-                    loadProfileGraph();
-                    loadLastWorkout();
+                   // loadProfileGraph();
+                   // loadLastWorkout();
                 }
 
                 @Override
