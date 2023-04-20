@@ -65,7 +65,7 @@ public class MainActivityProfile extends AppCompatActivity {
     private List<String> followIdList;
 
     private String profileId;
-    private String currentProfileId; // TODO: Replace with current user Firebase (Test USER: -NRVYvTjwCGKqGm9dUIq)
+    private String currentProfileId; // (Test USER: -NRVYvTjwCGKqGm9dUIq)
     FirebaseAuth mAuth;
     FirebaseUser mUser;
 
@@ -152,7 +152,7 @@ public class MainActivityProfile extends AppCompatActivity {
             }
             intent.putExtras(bundle);
             intent.putExtra("profileId", profileId);
-            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
+            intent.putExtra("currProfileId", currentProfileId);
             startActivity(intent);
 
         } else if (buttonId == followListButton.getId()) {
@@ -185,15 +185,15 @@ public class MainActivityProfile extends AppCompatActivity {
             DatabaseReference profileRef = FirebaseDatabase
                     .getInstance()
                     .getReference("profiles")
-                    .child(profileId); // TODO: Replace with user's profile id
+                    .child(profileId);
             DatabaseReference workoutRef = FirebaseDatabase
                     .getInstance()
                     .getReference("workouts")
-                    .child(profileId); // TODO: Replace with user's profile id
+                    .child(profileId);
             DatabaseReference followRef = FirebaseDatabase
                     .getInstance()
                     .getReference("follows")
-                    .child(profileId); // TODO: Replace with user's profile id
+                    .child(profileId);
 
             workoutRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -367,8 +367,10 @@ public class MainActivityProfile extends AppCompatActivity {
 
             // Get more recent workout
             Workout lastWorkout = workoutList.get(0);
-
             // Convert Date into MM/DD/YYYY format
+            if (Long.toString(lastWorkout.getDate()).length() == 11) {
+                lastWorkout.setDate(lastWorkout.getDate());
+            }
             String formattedDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US)
                     .format(lastWorkout.getDate());
 
