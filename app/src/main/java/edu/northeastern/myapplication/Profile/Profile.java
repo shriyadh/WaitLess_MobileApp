@@ -12,12 +12,12 @@ public class Profile {
     private String profileBio;
 
 
-    public Profile(String profileName, String firstname, String lastname, String profileEmail, String profileBio, String joinedDate) {
+    public Profile(String profileName, String firstname, String lastname, String profileEmail, String profileBio, Long joinedDate) {
         this.profileName = profileName;
         this.firstname = firstname;
         this.lastname = lastname;
         this.profileEmail = profileEmail;
-        this.joinedDate = Long.parseLong(joinedDate);
+        this.joinedDate = joinedDate;
         this.profileBio = profileBio;
     }
 

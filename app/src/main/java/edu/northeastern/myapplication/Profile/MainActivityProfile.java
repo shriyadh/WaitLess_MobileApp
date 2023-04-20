@@ -232,18 +232,7 @@ public class MainActivityProfile extends AppCompatActivity {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    System.out.println(snapshot.getValue());
-                    HashMap<String, String> profileMap = new HashMap<>();
-                    for (DataSnapshot child : snapshot.getChildren()) {
-                        profileMap.put(child.getKey(), child.getValue(String.class));
-                    }
-                    currentProfile = new Profile(
-                            profileMap.get("profileName"),
-                            profileMap.get("firstname"),
-                            profileMap.get("lastname"),
-                            profileMap.get("profileEmail"),
-                            profileMap.get("profileBio"),
-                            profileMap.get("joinedDate"));
+                    currentProfile = snapshot.getValue(Profile.class);
                     loadProfileData();
                     loadProfileImage();
                 }
