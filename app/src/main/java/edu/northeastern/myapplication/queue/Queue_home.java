@@ -74,7 +74,7 @@ public class Queue_home extends AppCompatActivity {
         set_count = "";
         is_working_out = false;
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
-        user = "SOME_USER";
+        user = "Mariah";
         q_list = new ArrayList<>();
     }
 
@@ -222,6 +222,7 @@ public class Queue_home extends AppCompatActivity {
         @Override
         public void run() {
             try {
+                System.out.println(workout);
                 DatabaseReference workout_to_join = FirebaseDatabase.getInstance()
                                 .getReference("queues/" + workout);
                 workout_to_join.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -301,7 +302,53 @@ public class Queue_home extends AppCompatActivity {
     }
 
     private void find_pos_and_waitTime() {
-        Collections.reverse(q_list);
+//        Collections.reverse(q_list);
+        for (List l : q_list) {
+            System.out.println(l.get(0));
+        }
+        int[] times = new int[q_list.size()];
+        for (int i = 0; i < q_list.size(); i += 3) {
+            for (int j = 0; j < 3; j++) {
+                if (i < 3) {
+                    times[i + j] = 0;
+                } else if (i < 6) {
+                    List<Integer> temp = new ArrayList<>();
+                    for (int k = 0; k < 3; k++) {
+                        temp.add(Integer.valueOf(q_list.get(k).get(1)));
+                    }
+                    Collections.sort(temp);
+                    for (int k = 0; k < 3; k++) {
+                        times[i + k] = temp.get(k);
+                    }
+                    break;
+                } else {
+                    int start = times[i + j - 1];
+                    List<Integer> temp = new ArrayList<>();
+                    for (int k = 0; k < 3; k++) {
+                        temp.add(Integer.valueOf(q_list.get(k).get(1)));
+                    }
+                    Collections.sort(temp);
+                    for (int k = 0; k < 3; k++) {
+                        start += temp.get(k);
+                        times[i + k] = start;
+                    }
+                    break;
+                }
+            }
+        }
+        int counter = 0;
+        for (List u : q_list) {
+            String uname = (String) u.get(0);
+            if (uname.equals(user)) {
+                if (counter < 3){
+                    is_working_out = true;
+                } else {
+                    wait_time_estimate = times[counter];
+                }
+                break;
+            }
+            counter++;
+        }
 
 
 
