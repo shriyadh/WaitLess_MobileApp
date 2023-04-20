@@ -1,12 +1,19 @@
 package edu.northeastern.myapplication.notificationsPage;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
@@ -40,11 +47,27 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyViewHolder> {
     public void onBindViewHolder(@NonNull NotifyViewHolder holder, int position) {
         Notification curr = notificationsList.get(position);
         holder.notifyImg.setImageResource(R.drawable.accept2);
+        String token = curr.getUserName();
 
         holder.notifyTxt.setText(curr.getUser() + " has sent you a connect request!\n");
 
+        new Thread(() -> {
+            FirebaseStorage
+                    .getInstance()
+                    .getReference("/profileIcons")
+                    .child(token + ".jpg")
+                    .getDownloadUrl()
+                    .addOnSuccessListener(uri -> Glide.with(holder.itemView.getContext())
+                            .load(uri)
+                            .placeholder(R.drawable.baseline_account_box_24)
+                            .override(275, 275)
+                            .apply(new RequestOptions()
+                                    .transform(new CenterCrop(),
+                                            new RoundedCorners(50)))
+                            .into(holder.notifyImg)).addOnFailureListener(e ->
+                            Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e));
+        }).start();
     }
-
 
 
     @Override
