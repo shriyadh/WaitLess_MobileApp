@@ -52,8 +52,9 @@ public class EditProfile extends AppCompatActivity {
     private ImageView profileIcon;
     private Button saveButton, cancelButton;
     private EditText editUserName, editBio;
+    private String profileId;
+    private String currProfileId;
 
-    private final String profileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with user's id
     public Uri imageUri;
     private ActivityResultLauncher<String> mGetContent;
     FirebaseAuth mAuth;
@@ -82,6 +83,9 @@ public class EditProfile extends AppCompatActivity {
 
 
 
+        Intent intent = getIntent();
+        profileId = intent.getStringExtra("profileId");
+        currProfileId = intent.getStringExtra("currProfileId");
 
         editUserName = findViewById(R.id.editTextUserName);
         editBio = findViewById(R.id.editTextBio);

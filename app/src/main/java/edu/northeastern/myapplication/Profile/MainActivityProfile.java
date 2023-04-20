@@ -1,5 +1,6 @@
 package edu.northeastern.myapplication.Profile;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -65,6 +66,7 @@ public class MainActivityProfile extends AppCompatActivity {
     private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with current user Firebase
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -133,9 +135,13 @@ public class MainActivityProfile extends AppCompatActivity {
 
     public void onClick(View view) {
         int buttonId = view.getId();
+        System.out.println("BUTTON ID IS " + buttonId);
         if (buttonId == profileSettingsButton.getId()) {
             // TODO: Add code to go to profile settings page
+            System.out.println("edit is clicked");
             Intent intent = new Intent(getApplicationContext(), EditProfile.class);
+            intent.putExtra("profileId", profileId);
+            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
             startActivity(intent);
             Log.w("Profile", "Profile Settings button clicked");
 
