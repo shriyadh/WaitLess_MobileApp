@@ -39,8 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.Date;
 import edu.northeastern.myapplication.R;
-
-
+import edu.northeastern.myapplication.discoverpage.Discover;
 
 
 public class Login extends AppCompatActivity {
@@ -201,6 +200,9 @@ public class Login extends AppCompatActivity {
                         Toast.makeText(Login.this, "Real User!", Toast.LENGTH_LONG).show();
                         System.out.println(mAuth.getCurrentUser().getEmail());
                         System.out.println(mAuth.getCurrentUser().getUid());
+                        // send user to the discover page
+                        Intent discoverIntent = new Intent(getApplicationContext(), Discover.class);
+                        startActivity(discoverIntent);
                     } else {
                         Toast.makeText(Login.this, "UNReal User!", Toast.LENGTH_LONG).show();
                     }

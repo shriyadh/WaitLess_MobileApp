@@ -15,6 +15,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -47,21 +49,32 @@ public class Discover extends AppCompatActivity {
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private ActivityResultLauncher<Intent> cameraLauncher;
 
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
 
-        loggedInUser = "1h9cxdj4GJeRFGawmUpk990Zg8b2";
+        // firebase authentication
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+       // loggedInUser = "1h9cxdj4GJeRFGawmUpk990Zg8b2";
+
+        assert mUser != null;
+        loggedInUser = mUser.getUid();
+
+        //checking logged in user
+        System.out.println(mUser.getEmail());
+
         // find navigation view
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         // set selected item to queue
         bottomNavigationView.setSelectedItemId(R.id.navigation_discover);
         // activate nav listener
         bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
-
-
-        //loggedInUser = "Shriya";
 
 
         // set up recycler for stories

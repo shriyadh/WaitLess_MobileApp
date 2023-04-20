@@ -28,6 +28,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,18 +63,31 @@ public class MainActivityProfile extends AppCompatActivity {
 
     private String profileId;
     private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with current user Firebase
-
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_profile);
+        // firebase authentication
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        assert mUser != null;
+        //checking logged in user
+        System.out.println(mUser.getEmail());
+
+
+
+
+
+        System.out.println("IN HERE");
         // find navigation view
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         // set selected item to queue
         bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
         // activate nav listener
         bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
-
 
         followButton = findViewById(R.id.toggleButtonFollow);
         followButton.setVisibility(View.GONE);

@@ -27,7 +27,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,6 +44,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.Calendar;
 import java.util.UUID;
 
+import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
 
 public class EditProfile extends AppCompatActivity {
@@ -52,13 +56,32 @@ public class EditProfile extends AppCompatActivity {
     private final String profileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with user's id
     public Uri imageUri;
     private ActivityResultLauncher<String> mGetContent;
-
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        // firebase authentication
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        assert mUser != null;
+        //checking logged in user
+        System.out.println(mUser.getEmail());
+
+        // find navigation view
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        // set selected item to queue
+        bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
+        // activate nav listener
+        bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
+
+
+
 
         editUserName = findViewById(R.id.editTextUserName);
         editBio = findViewById(R.id.editTextBio);
