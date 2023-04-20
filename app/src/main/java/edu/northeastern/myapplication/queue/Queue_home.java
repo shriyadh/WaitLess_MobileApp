@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -45,6 +47,7 @@ public class Queue_home extends AppCompatActivity {
     private String workout;
     private qThread qt;
     private qjoin_thread qjoin_t;
+    private looper e_15;
     private DatabaseReference databaseReference;
     private String set_count;
     private String user;
@@ -97,22 +100,15 @@ public class Queue_home extends AppCompatActivity {
         savedInstanceState.putString("workout", (String) workout);
         savedInstanceState.putString("user_db_key", (String) user_db_key);
         super.onSaveInstanceState(savedInstanceState);
-        System.out.println(workout);
 
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
-        //************
-        // recalc est wait time
-        //************
-
         user_in_queue = savedInstanceState.getBoolean("user_is_in_queue");
         user_in_queue = !user_in_queue;
         workout = savedInstanceState.getString("workout");
-        System.out.println(workout);
         user_db_key = savedInstanceState.getString("user_db_key");
         swap_queue_status(workout);
         if (user_in_queue) {
@@ -159,6 +155,7 @@ public class Queue_home extends AppCompatActivity {
                 set_count = String.valueOf(numSets);
                 // add to queue
                 queue_joiner();
+                every_15();
             }
         });
         builder.show();
@@ -345,5 +342,27 @@ public class Queue_home extends AppCompatActivity {
         }
         est_wait.setText("Est. wait time: " + String.valueOf(wait_time_estimate) + " min.");
     }
+
+    public void every_15() {
+        e_15 = new looper();
+        new Thread(e_15).start();
+    }
+
+    class looper implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(15000); // wait for 15 seconds
+                    if (!user_db_key.isEmpty()) {
+                        create_queue_list(); // call create_queue_list() if user_db_key is not empty
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
 }
