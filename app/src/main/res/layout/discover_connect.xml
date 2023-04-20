@@ -131,6 +131,14 @@
         app:layout_constraintStart_toEndOf="@id/friends"
         app:layout_constraintTop_toBottomOf="@+id/bio_text"
         app:layout_constraintWidth_default="spread" />
+    <Space
+        android:layout_width="1dp"
+        app:layout_constraintTop_toBottomOf="@id/workouts"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="60dp"
+        app:layout_constraintVertical_bias="0.0"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

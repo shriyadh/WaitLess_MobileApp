@@ -20,41 +20,35 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.043" />
 
-    <ImageButton
-        android:id="@+id/acceptBtn"
-        android:layout_width="54dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:background="@color/white"
-        android:scaleType="fitCenter"
-        android:src="@drawable/accept2"
+    <Button
+        android:id="@+id/connect_btn"
+        android:layout_width="123dp"
+        android:layout_height="49dp"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/background_dark"
+        android:text="follow back"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/denyBtn"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.77"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notificationTxtView"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintVertical_bias="1.0" />
 
-    <ImageButton
-        android:id="@+id/denyBtn"
-        android:layout_width="54dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@color/white"
+    <ImageView
+        android:id="@+id/follow_req_prof"
+        android:layout_width="wrap_content"
         android:scaleType="fitCenter"
-        android:src="@drawable/deny"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/acceptBtn"
-        app:layout_constraintTop_toBottomOf="@+id/notificationTxtView"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintEnd_toStartOf="@+id/notificationTxtView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

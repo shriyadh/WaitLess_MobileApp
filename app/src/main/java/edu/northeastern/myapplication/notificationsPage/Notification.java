@@ -6,15 +6,24 @@ public class Notification {
     private String user;
     private String mutual;
 
-    public Notification( String user, String mutual){
+    private String username;
+
+
+
+    public Notification( String user, String username){
         this.img = "";
+        this.username = username;
         this.user = user;
-        this.mutual = mutual;
+       // this.mutual = mutual;
 
     }
 
     public String getUser(){
         return this.user;
+    }
+
+    public String getUserName() {
+        return this.username;
     }
     public String getImg(){
         return this.img;
@@ -22,4 +31,10 @@ public class Notification {
     public  String getMutual(){
         return this.mutual;
     }
+
+
+
+
+
+
 }

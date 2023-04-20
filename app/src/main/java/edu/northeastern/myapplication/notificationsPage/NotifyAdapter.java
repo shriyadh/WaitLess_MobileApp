@@ -39,10 +39,13 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull NotifyViewHolder holder, int position) {
         Notification curr = notificationsList.get(position);
+        holder.notifyImg.setImageResource(R.drawable.accept2);
 
-        holder.notifyTxt.setText(curr.getUser() + " has sent you a connect request!\nMutual: " + curr.getMutual());
+        holder.notifyTxt.setText(curr.getUser() + " has sent you a connect request!\n");
 
     }
+
+
 
     @Override
     public int getItemCount() {
