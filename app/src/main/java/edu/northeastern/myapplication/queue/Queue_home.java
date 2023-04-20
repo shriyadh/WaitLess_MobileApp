@@ -6,15 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.InputType;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,9 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -45,13 +52,18 @@ public class Queue_home extends AppCompatActivity {
     private String workout;
     private qThread qt;
     private qjoin_thread qjoin_t;
+    private looper e_15;
     private DatabaseReference databaseReference;
     private String set_count;
     private String user;
+    private String user_db_key;
     private String machine_key;
     private boolean is_working_out;
     private int wait_time_estimate;
     private List<List<String>> q_list;
+    private Vibrator vibrator;
+    private boolean first_time;
+    private boolean been_warned;
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
@@ -63,9 +75,11 @@ public class Queue_home extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
+        // Disable rotation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         assert mUser != null;
         //checking logged in user
-        System.out.println(mUser.getEmail());
 
         setContentView(R.layout.activity_queue_home);
         // find navigation view
@@ -89,27 +103,29 @@ public class Queue_home extends AppCompatActivity {
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
         user = "Mariah";
         q_list = new ArrayList<>();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putBoolean("user_is_in_queue", user_in_queue);
         savedInstanceState.putString("workout", (String) workout);
+        savedInstanceState.putString("user_db_key", (String) user_db_key);
         super.onSaveInstanceState(savedInstanceState);
+
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
-        //************
-        // recalc est wait time
-        //************
-
         user_in_queue = savedInstanceState.getBoolean("user_is_in_queue");
         user_in_queue = !user_in_queue;
         workout = savedInstanceState.getString("workout");
+        user_db_key = savedInstanceState.getString("user_db_key");
         swap_queue_status(workout);
+        if (user_in_queue) {
+            create_queue_list();
+        }
     }
 
     public void qr_scanner(View view) {
@@ -136,7 +152,7 @@ public class Queue_home extends AppCompatActivity {
     public void ask_sets() {
         // ask for number of sets
         AlertDialog.Builder builder = new AlertDialog.Builder(Queue_home.this);
-        builder.setTitle("Enter Number of Sets");
+        builder.setTitle("Enter Number of Sets (Default = 3)");
 
         // Set up the input
         final EditText input = new EditText(Queue_home.this);
@@ -147,10 +163,18 @@ public class Queue_home extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int numSets = Integer.parseInt(input.getText().toString());
+                int numSets = 3;
+                try {
+                    numSets = Integer.parseInt(input.getText().toString());
+                } catch (Exception e) {
+                    numSets = 3;
+                }
                 set_count = String.valueOf(numSets);
                 // add to queue
                 queue_joiner();
+                first_time = true;
+                been_warned = false;
+                every_15();
             }
         });
         builder.show();
@@ -184,7 +208,9 @@ public class Queue_home extends AppCompatActivity {
                         try {
                             DatabaseReference workout_queue = FirebaseDatabase.getInstance()
                                     .getReference("queues/" + workout + "/" + machine_key);
-                            workout_queue.child(user).removeValue();
+                            workout_queue.child(user_db_key).removeValue();
+                            user_db_key = "";
+                            leave_queue_btn.setText("Leave Queue");
                         } catch (DatabaseException e) {
                             e.printStackTrace();
                         }
@@ -235,7 +261,6 @@ public class Queue_home extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                System.out.println(workout);
                 DatabaseReference workout_to_join = FirebaseDatabase.getInstance()
                                 .getReference("queues/" + workout);
                 workout_to_join.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -262,7 +287,13 @@ public class Queue_home extends AppCompatActivity {
                         DatabaseReference machine_to_join = FirebaseDatabase.getInstance()
                                 .getReference("queues/" + workout + "/" + workout + " " +
                                                 best_machine);
-                        machine_to_join.child(user).setValue(set_count);
+                        machine_to_join.push().setValue(set_count, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                String key = databaseReference.getKey();
+                                user_db_key = key;
+                            }
+                        });
                         machine_key = workout + " " + best_machine;
                         create_queue_list();
                     }
@@ -314,112 +345,141 @@ public class Queue_home extends AppCompatActivity {
 
     }
 
-    private void find_pos_and_waitTime() {
-//        Collections.reverse(q_list);
-        for (List l : q_list) {
-            System.out.println(l.get(0));
-        }
-        int[] times = new int[q_list.size()];
-        for (int i = 0; i < q_list.size(); i += 3) {
-            for (int j = 0; j < 3; j++) {
-                if (i < 3) {
-                    times[i + j] = 0;
-                } else if (i < 6) {
-                    List<Integer> temp = new ArrayList<>();
-                    for (int k = 0; k < 3; k++) {
-                        temp.add(Integer.valueOf(q_list.get(k).get(1)));
-                    }
-                    Collections.sort(temp);
-                    for (int k = 0; k < 3; k++) {
-                        times[i + k] = temp.get(k);
-                    }
-                    break;
-                } else {
-                    int start = times[i + j - 1];
-                    List<Integer> temp = new ArrayList<>();
-                    for (int k = 0; k < 3; k++) {
-                        temp.add(Integer.valueOf(q_list.get(k).get(1)));
-                    }
-                    Collections.sort(temp);
-                    for (int k = 0; k < 3; k++) {
-                        start += temp.get(k);
-                        times[i + k] = start;
-                    }
-                    break;
-                }
+    private Handler handler = new Handler();
+    private Random random = new Random();
+    private int maxBubbleSize = 125;
+    private long maxDuration = 1500L; // milliseconds
+    private long stopDelay = 4000L; // milliseconds
+
+    private void startConfetti() {
+        // Get the root view of the activity or fragment
+        View rootView = findViewById(android.R.id.content);
+
+        // Define a bubble-shaped drawable
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.OVAL);
+        drawable.setColor(Color.WHITE);
+        drawable.setStroke(5, Color.parseColor("#20B2AA"));
+
+        // Define the bubble generator runnable
+        Runnable generator = new Runnable() {
+            @Override
+            public void run() {
+                // Create a new bubble view with random size and position
+                View bubble = new View(Queue_home.this);
+                int size = random.nextInt(maxBubbleSize) + maxBubbleSize / 2;
+                int x = random.nextInt(rootView.getWidth() - size);
+                bubble.setX(x);
+                bubble.setY(0);
+                bubble.setLayoutParams(new ViewGroup.LayoutParams(size, size));
+                bubble.setBackground(drawable);
+                ((ViewGroup)rootView).addView(bubble);
+
+                // Animate the bubble falling to the bottom of the screen
+                bubble.animate()
+                        .y(rootView.getHeight() - size)
+                        .setDuration(random.nextInt((int) maxDuration) + maxDuration / 2)
+                        .withEndAction(() -> {
+                            // Remove the bubble from the view hierarchy when the animation ends
+                            ((ViewGroup)rootView).removeView(bubble);
+                        })
+                        .start();
+
+                // Schedule the next bubble to be generated
+                handler.postDelayed(this, random.nextInt(100) + 100);
             }
+        };
+
+        // Start the bubble generator
+        handler.post(generator);
+
+        // Stop the bubble generator after a delay
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                handler.removeCallbacks(generator);
+            }
+        }, stopDelay);
+    }
+
+
+
+
+
+    private void user_is_up() {
+        startConfetti();
+        Toast.makeText(this, "You're up for " + workout + "!",
+                Toast.LENGTH_LONG).show();
+        if (vibrator.hasVibrator()) {
+            long[] pattern = {0, 1000, 500, 1000, 500};
+            VibrationEffect vibrationEffect = VibrationEffect.createWaveform(pattern, -1);
+            vibrator.vibrate(vibrationEffect);
         }
-        int counter = 0;
+    }
+
+    private void user_is_next() {
+        Toast.makeText(this, "You're next! Head to " + workout,
+                Toast.LENGTH_LONG).show();
+        if (vibrator.hasVibrator()) {
+            long[] pattern = {0, 1000, 500, 1000, 500};
+            VibrationEffect vibrationEffect = VibrationEffect.createWaveform(pattern, -1);
+            vibrator.vibrate(vibrationEffect);
+        }
+        been_warned = true;
+    }
+
+    private void find_pos_and_waitTime() {
+        int counter = 1;
         for (List u : q_list) {
-            String uname = (String) u.get(0);
-            if (uname.equals(user)) {
-                if (counter < 3){
+            String ukey = (String) u.get(0);
+            if (ukey.equals(user_db_key)) {
+                if (counter < 4){
                     is_working_out = true;
+                    if (first_time) {
+                        user_is_up();
+                        first_time = false;
+                    }
+                    est_wait.setText("You're up - let's get those gains!");
+                    leave_queue_btn.setText("All Finished");
+                    return;
                 } else {
-                    wait_time_estimate = times[counter];
+                    wait_time_estimate = (counter - 3) * 2;
+                    if (wait_time_estimate == 2 && !been_warned) {
+                        user_is_next();
+                    }
                 }
                 break;
             }
             counter++;
         }
-
-
-
-
-//        int numUp = 3; // number of people who can be up at one time
-//        int totalUpTime = 0; // total time that people have been up so far
-//        int nextUpIndex = 0; // index of the next person who will be up
-//        while (q_list.size() > 0) {
-//            int numPeopleUp = Math.min(numUp, q_list.size()); // number of people who will be up in this round
-//            int roundUpTime = 0; // total "up time" for the people who will be up in this round
-//            for (int i = 0; i < numPeopleUp; i++) {
-//                roundUpTime += Integer.valueOf(q_list.get(i).get(1));
-//            }
-//            totalUpTime += roundUpTime; // add the round up time to the total up time
-//            nextUpIndex += numPeopleUp; // increment the index of the next person who will be up
-//            for (int k = 0; k < numPeopleUp; k++) {
-//                q_list.remove(k);
-//            }
-//        }
-//        int timeUntilUp = Integer.valueOf(q_list.get(q_list.size() - 1).get(1)) - totalUpTime; // Calculate the remaining "up time" for person F
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//        int min = Integer.MAX_VALUE;
-//
-//
-//
-//
-//
-//
-//
-//        int counter = 1;
-//        for (List u : q_list) {
-//            String uname = (String) u.get(0);
-//            String reps_remaining = (String) u.get(1);
-//            if (uname.equals(user)) {
-//                if (counter < 4){
-//                    is_working_out = true;
-//                } else {
-//                    wait_time_estimate = min;
-//                }
-//                break;
-//            } else {
-//                if (Integer.valueOf(reps_remaining) < min) {
-//                    min = Integer.valueOf(reps_remaining);
-//                }
-//                counter++;
-//            }
-//        }
         est_wait.setText("Est. wait time: " + String.valueOf(wait_time_estimate) + " min.");
+    }
+
+    public void every_15() {
+        e_15 = new looper();
+        new Thread(e_15).start();
+    }
+
+    class looper implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(15000); // wait for 15 seconds
+                    if (!user_db_key.isEmpty()) {
+                        create_queue_list(); // call create_queue_list() if user_db_key is not empty
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing to disable back button
+        Toast.makeText(this, "Back button is disabled", Toast.LENGTH_SHORT).show();
     }
 
 
