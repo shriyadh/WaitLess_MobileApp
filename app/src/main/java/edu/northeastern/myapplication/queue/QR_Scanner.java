@@ -40,6 +40,7 @@ public class QR_Scanner extends AppCompatActivity {
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private String qrCode;
     private static final int PERMISSION_REQUEST_CAMERA = 0;
+    private ArrayList allowed_QRs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,9 @@ public class QR_Scanner extends AppCompatActivity {
         previewView = findViewById(R.id.activity_main_previewView);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         requestCamera();
+        allowed_QRs = new ArrayList<>();
+        allowed_QRs.add("bench_press");
+        allowed_QRs.add("squat_rack");
     }
 
     private void requestCamera() {
@@ -132,10 +136,15 @@ public class QR_Scanner extends AppCompatActivity {
             public void onQRCodeFound(String _qrCode) {
                 // pass QR data back to queue home and exit activity
                 qrCode = _qrCode;
-                Intent intent = new Intent();
-                intent.putExtra("data", qrCode);
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+
+                if (!allowed_QRs.contains(qrCode.toString())) {
+                    make_toast();
+                } else {
+                    Intent intent = new Intent();
+                    intent.putExtra("data", qrCode);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }
             }
 
             @Override
@@ -144,6 +153,10 @@ public class QR_Scanner extends AppCompatActivity {
 
         Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector,
                                                         preview, imageAnalysis);
+    }
+
+    private void make_toast() {
+        Toast.makeText(this, "Invalid QR code", Toast.LENGTH_LONG).show();
     }
 
 }
