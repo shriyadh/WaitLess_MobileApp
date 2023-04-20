@@ -31,14 +31,14 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.discover_connect, parent, false);
 
-        return new ProfilesViewHolder(view, this.listener);    }
+        return new ProfilesViewHolder(view, this.listener, this.profiles);    }
 
     @Override
     public void onBindViewHolder(@NonNull ProfilesViewHolder holder, int position) {
         Profiles curr = profiles.get(position);
         holder.username.setText(curr.getUsername());
         holder.bio.setText(curr.getBio());
-        holder.friends.setText("FRIENDS \n" + curr.getTotal_friends());
+        holder.friends.setText("FRIENDS \n" + curr.getFriendListSize());
         holder.workouts.setText("WORKOUTS \n" + curr.getWorkouts());
 
         //holder.small_icon.set(curr.getUsername());

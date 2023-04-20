@@ -7,7 +7,7 @@ public class Profiles {
     private String username;
     private String bio;
     private List<String> total_friends;
-    private int total_workouts;
+    private int total_workouts = 0;
     private String user_token;
     private String image;
 
@@ -35,12 +35,17 @@ public class Profiles {
     }
 
     public void setTotal_friends(List<String> friends) {
+
         total_friends = friends;
     }
 
     public int getFriendListSize() {
+        if(total_friends == null) {
+            return 0;
+        }
         return total_friends.size();
     }
+
     public List<String> getTotal_friends() {
         return total_friends;
     }

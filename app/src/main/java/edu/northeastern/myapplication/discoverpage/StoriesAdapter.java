@@ -1,6 +1,8 @@
 package edu.northeastern.myapplication.discoverpage;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +47,24 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesViewHolder> {
         if(curr.isCheckedIn()) {
             holder.storyOutline.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green));
         }
-        holder.user.setText(stories.get(position).getUser());
+        String username = stories.get(position).getUser();
+        int maxLen = 8;
+
+        if(position == 0){
+            holder.user.setText(username);
+            holder.user.setTextColor(Color.BLACK);
+            holder.user.setTypeface(holder.user.getTypeface(), Typeface.BOLD);
+        }
+        else if(username.length() > maxLen) {
+            // Modify the text to add "..." at the end
+            String shortenedText = username.substring(0, maxLen) + "...";
+            holder.user.setText(shortenedText);
+
+        }
+        else{
+            holder.user.setText(username);
+
+        }
 
     }
 
