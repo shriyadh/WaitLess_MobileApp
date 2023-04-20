@@ -1,12 +1,19 @@
 package edu.northeastern.myapplication.discoverpage;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
@@ -40,6 +47,30 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
         holder.bio.setText(curr.getBio());
         holder.friends.setText("FRIENDS \n" + curr.getFriendListSize());
         holder.workouts.setText("WORKOUTS \n" + curr.getWorkouts());
+        String token = curr.getUser_token();
+
+        FirebaseStorage
+                .getInstance()
+                .getReference("/profileIcons")
+                .child(token + ".jpg")
+                .getDownloadUrl()
+                .addOnSuccessListener(uri -> Glide.with(holder.itemView.getContext())
+                        .load(uri)
+                        .placeholder(R.drawable.baseline_account_box_24)
+                        .override(275, 275)
+                        .apply(new RequestOptions()
+                                .transform(new CenterCrop(),
+                                        new RoundedCorners(50)))
+                        .into(holder.picture)).addOnFailureListener(e ->
+                        Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e));
+    }).start();
+
+
+//        FirebaseStorage.getInstance().getReference("/profileIcons").child(token+".jpg")
+//                .getDownloadUrl().addOnSuccessListener(uri -> Glide.with(this)
+//                        .load(uri)
+//                        .
+//                )
 
         //holder.small_icon.set(curr.getUsername());
         //holder.picture.setText(curr.getUsername());
