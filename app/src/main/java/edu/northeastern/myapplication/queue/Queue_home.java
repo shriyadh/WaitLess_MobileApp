@@ -10,11 +10,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -27,6 +30,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
 
 public class Queue_home extends AppCompatActivity {
@@ -48,10 +54,28 @@ public class Queue_home extends AppCompatActivity {
     private int wait_time_estimate;
     private List<List<String>> q_list;
 
+    FirebaseAuth mAuth;
+    FirebaseUser mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // firebase authentication
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+
+        assert mUser != null;
+        //checking logged in user
+        System.out.println(mUser.getEmail());
+
         setContentView(R.layout.activity_queue_home);
+        // find navigation view
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        // set selected item to queue
+        bottomNavigationView.setSelectedItemId(R.id.navigation_queue);
+        // activate nav listener
+        bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
+
 
         in_queue = findViewById(R.id.current_queue);
         est_wait = findViewById(R.id.wait_est);

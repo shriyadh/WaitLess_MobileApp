@@ -21,17 +21,28 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
         this.profiles = profiles;
     }
 
+    public void setListenerLink(RecycleViewClickListener lst) {
+        this.listener = lst;
+    }
+
     @NonNull
     @Override
     public ProfilesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.discover_display_profiles, parent, false);
+        View view = layoutInflater.inflate(R.layout.discover_connect, parent, false);
 
         return new ProfilesViewHolder(view, this.listener);    }
 
     @Override
     public void onBindViewHolder(@NonNull ProfilesViewHolder holder, int position) {
         Profiles curr = profiles.get(position);
+        holder.username.setText(curr.getUsername());
+        holder.bio.setText(curr.getBio());
+        holder.friends.setText("FRIENDS \n" + curr.getTotal_friends());
+        holder.workouts.setText("WORKOUTS \n" + curr.getWorkouts());
+
+        //holder.small_icon.set(curr.getUsername());
+        //holder.picture.setText(curr.getUsername());
 
     }
 
