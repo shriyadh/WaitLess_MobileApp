@@ -39,6 +39,7 @@
 
         <activity
             android:name=".queue.Queue_home"
+            android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false">
             <meta-data

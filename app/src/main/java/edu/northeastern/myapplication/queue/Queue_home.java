@@ -66,7 +66,6 @@ public class Queue_home extends AppCompatActivity {
 
         assert mUser != null;
         //checking logged in user
-        System.out.println(mUser.getEmail());
 
         setContentView(R.layout.activity_queue_home);
         // find navigation view
@@ -96,7 +95,10 @@ public class Queue_home extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putBoolean("user_is_in_queue", user_in_queue);
         savedInstanceState.putString("workout", (String) workout);
+        savedInstanceState.putString("user_db_key", (String) user_db_key);
         super.onSaveInstanceState(savedInstanceState);
+        System.out.println(workout);
+
     }
 
     @Override
@@ -110,7 +112,12 @@ public class Queue_home extends AppCompatActivity {
         user_in_queue = savedInstanceState.getBoolean("user_is_in_queue");
         user_in_queue = !user_in_queue;
         workout = savedInstanceState.getString("workout");
+        System.out.println(workout);
+        user_db_key = savedInstanceState.getString("user_db_key");
         swap_queue_status(workout);
+        if (user_in_queue) {
+            create_queue_list();
+        }
     }
 
     public void qr_scanner(View view) {
@@ -186,6 +193,7 @@ public class Queue_home extends AppCompatActivity {
                             DatabaseReference workout_queue = FirebaseDatabase.getInstance()
                                     .getReference("queues/" + workout + "/" + machine_key);
                             workout_queue.child(user_db_key).removeValue();
+                            user_db_key = "";
                         } catch (DatabaseException e) {
                             e.printStackTrace();
                         }
