@@ -6,13 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.InputType;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,10 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -58,6 +56,9 @@ public class Queue_home extends AppCompatActivity {
     private boolean is_working_out;
     private int wait_time_estimate;
     private List<List<String>> q_list;
+    private Vibrator vibrator;
+    private boolean first_time;
+    private boolean been_warned;
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
@@ -97,6 +98,7 @@ public class Queue_home extends AppCompatActivity {
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
         user = "Mariah";
         q_list = new ArrayList<>();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @Override
@@ -160,6 +162,8 @@ public class Queue_home extends AppCompatActivity {
                 set_count = String.valueOf(numSets);
                 // add to queue
                 queue_joiner();
+                first_time = true;
+                been_warned = false;
                 every_15();
             }
         });
@@ -196,6 +200,7 @@ public class Queue_home extends AppCompatActivity {
                                     .getReference("queues/" + workout + "/" + machine_key);
                             workout_queue.child(user_db_key).removeValue();
                             user_db_key = "";
+                            leave_queue_btn.setText("Leave Queue");
                         } catch (DatabaseException e) {
                             e.printStackTrace();
                         }
@@ -330,6 +335,27 @@ public class Queue_home extends AppCompatActivity {
 
     }
 
+    private void user_is_up() {
+        Toast.makeText(this, "You're up for " + workout + "!",
+                Toast.LENGTH_LONG).show();
+        if (vibrator.hasVibrator()) {
+            long[] pattern = {0, 1000, 500, 1000, 500};
+            VibrationEffect vibrationEffect = VibrationEffect.createWaveform(pattern, -1);
+            vibrator.vibrate(vibrationEffect);
+        }
+    }
+
+    private void user_is_next() {
+        Toast.makeText(this, "You're next! Head to " + workout,
+                Toast.LENGTH_LONG).show();
+        if (vibrator.hasVibrator()) {
+            long[] pattern = {0, 1000, 500, 1000, 500};
+            VibrationEffect vibrationEffect = VibrationEffect.createWaveform(pattern, -1);
+            vibrator.vibrate(vibrationEffect);
+        }
+        been_warned = true;
+    }
+
     private void find_pos_and_waitTime() {
         int counter = 1;
         for (List u : q_list) {
@@ -337,9 +363,18 @@ public class Queue_home extends AppCompatActivity {
             if (ukey.equals(user_db_key)) {
                 if (counter < 4){
                     is_working_out = true;
-                    wait_time_estimate = 0;
+                    if (first_time) {
+                        user_is_up();
+                        first_time = false;
+                    }
+                    est_wait.setText("You're up - let's get those gains!");
+                    leave_queue_btn.setText("All Finished");
+                    return;
                 } else {
                     wait_time_estimate = (counter - 3) * 2;
+                    if (wait_time_estimate == 2 && !been_warned) {
+                        user_is_next();
+                    }
                 }
                 break;
             }
