@@ -247,7 +247,7 @@ public class EditProfile extends AppCompatActivity {
 
     public void uploadtoFirebase(){
         final String randomKey = UUID.randomUUID().toString();
-        currentProfile.setImageName(randomKey);
+        //currentProfile.setImageName(randomKey);
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Image Uploading...");
         pd.show();

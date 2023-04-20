@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
 
 public class NotifyMe extends AppCompatActivity {
@@ -28,8 +30,17 @@ public class NotifyMe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         System.out.println("IN HERE");
 
+
+
         setContentView(R.layout.activity_notify_me);
         System.out.println("IN HERE");
+        // find navigation view
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        // set selected item to queue
+        bottomNavigationView.setSelectedItemId(R.id.navigation_notifications);
+        // activate nav listener
+        bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
+
 
         // set up recycler for notifications
         initNotify();

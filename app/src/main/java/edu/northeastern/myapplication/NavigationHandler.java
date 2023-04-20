@@ -10,6 +10,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import edu.northeastern.myapplication.Profile.MainActivityProfile;
 import edu.northeastern.myapplication.discoverpage.Discover;
+import edu.northeastern.myapplication.notificationsPage.NotifyMe;
 import edu.northeastern.myapplication.queue.Queue_home;
 
 public class NavigationHandler implements NavigationBarView.OnItemSelectedListener {
@@ -25,7 +26,7 @@ public class NavigationHandler implements NavigationBarView.OnItemSelectedListen
         switch (item.getItemId()) {
             case R.id.navigation_notifications:
                 System.out.println("Requests");
-                Intent requestIntent = new Intent(activity, RequestsActivity2.class);
+                Intent requestIntent = new Intent(activity, NotifyMe.class);
                 activity.startActivity(requestIntent);
                 break;
             case R.id.navigation_discover:

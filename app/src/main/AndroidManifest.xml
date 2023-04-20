@@ -71,9 +71,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
-            android:name=".Profile.MainActivityProfile"
-            android:exported="false" />
+
         <activity
 
             android:name=".notificationsPage.NotifyMe"
@@ -86,14 +84,7 @@
         </activity>
 
 
-        <activity
-            android:name=".notificationsPage.NotifyMe"
-            android:exported="false"
-            android:label="Notifications">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

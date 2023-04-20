@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import edu.northeastern.myapplication.LoginRegister.Register;
+import edu.northeastern.myapplication.Profile.EditProfile;
 import edu.northeastern.myapplication.Profile.MainActivityProfile;
 import edu.northeastern.myapplication.discoverpage.Discover;
 import edu.northeastern.myapplication.queue.QR_Scanner;
@@ -42,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
     public void queue(View view) {
         Intent intent = new Intent(this, Queue_home.class);
         startActivity(intent);
+    }
+
+    public void editprof(View view){
+        Intent i = new Intent(this, EditProfile.class);
+        startActivity(i);
     }
 
     public void notify(View view) {
