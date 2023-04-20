@@ -135,6 +135,8 @@ public class MainActivityProfile extends AppCompatActivity {
         int buttonId = view.getId();
         if (buttonId == profileSettingsButton.getId()) {
             // TODO: Add code to go to profile settings page
+            Intent intent = new Intent(getApplicationContext(), EditProfile.class);
+            startActivity(intent);
             Log.w("Profile", "Profile Settings button clicked");
 
 
