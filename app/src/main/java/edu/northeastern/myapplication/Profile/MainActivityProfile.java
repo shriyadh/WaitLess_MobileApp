@@ -80,9 +80,6 @@ public class MainActivityProfile extends AppCompatActivity {
         System.out.println(mUser.getEmail());
 
 
-
-
-
         System.out.println("IN HERE");
         // find navigation view
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

@@ -151,6 +151,21 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    // Check if user is already logged in
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(mAuth.getCurrentUser() != null){
+            Toast.makeText(Login.this, "Already logged in, yay!!", Toast.LENGTH_LONG).show();
+            // send user to the discover page
+            Intent discoverIntent = new Intent(getApplicationContext(), Discover.class);
+            startActivity(discoverIntent);
+        }
+        else{
+            Toast.makeText(Login.this, "NOT LOGGED IN", Toast.LENGTH_LONG).show();
+        }
+    }
 
     public void askUsername(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this).setView(R.layout.signin);
