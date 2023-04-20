@@ -10,11 +10,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.InputType;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -31,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -335,7 +340,69 @@ public class Queue_home extends AppCompatActivity {
 
     }
 
+    private Handler handler = new Handler();
+    private Random random = new Random();
+    private int maxBubbleSize = 125;
+    private long maxDuration = 1500L; // milliseconds
+    private long stopDelay = 4000L; // milliseconds
+
+    private void startConfetti() {
+        // Get the root view of the activity or fragment
+        View rootView = findViewById(android.R.id.content);
+
+        // Define a bubble-shaped drawable
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.OVAL);
+        drawable.setColor(Color.WHITE);
+        drawable.setStroke(5, Color.parseColor("#20B2AA"));
+
+        // Define the bubble generator runnable
+        Runnable generator = new Runnable() {
+            @Override
+            public void run() {
+                // Create a new bubble view with random size and position
+                View bubble = new View(Queue_home.this);
+                int size = random.nextInt(maxBubbleSize) + maxBubbleSize / 2;
+                int x = random.nextInt(rootView.getWidth() - size);
+                bubble.setX(x);
+                bubble.setY(0);
+                bubble.setLayoutParams(new ViewGroup.LayoutParams(size, size));
+                bubble.setBackground(drawable);
+                ((ViewGroup)rootView).addView(bubble);
+
+                // Animate the bubble falling to the bottom of the screen
+                bubble.animate()
+                        .y(rootView.getHeight() - size)
+                        .setDuration(random.nextInt((int) maxDuration) + maxDuration / 2)
+                        .withEndAction(() -> {
+                            // Remove the bubble from the view hierarchy when the animation ends
+                            ((ViewGroup)rootView).removeView(bubble);
+                        })
+                        .start();
+
+                // Schedule the next bubble to be generated
+                handler.postDelayed(this, random.nextInt(100) + 100);
+            }
+        };
+
+        // Start the bubble generator
+        handler.post(generator);
+
+        // Stop the bubble generator after a delay
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                handler.removeCallbacks(generator);
+            }
+        }, stopDelay);
+    }
+
+
+
+
+
     private void user_is_up() {
+        startConfetti();
         Toast.makeText(this, "You're up for " + workout + "!",
                 Toast.LENGTH_LONG).show();
         if (vibrator.hasVibrator()) {
