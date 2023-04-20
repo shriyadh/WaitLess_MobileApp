@@ -3,6 +3,7 @@ package edu.northeastern.myapplication.discoverpage;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
@@ -44,6 +51,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull StoriesViewHolder holder, int position) {
         Story curr = stories.get(position);
+        String token = curr.getToken();
         if(curr.isCheckedIn()) {
             holder.storyOutline.setCardBackgroundColor(ContextCompat.getColor(context, R.color.green));
         }
@@ -65,6 +73,24 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesViewHolder> {
             holder.user.setText(username);
 
         }
+
+        new Thread(() -> {
+            System.out.println(token);
+            FirebaseStorage
+                    .getInstance()
+                    .getReference("/profileIcons")
+                    .child(token + ".jpg")
+                    .getDownloadUrl()
+                    .addOnSuccessListener(uri -> Glide.with(holder.itemView.getContext())
+                            .load(uri)
+                            .placeholder(R.drawable.baseline_account_box_24)
+                            .override(275, 275)
+                            .apply(new RequestOptions()
+                                    .transform(new CenterCrop(),
+                                            new RoundedCorners(50)))
+                            .into(holder.storyImage)).addOnFailureListener(e ->
+                            Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e));
+        }).start();
 
     }
 

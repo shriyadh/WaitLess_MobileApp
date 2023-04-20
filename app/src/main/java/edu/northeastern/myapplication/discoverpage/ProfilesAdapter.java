@@ -48,22 +48,22 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
         holder.friends.setText("FRIENDS \n" + curr.getFriendListSize());
         holder.workouts.setText("WORKOUTS \n" + curr.getWorkouts());
         String token = curr.getUser_token();
-
-        FirebaseStorage
-                .getInstance()
-                .getReference("/profileIcons")
-                .child(token + ".jpg")
-                .getDownloadUrl()
-                .addOnSuccessListener(uri -> Glide.with(holder.itemView.getContext())
-                        .load(uri)
-                        .placeholder(R.drawable.baseline_account_box_24)
-                        .override(275, 275)
-                        .apply(new RequestOptions()
-                                .transform(new CenterCrop(),
-                                        new RoundedCorners(50)))
-                        .into(holder.picture)).addOnFailureListener(e ->
-                        Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e));
-    }).start();
+        new Thread(() -> {
+            FirebaseStorage
+                    .getInstance()
+                    .getReference("/profileIcons")
+                    .child(token + ".jpg")
+                    .getDownloadUrl()
+                    .addOnSuccessListener(uri -> Glide.with(holder.itemView.getContext())
+                            .load(uri)
+                            .placeholder(R.drawable.baseline_account_box_24)
+                            .override(275, 275)
+                            .apply(new RequestOptions()
+                                    .transform(new CenterCrop(),
+                                            new RoundedCorners(50)))
+                            .into(holder.picture)).addOnFailureListener(e ->
+                            Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e));
+        }).start();
 
 
 //        FirebaseStorage.getInstance().getReference("/profileIcons").child(token+".jpg")
