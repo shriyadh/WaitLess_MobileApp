@@ -4,22 +4,27 @@ import java.util.Date;
 import java.util.UUID;
 
 public class Profile {
-    //    private String profileId;
     private String profileName;
+    private String firstname;
+    private String lastname;
     private String profileEmail;
     private long joinedDate;
     private String profileBio;
 
 
-    public Profile(String profileName, String profileEmail, long joinedDate, String profileBio) {
+    public Profile(String profileName, String firstname, String lastname, String profileEmail, String profileBio, String joinedDate) {
         this.profileName = profileName;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.profileEmail = profileEmail;
-        this.joinedDate = joinedDate;
+        this.joinedDate = Long.parseLong(joinedDate);
         this.profileBio = profileBio;
     }
 
     public Profile() {
         this.profileName = "User" + UUID.randomUUID();
+        this.firstname = "Default First Name";
+        this.lastname = "Default Last Name";
         this.profileEmail = "Default Email";
         this.joinedDate = new Date().getTime();
         this.profileBio = "Default Bio";
@@ -80,6 +85,22 @@ public class Profile {
 
     public void setProfileName(String profileName) {
         this.profileName = profileName;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getProfileEmail() {

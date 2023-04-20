@@ -41,8 +41,11 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import edu.northeastern.myapplication.Follows.MainActivityFollowList;
 import edu.northeastern.myapplication.NavigationHandler;
@@ -62,9 +65,10 @@ public class MainActivityProfile extends AppCompatActivity {
     private List<String> followIdList;
 
     private String profileId;
-    private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with current user Firebase
+    private String currentProfileId; // TODO: Replace with current user Firebase (Test USER: -NRVYvTjwCGKqGm9dUIq)
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,7 @@ public class MainActivityProfile extends AppCompatActivity {
         assert mUser != null;
         //checking logged in user
         System.out.println(mUser.getEmail());
+        currentProfileId = mUser.getUid();
 
 
         System.out.println("IN HERE");
@@ -227,7 +232,18 @@ public class MainActivityProfile extends AppCompatActivity {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    currentProfile = snapshot.getValue(Profile.class);
+                    System.out.println(snapshot.getValue());
+                    HashMap<String, String> profileMap = new HashMap<>();
+                    for (DataSnapshot child : snapshot.getChildren()) {
+                        profileMap.put(child.getKey(), child.getValue(String.class));
+                    }
+                    currentProfile = new Profile(
+                            profileMap.get("profileName"),
+                            profileMap.get("firstname"),
+                            profileMap.get("lastname"),
+                            profileMap.get("profileEmail"),
+                            profileMap.get("profileBio"),
+                            profileMap.get("joinedDate"));
                     loadProfileData();
                     loadProfileImage();
                 }
