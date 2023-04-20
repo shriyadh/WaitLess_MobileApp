@@ -42,6 +42,7 @@ public class Queue_home extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private String set_count;
     private String user;
+    private String user_db_key;
     private String machine_key;
     private boolean is_working_out;
     private int wait_time_estimate;
@@ -160,7 +161,7 @@ public class Queue_home extends AppCompatActivity {
                         try {
                             DatabaseReference workout_queue = FirebaseDatabase.getInstance()
                                     .getReference("queues/" + workout + "/" + machine_key);
-                            workout_queue.child(user).removeValue();
+                            workout_queue.child(user_db_key).removeValue();
                         } catch (DatabaseException e) {
                             e.printStackTrace();
                         }
@@ -211,7 +212,6 @@ public class Queue_home extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                System.out.println(workout);
                 DatabaseReference workout_to_join = FirebaseDatabase.getInstance()
                                 .getReference("queues/" + workout);
                 workout_to_join.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -238,7 +238,13 @@ public class Queue_home extends AppCompatActivity {
                         DatabaseReference machine_to_join = FirebaseDatabase.getInstance()
                                 .getReference("queues/" + workout + "/" + workout + " " +
                                                 best_machine);
-                        machine_to_join.child(user).setValue(set_count);
+                        machine_to_join.push().setValue(set_count, new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                String key = databaseReference.getKey();
+                                user_db_key = key;
+                            }
+                        });
                         machine_key = workout + " " + best_machine;
                         create_queue_list();
                     }
@@ -291,112 +297,21 @@ public class Queue_home extends AppCompatActivity {
     }
 
     private void find_pos_and_waitTime() {
-//        Collections.reverse(q_list);
-        for (List l : q_list) {
-            System.out.println(l.get(0));
-        }
-        int[] times = new int[q_list.size()];
-        for (int i = 0; i < q_list.size(); i += 3) {
-            for (int j = 0; j < 3; j++) {
-                if (i < 3) {
-                    times[i + j] = 0;
-                } else if (i < 6) {
-                    List<Integer> temp = new ArrayList<>();
-                    for (int k = 0; k < 3; k++) {
-                        temp.add(Integer.valueOf(q_list.get(k).get(1)));
-                    }
-                    Collections.sort(temp);
-                    for (int k = 0; k < 3; k++) {
-                        times[i + k] = temp.get(k);
-                    }
-                    break;
-                } else {
-                    int start = times[i + j - 1];
-                    List<Integer> temp = new ArrayList<>();
-                    for (int k = 0; k < 3; k++) {
-                        temp.add(Integer.valueOf(q_list.get(k).get(1)));
-                    }
-                    Collections.sort(temp);
-                    for (int k = 0; k < 3; k++) {
-                        start += temp.get(k);
-                        times[i + k] = start;
-                    }
-                    break;
-                }
-            }
-        }
-        int counter = 0;
+        int counter = 1;
         for (List u : q_list) {
-            String uname = (String) u.get(0);
-            if (uname.equals(user)) {
-                if (counter < 3){
+            String ukey = (String) u.get(0);
+            if (ukey.equals(user_db_key)) {
+                if (counter < 4){
                     is_working_out = true;
+                    wait_time_estimate = 0;
                 } else {
-                    wait_time_estimate = times[counter];
+                    wait_time_estimate = (counter - 3) * 2;
                 }
                 break;
             }
             counter++;
         }
-
-
-
-
-//        int numUp = 3; // number of people who can be up at one time
-//        int totalUpTime = 0; // total time that people have been up so far
-//        int nextUpIndex = 0; // index of the next person who will be up
-//        while (q_list.size() > 0) {
-//            int numPeopleUp = Math.min(numUp, q_list.size()); // number of people who will be up in this round
-//            int roundUpTime = 0; // total "up time" for the people who will be up in this round
-//            for (int i = 0; i < numPeopleUp; i++) {
-//                roundUpTime += Integer.valueOf(q_list.get(i).get(1));
-//            }
-//            totalUpTime += roundUpTime; // add the round up time to the total up time
-//            nextUpIndex += numPeopleUp; // increment the index of the next person who will be up
-//            for (int k = 0; k < numPeopleUp; k++) {
-//                q_list.remove(k);
-//            }
-//        }
-//        int timeUntilUp = Integer.valueOf(q_list.get(q_list.size() - 1).get(1)) - totalUpTime; // Calculate the remaining "up time" for person F
-
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//        int min = Integer.MAX_VALUE;
-//
-//
-//
-//
-//
-//
-//
-//        int counter = 1;
-//        for (List u : q_list) {
-//            String uname = (String) u.get(0);
-//            String reps_remaining = (String) u.get(1);
-//            if (uname.equals(user)) {
-//                if (counter < 4){
-//                    is_working_out = true;
-//                } else {
-//                    wait_time_estimate = min;
-//                }
-//                break;
-//            } else {
-//                if (Integer.valueOf(reps_remaining) < min) {
-//                    min = Integer.valueOf(reps_remaining);
-//                }
-//                counter++;
-//            }
-//        }
         est_wait.setText("Est. wait time: " + String.valueOf(wait_time_estimate) + " min.");
     }
-
 
 }
