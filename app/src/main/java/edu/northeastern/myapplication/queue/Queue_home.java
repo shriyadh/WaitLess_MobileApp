@@ -152,7 +152,7 @@ public class Queue_home extends AppCompatActivity {
     public void ask_sets() {
         // ask for number of sets
         AlertDialog.Builder builder = new AlertDialog.Builder(Queue_home.this);
-        builder.setTitle("Enter Number of Sets");
+        builder.setTitle("Enter Number of Sets (Default = 3)");
 
         // Set up the input
         final EditText input = new EditText(Queue_home.this);
@@ -163,7 +163,12 @@ public class Queue_home extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int numSets = Integer.parseInt(input.getText().toString());
+                int numSets = 3;
+                try {
+                    numSets = Integer.parseInt(input.getText().toString());
+                } catch (Exception e) {
+                    numSets = 3;
+                }
                 set_count = String.valueOf(numSets);
                 // add to queue
                 queue_joiner();
