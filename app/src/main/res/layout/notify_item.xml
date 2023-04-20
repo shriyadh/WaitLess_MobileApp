@@ -40,9 +40,9 @@
 
     <ImageView
         android:id="@+id/follow_req_prof"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:scaleType="fitCenter"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
