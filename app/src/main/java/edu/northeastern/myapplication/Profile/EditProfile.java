@@ -273,7 +273,8 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void uploadtoFirebase(){
-        final String randomKey = UUID.randomUUID().toString();
+//        final String randomKey = UUID.randomUUID().toString();
+        String picKey = profileId;
         //currentProfile.setImageName(randomKey);
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Image Uploading...");
@@ -281,8 +282,9 @@ public class EditProfile extends AppCompatActivity {
 
         StorageReference storageRef = FirebaseStorage
                 .getInstance()
-                .getReference("/"+profileId+"/")
-                .child(randomKey);
+//                .getReference("/"+profileId+"/")
+                .getReference("/profileIcons")
+                .child(picKey + ".jpg");
         storageRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override

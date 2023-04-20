@@ -63,7 +63,8 @@ public class MainActivityProfile extends AppCompatActivity {
     private List<String> followIdList;
 
     private String profileId;
-    private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with current user Firebase
+//    private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with current user Firebase
+    private String currentProfileId;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     @SuppressLint("MissingInflatedId")
@@ -75,9 +76,12 @@ public class MainActivityProfile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
+
         assert mUser != null;
         //checking logged in user
         System.out.println(mUser.getEmail());
+        currentProfileId = mUser.getUid();
+        System.out.println("CURRENT LOGGED IN USER: " + currentProfileId);
 
 
         System.out.println("IN HERE");
@@ -102,11 +106,15 @@ public class MainActivityProfile extends AppCompatActivity {
         chart = findViewById(R.id.barChartTotalWeight);
 
         profileId = getIntent().getStringExtra("profileId");
+        System.out.println("ProfileId is: " + profileId);
         if (profileId != null && !profileId.equals(currentProfileId)) {
+            System.out.println("In the if statement");
             followButton.setVisibility(View.VISIBLE);
             getFollowStatus();
         } else {
+            System.out.println("setting profile id now");
             profileId = currentProfileId;
+            System.out.println(profileId);
             profileSettingsButton.setVisibility(View.VISIBLE);
         }
 
@@ -203,6 +211,7 @@ public class MainActivityProfile extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     workoutList = new ArrayList<>();
                     for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
+                        System.out.println(workoutSnapshot);
                         workoutList.add(workoutSnapshot.getValue(Workout.class));
                     }
                     loadWorkoutData();
@@ -236,6 +245,8 @@ public class MainActivityProfile extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     currentProfile = snapshot.getValue(Profile.class);
+                    System.out.println("inside load profile");
+                    System.out.println(currentProfile);
                     loadProfileData();
                     loadProfileImage();
                 }
