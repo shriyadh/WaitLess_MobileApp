@@ -77,4 +77,5 @@
     <string name="wait_est_str">Est. wait time: </string>
     <string name="requests_page">REQUESTS PAGE</string>
     <string name="notifications">Notifs</string>
+    <string name="logout">logout</string>
 </resources>
