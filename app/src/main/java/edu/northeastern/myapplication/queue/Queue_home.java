@@ -472,7 +472,6 @@ public class Queue_home extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Do nothing to disable back button
-        Toast.makeText(this, "Back button is disabled", Toast.LENGTH_SHORT).show();
     }
 
 
