@@ -5,6 +5,10 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 public class Workout implements Parcelable {
     private int abdominal;
     private int arms;
@@ -33,7 +37,7 @@ public class Workout implements Parcelable {
         this.chest = 0;
         this.legs = 0;
         this.shoulders = 0;
-        this.date = 0;
+        this.date = Instant.now().toEpochMilli();
         this.duration = 0;
     }
 

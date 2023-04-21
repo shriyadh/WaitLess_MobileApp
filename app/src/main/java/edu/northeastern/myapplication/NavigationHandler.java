@@ -45,6 +45,7 @@ public class NavigationHandler implements NavigationBarView.OnItemSelectedListen
                 // Handle notifications click
                 System.out.println("ADD TO QUEUE");
                 Intent queueIntent = new Intent(activity, Queue_home.class);
+                queueIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 activity.startActivity(queueIntent);
                 break;
             default:
