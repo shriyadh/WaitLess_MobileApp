@@ -48,16 +48,20 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull NotifyViewHolder holder, int position) {
         Notification curr = notificationsList.get(position);
-        holder.notifyImg.setImageResource(R.drawable.accept2);
+        //holder.notifyImg.setImageResource(R.drawable.accept2);
         String token = curr.getUserID();
+        System.out.println(token);
 
 
            FirebaseDatabase.getInstance().getReference("profiles/" + token)
                     .child("profileName").addListenerForSingleValueEvent(new ValueEventListener() {
                        @Override
                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                  String n = snapshot.getValue().toString();
-                                  holder.notifyTxt.setText(n + " has sent you a connect request!\n");
+                           if(snapshot.exists()) {
+                               System.out.println(snapshot);
+                               String n = snapshot.getValue().toString();
+                               holder.notifyTxt.setText(n + " has sent you a connect request!\n");
+                           }
                        }
 
                        @Override
