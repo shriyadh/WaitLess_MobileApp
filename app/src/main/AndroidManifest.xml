@@ -79,7 +79,6 @@
 
             android:name=".discoverpage.Discover"
             android:exported="false"
-            android:launchMode="singleTask"
             android:label="Discover">
             <meta-data
                 android:name="android.app.lib_name"
