@@ -41,11 +41,8 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import edu.northeastern.myapplication.Follows.MainActivityFollowList;
 import edu.northeastern.myapplication.NavigationHandler;
@@ -136,12 +133,14 @@ public class MainActivityProfile extends AppCompatActivity {
     public void onClick(View view) {
         int buttonId = view.getId();
         if (buttonId == profileSettingsButton.getId()) {
-            // TODO: Add code to go to profile settings page
+            Intent intent = new Intent(getApplicationContext(), EditProfile.class);
+            intent.putExtra("profileId", profileId);
+            intent.putExtra("currProfileId", currentProfileId);
+            startActivity(intent);
             Log.w("Profile", "Profile Settings button clicked");
 
 
         } else if (buttonId == workoutListButton.getId()) {
-            // TODO: Add code to go to workout history page
             Log.w("Profile", "Workout History button clicked");
             Intent intent = new Intent(getApplicationContext(), MainActivityWorkoutList.class);
             Bundle bundle = new Bundle();
@@ -158,7 +157,7 @@ public class MainActivityProfile extends AppCompatActivity {
         } else if (buttonId == followListButton.getId()) {
             Intent intent = new Intent(getApplicationContext(), MainActivityFollowList.class);
             intent.putExtra("profileId", profileId);
-            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
+            intent.putExtra("currProfileId", currentProfileId);
             if (followIdList != null) {
                 intent.putStringArrayListExtra("followIdList", (ArrayList<String>) followIdList);
             } else {
@@ -367,10 +366,8 @@ public class MainActivityProfile extends AppCompatActivity {
 
             // Get more recent workout
             Workout lastWorkout = workoutList.get(0);
+
             // Convert Date into MM/DD/YYYY format
-            if (Long.toString(lastWorkout.getDate()).length() == 11) {
-                lastWorkout.setDate(lastWorkout.getDate());
-            }
             String formattedDate = new SimpleDateFormat("MM/dd/yyyy", Locale.US)
                     .format(lastWorkout.getDate());
 
