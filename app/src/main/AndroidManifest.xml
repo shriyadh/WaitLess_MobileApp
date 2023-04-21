@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,37 +18,106 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".Profile.MainActivityProfile"
+            android:name=".Workouts.MainActivityWorkoutList"
+            android:label="Workouts"
             android:exported="false" />
         <activity
-            android:name=".chats.Chat"
-            android:exported="false"
-            android:label="Chats">
+            android:name=".Follows.MainActivityFollowList"
+            android:label="Followers"
+            android:exported="false" />
+        <activity
+            android:name=".Profile.EditProfile"
+            android:label="Edit Profile"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
+            android:name=".Profile.MainActivityProfile"
+            android:launchMode="singleTask"
+            android:label="Profile"
+            android:exported="false" />
+        <activity  android:name=".RequestsActivity2"
+            android:exported="false"/>
+
+        <activity
+            android:name=".queue.Queue_home"
+            android:label="Queue"
+            android:launchMode="singleTask"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".queue.QR_Scanner"
+            android:label="Queue"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".LoginRegister.GoogleLogin"
+            android:exported="false" />
+        <activity
+            android:name=".LoginRegister.Login"
+
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+             /
+        </activity>
+        <activity
+            android:name=".LoginRegister.Register"
+            android:exported="false" />
+        <activity
+
             android:name=".discoverpage.Discover"
             android:exported="false"
+            android:launchMode="singleTask"
             android:label="Discover">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity
+
+            android:name=".notificationsPage.NotifyMe"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:label="Notifications">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
+
+
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
 
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

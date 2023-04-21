@@ -1,33 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".discoverpage.Discover">
 
+
     <!-- Horizontal Recycler View -->
 
-    <androidx.core.widget.NestedScrollView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:id="@+id/nested">
-
-       <androidx.recyclerview.widget.RecyclerView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_alignParentTop="true"
-           android:orientation="horizontal"
-           android:id="@+id/stories" />
-
-    </androidx.core.widget.NestedScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/stories"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="2dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/profiles"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.381"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <!-- Vertical Recycler View -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/profiles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nested" />
+        android:layout_marginTop="10dp"
+        android:paddingBottom="100dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stories"
+        app:layout_constraintVertical_bias="0.966"
+ />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:itemBackground="@color/purple_500"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:menu="@menu/nav" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

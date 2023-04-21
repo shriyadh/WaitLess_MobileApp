@@ -4,21 +4,12 @@ public class Profiles {
 
     private String username;
     private String bio;
-    private int mutual;
-    private int total_friends;
-    private int workouts;
-    private long id;
-    private String image;
+    private String user_token;
 
-
-    public Profiles(String username, String bio, String img, int mutual, int total_friends, int workouts, long id) {
+    public Profiles(String username, String bio,String user_token) {
         this.username = username;
         this.bio = bio;
-        this.mutual = mutual;
-        this.total_friends = total_friends;
-        this.workouts = workouts;
-        this.id = id;
-        this.image = img;
+        this.user_token = user_token;
     }
 
     public String getUsername() {
@@ -29,19 +20,7 @@ public class Profiles {
         return bio;
     }
 
-    public int getMutual() {
-        return mutual;
-    }
-
-    public int getTotal_friends() {
-        return total_friends;
-    }
-
-    public int getWorkouts() {
-        return workouts;
-    }
-
-    public long getId() {
-        return id;
+    public String getUser_token() {
+        return this.user_token;
     }
 }

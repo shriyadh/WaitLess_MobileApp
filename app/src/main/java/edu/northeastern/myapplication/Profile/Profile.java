@@ -1,49 +1,34 @@
 package edu.northeastern.myapplication.Profile;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
 public class Profile {
-    private String profileId;
     private String profileName;
+    private String firstname;
+    private String lastname;
+    private String profileEmail;
     private long joinedDate;
-    private Integer totalLifted;
-    private Integer totalWorkouts;
     private String profileBio;
 
 
-    public Profile(String profileName, long joinedDate, Integer totalLifted, Integer totalWorkouts, String profileBio) {
+    public Profile(String profileName, String firstname, String lastname, String profileEmail, String profileBio, Long joinedDate) {
         this.profileName = profileName;
-        this.joinedDate = joinedDate;
-        this.totalLifted = totalLifted;
-        this.totalWorkouts = totalWorkouts;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.profileEmail = profileEmail;
         this.profileBio = profileBio;
+        this.joinedDate = joinedDate;
     }
 
     public Profile() {
         this.profileName = "User" + UUID.randomUUID();
-        this.joinedDate = new Date().getTime();
-        this.totalLifted = 0;
-        this.totalWorkouts = 0;
+        this.firstname = "Default First Name";
+        this.lastname = "Default Last Name";
+        this.profileEmail = "Default Email";
+        this.joinedDate = Instant.now().toEpochMilli();
         this.profileBio = "Default Bio";
-    }
-
-    public void uploadProfile() {
-        DatabaseReference profileRef = FirebaseDatabase.getInstance().getReference("profiles");
-        DatabaseReference newProfileRef = profileRef.push();
-        setProfileId(newProfileRef.getKey());
-        profileRef.push().setValue(this);
-    }
-
-    public String getProfileId() {
-        return profileId;
-    }
-
-    public void setProfileId(String profileId) {
-        this.profileId = profileId;
     }
 
     public String getProfileName() {
@@ -54,6 +39,30 @@ public class Profile {
         this.profileName = profileName;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getProfileEmail() {
+        return profileEmail;
+    }
+
+    public void setProfileEmail(String profileEmail) {
+        this.profileEmail = profileEmail;
+    }
+
     public long getJoinedDate() {
         return joinedDate;
     }
@@ -62,21 +71,6 @@ public class Profile {
         this.joinedDate = joinedDate;
     }
 
-    public Integer getTotalLifted() {
-        return totalLifted;
-    }
-
-    public void setTotalLifted(Integer totalLifted) {
-        this.totalLifted = totalLifted;
-    }
-
-    public Integer getTotalWorkouts() {
-        return totalWorkouts;
-    }
-
-    public void setTotalWorkouts(Integer totalWorkouts) {
-        this.totalWorkouts = totalWorkouts;
-    }
 
     public String getProfileBio() {
         return profileBio;
@@ -86,4 +80,3 @@ public class Profile {
         this.profileBio = profileBio;
     }
 }
-
