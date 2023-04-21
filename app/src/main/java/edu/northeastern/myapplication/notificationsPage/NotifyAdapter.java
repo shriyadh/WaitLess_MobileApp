@@ -60,7 +60,7 @@ public class NotifyAdapter extends RecyclerView.Adapter<NotifyViewHolder> {
                            if(snapshot.exists()) {
                                System.out.println(snapshot);
                                String n = snapshot.getValue().toString();
-                               holder.notifyTxt.setText(n + " has sent you a\n connect request!");
+                               holder.notifyTxt.setText(n + " is now \nfollowing you!");
                            }
                        }
 
