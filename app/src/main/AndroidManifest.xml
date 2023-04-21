@@ -33,7 +33,7 @@
         </activity>
         <activity
             android:name=".Profile.MainActivityProfile"
-
+            android:launchMode="singleTask"
             android:exported="false" />
         <activity  android:name=".RequestsActivity2"
             android:exported="false"/>
@@ -74,7 +74,7 @@
 
             android:name=".discoverpage.Discover"
             android:exported="false"
-
+            android:launchMode="singleTask"
             android:label="Discover">
             <meta-data
                 android:name="android.app.lib_name"
@@ -85,7 +85,7 @@
 
             android:name=".notificationsPage.NotifyMe"
             android:exported="false"
-
+            android:launchMode="singleTask"
             android:label="Notifications">
             <meta-data
                 android:name="android.app.lib_name"
