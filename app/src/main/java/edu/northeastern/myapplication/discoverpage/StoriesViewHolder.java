@@ -21,22 +21,5 @@ public class StoriesViewHolder extends RecyclerView.ViewHolder {
         user = view.findViewById(R.id.user_story);
         storyImage = view.findViewById(R.id.story_image);
 
-        storyOutline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = getLayoutPosition();
-                if(pos != RecyclerView.NO_POSITION) {
-                    if(pos == 0) {
-                        lst.onLinkClick(pos);
-
-                    }
-
-
-                }
-            }
-        });
-
-
-
     }
 }

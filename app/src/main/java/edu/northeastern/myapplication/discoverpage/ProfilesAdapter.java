@@ -30,7 +30,6 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
 
     private List<Profiles> profiles;
     private RecycleViewClickListener listener;
-    //private List<>
 
     public ProfilesAdapter(List<Profiles> profiles, Context con) {
         this.profiles = profiles;
@@ -53,8 +52,6 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
         Profiles curr = profiles.get(position);
         holder.username.setText(curr.getUsername());
         holder.bio.setText(curr.getBio());
-
-
 
         String token = curr.getUser_token();
 

@@ -236,7 +236,7 @@ public class Discover extends AppCompatActivity {
                                 }
                             }
                         }
-                        stories.add(0,new Story("Check-In!", loggedInUser));
+                        stories.add(0,new Story("Me", loggedInUser));
                         stories.get(0).setCheckIn(false);
 
                         storiesAdapter.notifyItemRangeInserted(0, stories.size());
@@ -264,7 +264,6 @@ public class Discover extends AppCompatActivity {
         public void run() {
             try {
                 runFirebase();
-                //runFireBaseforOthers();
             } catch (DatabaseException e) {
                 e.printStackTrace();
             }
