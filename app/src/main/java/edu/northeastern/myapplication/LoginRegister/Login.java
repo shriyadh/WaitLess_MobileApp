@@ -127,7 +127,7 @@ public class Login extends AppCompatActivity {
                                 });
                     }
                 } catch (ApiException e) {
-                    Toast.makeText(getApplicationContext(),"cant",Toast.LENGTH_LONG);
+                  //  Toast.makeText(getApplicationContext(),"cant",Toast.LENGTH_LONG);
                     throw new RuntimeException(e);
                 }
                 // Handle the result data here
@@ -157,13 +157,13 @@ public class Login extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if(mAuth.getCurrentUser() != null){
-            Toast.makeText(Login.this, "Already logged in, yay!!", Toast.LENGTH_LONG).show();
+           // Toast.makeText(Login.this, "Already logged in, yay!!", Toast.LENGTH_LONG).show();
             // send user to the discover page
             Intent discoverIntent = new Intent(getApplicationContext(), Discover.class);
             startActivity(discoverIntent);
         }
         else{
-            Toast.makeText(Login.this, "NOT LOGGED IN", Toast.LENGTH_LONG).show();
+          //  Toast.makeText(Login.this, "NOT LOGGED IN", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -191,7 +191,7 @@ public class Login extends AppCompatActivity {
 
     }
     public void Authenticate() {
-        Toast.makeText(Login.this, "Here!", Toast.LENGTH_LONG).show();
+        // Toast.makeText(Login.this, "Here!", Toast.LENGTH_LONG).show();
         System.out.println("in authen");
         //GET THE INPUTS FROM THE USER
         String email = inputEmail.getText().toString();
@@ -212,14 +212,14 @@ public class Login extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(Login.this, "Real User!", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(Login.this, "Real User!", Toast.LENGTH_LONG).show();
                         System.out.println(mAuth.getCurrentUser().getEmail());
                         System.out.println(mAuth.getCurrentUser().getUid());
                         // send user to the discover page
                         Intent discoverIntent = new Intent(getApplicationContext(), Discover.class);
                         startActivity(discoverIntent);
                     } else {
-                        Toast.makeText(Login.this, "UNReal User!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Login.this, "This user does not exist!", Toast.LENGTH_LONG).show();
                     }
                 }
             });

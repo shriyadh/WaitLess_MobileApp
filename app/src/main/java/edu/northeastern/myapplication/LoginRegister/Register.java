@@ -73,8 +73,6 @@ public class Register extends AppCompatActivity {
         // firebase authentication
         mAuth = FirebaseAuth.getInstance();
 
-
-
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +123,7 @@ public class Register extends AppCompatActivity {
                     }
                     else {
                         System.out.println("FAIL"+ task.getException());
-                        Toast.makeText(Register.this, "Not Registered!" + task.getException(),Toast.LENGTH_LONG).show();
+                        //Toast.makeText(Register.this, "Not Registered!" + task.getException(),Toast.LENGTH_LONG).show();
 
                     }
                 }
