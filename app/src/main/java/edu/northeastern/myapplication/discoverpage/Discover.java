@@ -222,7 +222,7 @@ public class Discover extends AppCompatActivity {
                             for (DataSnapshot userData : snapshot.getChildren()) {
 
                                 if (!userData.getKey().equalsIgnoreCase(loggedInUser)) {
-                                    if (followIdListStory == null || !followIdListStory.contains(userData.getKey())) {
+                                    if (followIdListStory != null && followIdListStory.contains(userData.getKey())) {
 
                                         String username = userData.child("profileName").getValue().toString();
                                         //System.out.println(username);
