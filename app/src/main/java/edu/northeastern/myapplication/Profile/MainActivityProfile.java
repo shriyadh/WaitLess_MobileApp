@@ -118,6 +118,11 @@ public class MainActivityProfile extends AppCompatActivity {
         loadProfile();
     }
 
+    @Override
+    public void onBackPressed() {
+        // do nothing
+    }
+
     private void getFollowStatus() {
         FirebaseDatabase.getInstance()
                 .getReference("follows/" + profileId)
