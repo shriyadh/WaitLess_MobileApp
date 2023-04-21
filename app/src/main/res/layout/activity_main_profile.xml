@@ -13,6 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
             <TextView
+                android:textColor="@color/white"
                 android:id="@+id/textViewW4Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
 
             <TextView
                 android:id="@+id/textViewW4X"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -42,6 +44,7 @@
 
             <TextView
                 android:id="@+id/textViewW4"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -56,6 +59,7 @@
 
             <TextView
                 android:id="@+id/textViewW3Title"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -70,6 +74,7 @@
 
             <TextView
                 android:id="@+id/textViewW3X"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -84,6 +89,7 @@
 
             <TextView
                 android:id="@+id/textViewW3"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -98,6 +104,7 @@
 
             <TextView
                 android:id="@+id/textViewJoinedTitle"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -113,6 +120,7 @@
 
             <ImageView
                 android:id="@+id/imageViewProfileIcon"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -128,6 +136,7 @@
 
             <TextView
                 android:id="@+id/textViewProfileName"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -143,6 +152,7 @@
 
             <TextView
                 android:id="@+id/textViewJoinedYear"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -159,6 +169,7 @@
             <TextView
                 android:id="@+id/textViewFollowCountTitle"
                 android:layout_width="wrap_content"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
@@ -174,6 +185,7 @@
 
             <TextView
                 android:id="@+id/textViewFollowCount"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -189,6 +201,7 @@
 
             <TextView
                 android:id="@+id/textViewWorkoutCompleteTitle"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -204,6 +217,7 @@
 
             <TextView
                 android:id="@+id/textViewWorkoutCompleted"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -249,6 +263,7 @@
 
                     <TextView
                         android:id="@+id/textViewBioDesc"
+                        android:textColor="@color/white"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:text="@string/bio_description" />
@@ -307,6 +322,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:textColor="@color/white"
                 android:text="@string/last_workout"
                 android:textAllCaps="false"
                 app:layout_constraintBottom_toTopOf="@+id/barChartTotalWeight"
@@ -319,6 +335,7 @@
             <TextView
                 android:id="@+id/textViewLastWorkoutDate"
                 android:layout_width="wrap_content"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
@@ -334,6 +351,7 @@
                 android:id="@+id/textViewW1Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/profile_workout1"
@@ -348,6 +366,7 @@
                 android:id="@+id/textViewW1X"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/x"
@@ -361,6 +380,8 @@
             <TextView
                 android:id="@+id/textViewW1"
                 android:layout_width="wrap_content"
+                android:textColor="@color/white"
+
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -374,6 +395,7 @@
 
             <TextView
                 android:id="@+id/textViewW2Title"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -388,6 +410,7 @@
 
             <TextView
                 android:id="@+id/textViewW2X"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -402,6 +425,7 @@
 
             <TextView
                 android:id="@+id/textViewW2"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -430,6 +454,8 @@
 
             <TextView
                 android:id="@+id/textViewW5X"
+                android:textColor="@color/white"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -444,6 +470,8 @@
 
             <TextView
                 android:id="@+id/textViewW5"
+                android:textColor="@color/white"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -459,6 +487,7 @@
             <TextView
                 android:id="@+id/textViewW6Title"
                 android:layout_width="wrap_content"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
@@ -474,6 +503,8 @@
                 android:id="@+id/textView1W6X"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/x"
@@ -486,6 +517,8 @@
 
             <TextView
                 android:id="@+id/textViewW6"
+                android:textColor="@color/white"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -503,6 +536,8 @@
                 android:id="@+id/textViewDurationTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/duration"
@@ -517,6 +552,8 @@
                 android:id="@+id/textViewWorkoutDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/_0"
@@ -531,6 +568,8 @@
                 android:id="@+id/textViewDurationUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/minutes"
@@ -613,6 +652,8 @@
                 android:text="Total Workout History"
                 android:textAllCaps="true"
                 android:textSize="16sp"
+                android:textColor="@color/white"
+
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/divider3"
                 app:layout_constraintEnd_toEndOf="parent"

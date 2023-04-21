@@ -7,6 +7,8 @@
     android:layout_height="match_parent">
 
     <EditText
+        android:textColor="@color/white"
+
         android:id="@+id/editTextNumberAbdominalSets"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -23,6 +25,8 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
+        android:textColor="@color/white"
+
         android:id="@+id/editTextNumberArmSets"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -38,6 +42,8 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
+        android:textColor="@color/white"
+
         android:id="@+id/editTextNumberBackSets"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -55,6 +61,8 @@
     <EditText
         android:id="@+id/editTextNumberChestSets"
         android:layout_width="0dp"
+        android:textColor="@color/white"
+
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -70,6 +78,8 @@
     <EditText
         android:id="@+id/editTextNumberLegSets"
         android:layout_width="0dp"
+        android:textColor="@color/white"
+
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -85,6 +95,8 @@
     <EditText
         android:id="@+id/editTextNumberShoulderSets"
         android:layout_width="0dp"
+        android:textColor="@color/white"
+
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
@@ -100,6 +112,8 @@
     <EditText
         android:id="@+id/editTextNumberDuration"
         android:layout_width="0dp"
+        android:textColor="@color/white"
+
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"

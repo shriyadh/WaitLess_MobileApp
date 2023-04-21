@@ -14,6 +14,8 @@
         <TextView
             android:id="@+id/textViewUserSent"
             android:layout_width="0dp"
+            android:textColor="@color/white"
+
             android:layout_height="wrap_content"
             android:text="user_sent"
             android:textSize="20sp"

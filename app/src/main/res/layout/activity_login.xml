@@ -39,6 +39,7 @@
 
             <EditText
                 android:id="@+id/user_password"
+
                 android:drawableLeft="@drawable/baseline_password_24"
                 android:drawablePadding="10dp"
                 android:layout_width="0dp"

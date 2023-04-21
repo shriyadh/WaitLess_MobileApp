@@ -35,8 +35,6 @@
             android:name=".Profile.MainActivityProfile"
 
             android:exported="false" />
-        <activity  android:name=".RequestsActivity2"
-            android:exported="false"/>
 
         <activity
             android:name=".queue.Queue_home"

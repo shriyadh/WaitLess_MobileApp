@@ -16,7 +16,7 @@
         android:layout_marginEnd="10dp"
         android:gravity="center"
         android:text="@string/x_sent_you_a_connection_request"
-        android:textColor="#121211"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
