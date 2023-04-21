@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -105,6 +108,9 @@ public class Discover extends AppCompatActivity {
         // add divided b/w links
         DividerItemDecoration decor = new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL);
+        GradientDrawable drawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, new int[]{0xfff7f7f7, 0xfff7f7f7});
+        drawable.setSize(4,4);
+        decor.setDrawable(drawable);
         profilesRecyclerView.addItemDecoration(decor);
 
         // set the listener for recycler view
