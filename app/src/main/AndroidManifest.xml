@@ -19,12 +19,15 @@
         tools:targetApi="31">
         <activity
             android:name=".Workouts.MainActivityWorkoutList"
+            android:label="Workouts"
             android:exported="false" />
         <activity
             android:name=".Follows.MainActivityFollowList"
+            android:label="Followers"
             android:exported="false" />
         <activity
             android:name=".Profile.EditProfile"
+            android:label="Edit Profile"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false">
             <meta-data
@@ -34,12 +37,14 @@
         <activity
             android:name=".Profile.MainActivityProfile"
             android:launchMode="singleTask"
+            android:label="Profile"
             android:exported="false" />
         <activity  android:name=".RequestsActivity2"
             android:exported="false"/>
 
         <activity
             android:name=".queue.Queue_home"
+            android:label="Queue"
             android:launchMode="singleTask"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="false">
@@ -49,6 +54,7 @@
         </activity>
         <activity
             android:name=".queue.QR_Scanner"
+            android:label="Queue"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -59,6 +65,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginRegister.Login"
+
             android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
