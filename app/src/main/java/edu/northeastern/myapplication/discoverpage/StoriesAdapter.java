@@ -60,7 +60,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesViewHolder> {
 
         if(position == 0){
             holder.user.setText(username);
-            holder.user.setTextColor(Color.WHITE);
+            holder.user.setTextColor(Color.GRAY);
             holder.user.setTypeface(holder.user.getTypeface(), Typeface.BOLD);
         }
         else if(username.length() > maxLen) {
