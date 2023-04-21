@@ -58,12 +58,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesViewHolder> {
         String username = stories.get(position).getUser();
         int maxLen = 8;
 
-        if(position == 0){
-            holder.user.setText(username);
-            holder.user.setTextColor(Color.GRAY);
-            //holder.user.setTypeface(holder.user.getTypeface());
-        }
-        else if(username.length() > maxLen) {
+        if(username.length() > maxLen) {
             // Modify the text to add "..." at the end
             String shortenedText = username.substring(0, maxLen) + "...";
             holder.user.setText(shortenedText);

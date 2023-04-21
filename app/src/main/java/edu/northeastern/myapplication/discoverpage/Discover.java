@@ -218,7 +218,7 @@ public class Discover extends AppCompatActivity {
                                 }
                             }
                         }
-                        stories.add(0,new Story("Me", loggedInUser, false));
+                        //stories.add(0,new Story("Me", loggedInUser, false));
 
                         storiesAdapter.notifyItemRangeInserted(0, stories.size());
 
