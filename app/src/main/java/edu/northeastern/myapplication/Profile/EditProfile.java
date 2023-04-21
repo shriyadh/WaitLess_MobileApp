@@ -53,8 +53,9 @@ public class EditProfile extends AppCompatActivity {
     private ImageView profileIcon;
     private Button saveButton, cancelButton;
     private EditText editUserName, editBio;
+    private String profileId;
+    private String currProfileId;
 
-    private final String profileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with user's id
     public Uri imageUri;
     private ActivityResultLauncher<String> mGetContent;
     FirebaseAuth mAuth;
@@ -83,6 +84,9 @@ public class EditProfile extends AppCompatActivity {
 
 
 
+        Intent intent = getIntent();
+        profileId = intent.getStringExtra("profileId");
+        currProfileId = intent.getStringExtra("currProfileId");
 
         editUserName = findViewById(R.id.editTextUserName);
         editBio = findViewById(R.id.editTextBio);
@@ -105,9 +109,6 @@ public class EditProfile extends AppCompatActivity {
                         }
                     }
                 });
-
-
-//        System.out.println(currentProfile.getProfileId());
     }
 
     public void loadProfile() {
@@ -134,14 +135,6 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void loadProfileTextData() {
-        // Get text views
-//        TextView profileName = findViewById(R.id.textViewProfileName);
-//        TextView joinedYear = findViewById(R.id.textViewJoinedYear);
-//        TextView totalWeight = findViewById(R.id.textViewTotalWeight);
-//        TextView workoutCompleted = findViewById(R.id.textViewWorkoutCompleted);
-//        TextView profileBio = findViewById(R.id.textViewBioDesc);
-
-        // Set text
         editUserName.setText(currentProfile.getProfileName());
         editBio.setText(currentProfile.getProfileBio());
     }
@@ -207,16 +200,15 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void uploadtoFirebase(){
-        final String randomKey = UUID.randomUUID().toString();
-        //currentProfile.setImageName(randomKey);
+        String picKey = profileId;
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Image Uploading...");
         pd.show();
 
         StorageReference storageRef = FirebaseStorage
                 .getInstance()
-                .getReference("/"+profileId+"/")
-                .child(randomKey);
+                .getReference("/profileIcons")
+                .child(picKey + ".jpg");
         storageRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -243,17 +235,3 @@ public class EditProfile extends AppCompatActivity {
     }
 
 }
-
-
-/**
- *     // save updated data and pass it to previous activity which is profile activity
- * //        Intent updated = new Intent();
- * //        updated.putExtra("userName", newUsername);
- * //        updated.putExtra("newBio", newBio);
- * //        setResult(EditProfile.RESULT_OK, updated);
- * //
- * //        finish();
- *         Intent intent = new Intent(EditProfile.this, MainActivityProfile.class);
- *         startActivity(intent);
- *         finish();
- */
