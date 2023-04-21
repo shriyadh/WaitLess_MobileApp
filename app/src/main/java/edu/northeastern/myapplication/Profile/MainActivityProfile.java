@@ -1,6 +1,7 @@
 package edu.northeastern.myapplication.Profile;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -70,6 +71,10 @@ public class MainActivityProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_profile);
+
+        // Disable rotation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         // firebase authentication
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
