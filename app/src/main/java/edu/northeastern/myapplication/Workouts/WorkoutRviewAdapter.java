@@ -3,6 +3,7 @@ package edu.northeastern.myapplication.Workouts;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -48,9 +49,15 @@ public class WorkoutRviewAdapter extends RecyclerView.Adapter<WorkoutRviewHolder
         holder.workout5Total.setText(String.valueOf(workout.getLegs()));
         holder.workout6Total.setText(String.valueOf(workout.getShoulders()));
         holder.workoutDuration.setText(String.valueOf(workout.getDuration()));
+        if (Long.toString(workout.getDate()).length() != 13) {
+            StringBuilder date = new StringBuilder(Long.toString(workout.getDate()));
+            for (int i = 0; i < 13 - Long.toString(workout.getDate()).length(); i++) {
+                date.append("0");
+            }
+            workout.setDate(Long.parseLong(date.toString()));
+        }
         holder.workoutDate.setText(new SimpleDateFormat("MM/dd/yyyy", Locale.US)
                 .format(workout.getDate()));
-
         List<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(0f, workout.getChest()));
         entries.add(new BarEntry(1f, workout.getBack()));

@@ -53,9 +53,8 @@ public class EditProfile extends AppCompatActivity {
     private ImageView profileIcon;
     private Button saveButton, cancelButton;
     private EditText editUserName, editBio;
-    private String profileId;
-    private String currProfileId;
 
+    private final String profileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with user's id
     public Uri imageUri;
     private ActivityResultLauncher<String> mGetContent;
     FirebaseAuth mAuth;
@@ -84,9 +83,6 @@ public class EditProfile extends AppCompatActivity {
 
 
 
-        Intent intent = getIntent();
-        profileId = intent.getStringExtra("profileId");
-        currProfileId = intent.getStringExtra("currProfileId");
 
         editUserName = findViewById(R.id.editTextUserName);
         editBio = findViewById(R.id.editTextBio);
@@ -211,8 +207,7 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void uploadtoFirebase(){
-//        final String randomKey = UUID.randomUUID().toString();
-        String picKey = profileId;
+        final String randomKey = UUID.randomUUID().toString();
         //currentProfile.setImageName(randomKey);
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Image Uploading...");
@@ -220,9 +215,8 @@ public class EditProfile extends AppCompatActivity {
 
         StorageReference storageRef = FirebaseStorage
                 .getInstance()
-//                .getReference("/"+profileId+"/")
-                .getReference("/profileIcons")
-                .child(picKey + ".jpg");
+                .getReference("/"+profileId+"/")
+                .child(randomKey);
         storageRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override

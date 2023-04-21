@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void queue(View view) {
         Intent intent = new Intent(this, Queue_home.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent);
     }
 
