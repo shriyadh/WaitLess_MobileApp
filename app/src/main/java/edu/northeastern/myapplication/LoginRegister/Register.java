@@ -33,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import edu.northeastern.myapplication.R;
+import edu.northeastern.myapplication.discoverpage.Discover;
+
 public class Register extends AppCompatActivity {
     EditText inputEmail;
     EditText inputUsername;
@@ -82,7 +84,7 @@ public class Register extends AppCompatActivity {
 
     }
     public void Authenticate(){
-        Toast.makeText(Register.this, "Here!",Toast.LENGTH_LONG).show();
+        //Toast.makeText(Register.this, "Here!",Toast.LENGTH_LONG).show();
         System.out.println("in authen");
         //GET THE INPUTS FROM THE USER
         String email = inputEmail.getText().toString();
@@ -119,6 +121,25 @@ public class Register extends AppCompatActivity {
                         // store the user's info in the profiles table in the database
                         mUser = mAuth.getCurrentUser();
                         addProfile();
+
+                        // log them in
+
+                        mAuth.signInWithEmailAndPassword(email, passwrd).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Toast.makeText(Login.this, "Real User!", Toast.LENGTH_LONG).show();
+                                    System.out.println(mAuth.getCurrentUser().getEmail());
+                                    System.out.println(mAuth.getCurrentUser().getUid());
+                                    // send user to the discover page
+                                    Intent discoverIntent = new Intent(getApplicationContext(), Discover.class);
+                                    startActivity(discoverIntent);
+                                } else {
+                                    //Toast.makeText(Login.this, "This user does not exist!", Toast.LENGTH_LONG).show();
+                                    System.out.println("Signed in");
+                                }
+                            }
+                        });
                         //sendToLogin(View);
                     }
                     else {
@@ -146,9 +167,9 @@ public class Register extends AppCompatActivity {
 
         Date creationDate = new Date(mUser.getMetadata().getCreationTimestamp());
         long epochTime = creationDate.getTime();
-        String formattedDate = String.valueOf(epochTime);
+        //String formattedDate = String.valueOf(epochTime);
 
-        System.out.println(formattedDate);
+        System.out.println(epochTime);
 
         String email = mUser.getEmail();
         String uid = mUser.getUid();
@@ -171,7 +192,7 @@ public class Register extends AppCompatActivity {
                     // Get a reference to the uid node under profiles
                     DatabaseReference uidRef = profilesRef.child(uid);
                     // add joinedDate node
-                    uidRef.child("joinedDate").setValue(formattedDate);
+                    uidRef.child("joinedDate").setValue(epochTime);
                     // add default bio
                     uidRef.child("profileBio").setValue("Hello! I have just joined WaitLess!");
                     // add to username
