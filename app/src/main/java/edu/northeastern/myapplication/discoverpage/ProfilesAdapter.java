@@ -106,7 +106,8 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
                             .placeholder(R.drawable.baseline_account_box_24)
                             .override(275, 275)
                             .apply(new RequestOptions()
-                                    .transform(new CenterCrop()))
+                                    .transform(new CenterCrop(),
+                                            new RoundedCorners(50)))
                             .into(holder.picture)).addOnFailureListener(e ->
                             Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e));
         }).start();
