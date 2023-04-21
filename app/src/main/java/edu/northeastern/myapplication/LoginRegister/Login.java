@@ -65,6 +65,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        googleButton = findViewById(R.id.btn_google);
 
         inputEmail = findViewById(R.id.user_email);
         inputPassword = findViewById(R.id.user_password);
