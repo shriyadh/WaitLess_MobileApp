@@ -125,10 +125,6 @@ public class Discover extends AppCompatActivity {
                         + token_send_notify + "/" + loggedInUser)
                         .setValue(true);
 
-                //Profiles followedUser = profilesLst.get(position);
-                //List<String> followers = followedUser.getTotal_friends();
-                //followers.add(loggedInUser);
-
 
                 Toast.makeText(getApplicationContext(), "You are now following " +
                                 profilesLst.get(position).getUsername() + "!",
@@ -138,21 +134,6 @@ public class Discover extends AppCompatActivity {
             }
         };
         profilesAdapter.setListenerLink(listener);
-
-        // Initialize the cameraLauncher
-        cameraLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK) {
-                        // The image was captured successfully
-                        // You can retrieve the captured image from the result data
-                        Intent data = result.getData();
-                        if (data != null && data.getExtras() != null) {
-                            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-                            // Do something with the imageBitmap
-                        }
-                    }
-                });
 
 
     }
@@ -167,12 +148,6 @@ public class Discover extends AppCompatActivity {
         storiesRecyclerView.setAdapter(storiesAdapter);
         storiesRecyclerView.addItemDecoration(new StoriesDecor(10));
 
-      /*  RecycleViewClickListener listener = new RecycleViewClickListener() {
-            @Override
-            public void onLinkClick(int position) {
-            }
-
-        }*/
     }
 
     class storyThread implements Runnable{
@@ -275,8 +250,6 @@ public class Discover extends AppCompatActivity {
         new Thread(fbThread).start();
     }
 
-
-
     public void runFirebase() {
 
         // first get the list of following for this user
@@ -342,12 +315,5 @@ public class Discover extends AppCompatActivity {
 
     }
 
-    private void takePicture() {
-        // Launch the camera activity
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            cameraLauncher.launch(takePictureIntent);
-        }
 
-    }
 }
