@@ -64,6 +64,11 @@ public class Queue_home extends AppCompatActivity {
     private Vibrator vibrator;
     private boolean first_time;
     private boolean been_warned;
+    private Handler handler = new Handler();
+    private Random random = new Random();
+    private int maxBubbleSize = 125;
+    private long maxDuration = 1500L; // milliseconds
+    private long stopDelay = 4000L; // milliseconds
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
@@ -101,7 +106,6 @@ public class Queue_home extends AppCompatActivity {
         set_count = "";
         is_working_out = false;
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
-        user = "Mariah";
         q_list = new ArrayList<>();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
@@ -234,7 +238,6 @@ public class Queue_home extends AppCompatActivity {
             join_queue_btn.setVisibility(View.INVISIBLE);
             leave_queue_btn.setVisibility(View.VISIBLE);
             // calc and show estimated wait time
-//            pos_and_waitTime_updater();
             est_wait.setVisibility(View.VISIBLE);
             user_in_queue = true;
         } else {
@@ -345,13 +348,7 @@ public class Queue_home extends AppCompatActivity {
 
     }
 
-    private Handler handler = new Handler();
-    private Random random = new Random();
-    private int maxBubbleSize = 125;
-    private long maxDuration = 1500L; // milliseconds
-    private long stopDelay = 4000L; // milliseconds
-
-    private void startConfetti() {
+    private void startBubbles() {
         // Get the root view of the activity or fragment
         View rootView = findViewById(android.R.id.content);
 
@@ -402,12 +399,8 @@ public class Queue_home extends AppCompatActivity {
         }, stopDelay);
     }
 
-
-
-
-
     private void user_is_up() {
-        startConfetti();
+        startBubbles();
         Toast.makeText(this, "You're up for " + workout + "!",
                 Toast.LENGTH_LONG).show();
         if (vibrator.hasVibrator()) {
