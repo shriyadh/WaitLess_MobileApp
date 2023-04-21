@@ -114,14 +114,9 @@ public class MainActivityProfile extends AppCompatActivity {
             profileId = currentProfileId;
             profileSettingsButton.setVisibility(View.VISIBLE);
         }
-
         loadProfile();
     }
 
-    @Override
-    public void onBackPressed() {
-        // do nothing
-    }
 
     private void getFollowStatus() {
         FirebaseDatabase.getInstance()

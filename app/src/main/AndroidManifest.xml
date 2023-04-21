@@ -36,7 +36,6 @@
         </activity>
         <activity
             android:name=".Profile.MainActivityProfile"
-            android:launchMode="singleTask"
             android:label="Profile"
             android:exported="false" />
         <activity  android:name=".RequestsActivity2"
@@ -72,7 +71,6 @@
 
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-             /
         </activity>
         <activity
             android:name=".LoginRegister.Register"
