@@ -44,7 +44,7 @@ public class NotifyMe extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("IN HERE");
+        //System.out.println("IN HERE");
         // Disable rotation
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -57,14 +57,15 @@ public class NotifyMe extends AppCompatActivity {
         System.out.println(mUser.getEmail());
 
         setContentView(R.layout.activity_notify_me);
-        System.out.println("IN HERE");
+        //System.out.println("IN HERE");
         // find navigation view
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         // set selected item to queue
         bottomNavigationView.setSelectedItemId(R.id.navigation_notifications);
         // activate nav listener
         bottomNavigationView.setOnItemSelectedListener(new NavigationHandler(this));
-
+// Disable rotation
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //RUN THREAD
         run_fbThread();
 
@@ -72,6 +73,11 @@ public class NotifyMe extends AppCompatActivity {
         initNotify();
 
     }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing to disable back button
+      }
 
     class fbThread implements Runnable {
         @Override

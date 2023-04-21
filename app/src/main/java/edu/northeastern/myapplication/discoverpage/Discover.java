@@ -61,6 +61,7 @@ public class Discover extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
         // Disable rotation
@@ -74,8 +75,8 @@ public class Discover extends AppCompatActivity {
         loggedInUser = mUser.getUid();
 
         //checking logged in user
-        System.out.println("displaynae" +mUser.getEmail());
-        System.out.println(loggedInUser);
+        //System.out.println("displaynae" +mUser.getEmail());
+        //System.out.println(loggedInUser);
 
         // find navigation view
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -95,7 +96,10 @@ public class Discover extends AppCompatActivity {
         run_storyThread();
 
     }
-
+    @Override
+    public void onBackPressed() {
+        // Do nothing to disable back button
+      }
     public void initProfiles() {
         profilesRecyclerView = findViewById(R.id.profiles);
 
