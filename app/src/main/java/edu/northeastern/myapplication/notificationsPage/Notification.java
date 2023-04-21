@@ -6,13 +6,13 @@ public class Notification {
     private String user;
     private String mutual;
 
-    private String username;
+    private String userID;
 
 
 
-    public Notification( String user, String username){
+    public Notification(String userID){
         this.img = "";
-        this.username = username;
+        this.userID = userID;
         this.user = user;
        // this.mutual = mutual;
 
@@ -22,8 +22,8 @@ public class Notification {
         return this.user;
     }
 
-    public String getUserName() {
-        return this.username;
+    public String getUserID() {
+        return this.userID;
     }
     public String getImg(){
         return this.img;

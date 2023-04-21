@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:background="@android:color/background_dark"
-        android:text="follow back"
+        android:text="View Profile"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

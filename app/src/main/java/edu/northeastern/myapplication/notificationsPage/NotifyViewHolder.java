@@ -41,12 +41,6 @@ public class NotifyViewHolder extends RecyclerView.ViewHolder {
                 int pos = getLayoutPosition();
                 if(pos != RecyclerView.NO_POSITION) {
                     lst.onLinkClick(pos);
-                    followBack.setClickable(false);
-                    followBack.setText("FOLLOWED BACK");
-                    int color = ContextCompat.getColor(view.getContext(), R.color.grey);
-                    followBack.setBackgroundColor(color);
-
-
 
                 }
             }
