@@ -61,7 +61,7 @@ public class StoriesAdapter extends RecyclerView.Adapter<StoriesViewHolder> {
         if(position == 0){
             holder.user.setText(username);
             holder.user.setTextColor(Color.GRAY);
-            holder.user.setTypeface(holder.user.getTypeface(), Typeface.BOLD);
+            //holder.user.setTypeface(holder.user.getTypeface());
         }
         else if(username.length() > maxLen) {
             // Modify the text to add "..." at the end

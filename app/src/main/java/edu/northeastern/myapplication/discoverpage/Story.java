@@ -11,6 +11,11 @@ public class Story {
         this.token = token;
         this.checkedIn = true;
     }
+    public Story(String username, String token, boolean checkedIn) {
+        this.username = username;
+        this.token = token;
+        this.checkedIn = checkedIn;
+    }
 
     public String getUser() { return this.username; }
     public boolean isCheckedIn(){
