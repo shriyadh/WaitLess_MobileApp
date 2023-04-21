@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Profile.EditProfile">
 
+
+
     <ImageView
         android:id="@+id/editProfileIcon"
         android:layout_width="wrap_content"
@@ -27,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
@@ -35,38 +37,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editProfileIcon"
-        app:layout_constraintVertical_bias="0.06"
-        android:autofillHints="" />
+        app:layout_constraintStart_toEndOf="@id/editProfileIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.06" />
 
     <EditText
         android:id="@+id/editTextBio"
-        android:layout_width="wrap_content"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="-350dp"
+        android:layout_marginTop="24dp"
+        android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:minHeight="48dp"
         android:text="@string/bio_description"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextUserName"
-        app:layout_constraintVertical_bias="0.468"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@id/textView3" />
 
     <Button
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:onClick="saveUpdates"
         android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cancel"
         app:layout_constraintTop_toBottomOf="@+id/editTextBio" />
@@ -77,10 +75,38 @@
         android:layout_height="wrap_content"
         android:onClick="cancelUpdate"
         android:text="@string/cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toStartOf="@+id/save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextBio" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:onClick="logout"
+        android:text="@string/logout"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cancel" />
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="55dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/bio"
+        app:layout_constraintBottom_toTopOf="@+id/editTextBio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.044"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editProfileIcon"
+        app:layout_constraintVertical_bias="0.66" />
+
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
@@ -91,4 +117,5 @@
         app:itemIconTint="@drawable/selector"
         app:menu="@menu/nav"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

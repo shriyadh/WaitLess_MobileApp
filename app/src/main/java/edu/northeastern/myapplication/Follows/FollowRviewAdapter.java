@@ -12,19 +12,23 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import edu.northeastern.myapplication.Profile.Profile;
 import edu.northeastern.myapplication.R;
 
 public class FollowRviewAdapter extends RecyclerView.Adapter<FollowRviewHolder>{
-    private final String currentUserId = "-NRVYvTjwCGKqGm9dUIq";
+    private final String currentUserId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
     private final List<String> followIdList;
     private FollowClickListener listener;
 
@@ -97,8 +101,10 @@ public class FollowRviewAdapter extends RecyclerView.Adapter<FollowRviewHolder>{
                                 .apply(new RequestOptions()
                                         .transform(new CenterCrop(),
                                                 new RoundedCorners(50)))
-                                .into(holder.profileIcon)).addOnFailureListener(e ->
-                                Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e));
+                                .into(holder.profileIcon)).addOnFailureListener(e -> {
+                                    Log.w("FollowRviewAdapter_ProfileIcon", "Failed to load profile image", e);
+                                    holder.profileIcon.setImageResource(R.drawable.baseline_account_box_24);
+                                });
             }).start();
         }
     }

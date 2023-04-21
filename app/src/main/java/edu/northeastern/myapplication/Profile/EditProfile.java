@@ -44,6 +44,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.Calendar;
 import java.util.UUID;
 
+import edu.northeastern.myapplication.LoginRegister.Login;
 import edu.northeastern.myapplication.NavigationHandler;
 import edu.northeastern.myapplication.R;
 
@@ -52,8 +53,9 @@ public class EditProfile extends AppCompatActivity {
     private ImageView profileIcon;
     private Button saveButton, cancelButton;
     private EditText editUserName, editBio;
+    private String profileId;
+    private String currProfileId;
 
-    private final String profileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with user's id
     public Uri imageUri;
     private ActivityResultLauncher<String> mGetContent;
     FirebaseAuth mAuth;
@@ -82,6 +84,9 @@ public class EditProfile extends AppCompatActivity {
 
 
 
+        Intent intent = getIntent();
+        profileId = intent.getStringExtra("profileId");
+        currProfileId = intent.getStringExtra("currProfileId");
 
         editUserName = findViewById(R.id.editTextUserName);
         editBio = findViewById(R.id.editTextBio);
@@ -104,9 +109,6 @@ public class EditProfile extends AppCompatActivity {
                         }
                     }
                 });
-
-
-//        System.out.println(currentProfile.getProfileId());
     }
 
     public void loadProfile() {
@@ -133,14 +135,6 @@ public class EditProfile extends AppCompatActivity {
     }
 
     public void loadProfileTextData() {
-        // Get text views
-//        TextView profileName = findViewById(R.id.textViewProfileName);
-//        TextView joinedYear = findViewById(R.id.textViewJoinedYear);
-//        TextView totalWeight = findViewById(R.id.textViewTotalWeight);
-//        TextView workoutCompleted = findViewById(R.id.textViewWorkoutCompleted);
-//        TextView profileBio = findViewById(R.id.textViewBioDesc);
-
-        // Set text
         editUserName.setText(currentProfile.getProfileName());
         editBio.setText(currentProfile.getProfileBio());
     }
@@ -185,22 +179,6 @@ public class EditProfile extends AppCompatActivity {
         finish();
     }
 
-//    public void saveUpdate(View view){
-//        String newUsername = editUserName.getText().toString();
-//        String newBio = editBio.getText().toString();
-//        Toast.makeText(this, currentProfile.getProfileId(), Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, newUsername, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, newBio, Toast.LENGTH_SHORT).show();
-//
-//
-//        new Thread(() -> {
-//            // update profile info in database
-//            FirebaseDatabase database = FirebaseDatabase.getInstance();
-//            DatabaseReference userRef = database.getReference("profiles/" + currentProfile.getProfileId());
-//            userRef.child("profileName").setValue(newUsername);
-//            userRef.child("profileBio").setValue(newBio);
-//        }).start();
-//    }
 
     public void cancelUpdate(View view){
         Intent intent = new Intent(EditProfile.this, MainActivityProfile.class);
@@ -208,77 +186,29 @@ public class EditProfile extends AppCompatActivity {
         finish();
     }
 
-//   public void uploadNewProfile(View view){
-//        Intent intent = new Intent();
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        startActivityForResult(intent, 1);
-//   }
+    public void logout(View view){
+        mAuth.signOut();
+        Intent intent = new Intent(EditProfile.this, Login.class);
+        startActivity(intent);
+        finish();
+    }
 
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode == 1 && resultCode == RESULT_OK && data.getData() != null){
-//            imageUri = data.getData();
-//            profileIcon.setImageURI(imageUri);
-//            uploadtoFirebase();
-//        }
-//    }
-//
-//    public void uploadtoFirebase(){
-//        final String randomKey = UUID.randomUUID().toString();
-//        currentProfile.setImageName(randomKey);
-//        final ProgressDialog pd = new ProgressDialog(this);
-//        pd.setTitle("Image Uploading...");
-//        pd.show();
-//
-//        // run thread to upload picture to firebase storage
-//        new Thread(() -> {
-//            StorageReference storageRef = FirebaseStorage
-//                                            .getInstance()
-//                                            .getReference("/profileIcons/")
-//                                            .child(randomKey);
-//            storageRef.putFile(imageUri)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            pd.dismiss();
-//                            Snackbar.make(findViewById(android.R.id.content), "Image uploaded", Snackbar.LENGTH_LONG).show();
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            pd.dismiss();
-//                            Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_LONG).show();
-//                        }
-//                    })
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-//                            double progressPercent = (100.00 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-//                            pd.setMessage("Progess: " + (int)progressPercent + "%");
-//                        }
-//                    });
-//        }).start();
-//    }
 
     public void uploadNewProfile(View view){
         mGetContent.launch("image/*");
     }
 
     public void uploadtoFirebase(){
-        final String randomKey = UUID.randomUUID().toString();
-        //currentProfile.setImageName(randomKey);
+        String picKey = profileId;
         final ProgressDialog pd = new ProgressDialog(this);
         pd.setTitle("Image Uploading...");
         pd.show();
 
         StorageReference storageRef = FirebaseStorage
                 .getInstance()
-                .getReference("/"+profileId+"/")
-                .child(randomKey);
+                .getReference("/profileIcons")
+                .child(picKey + ".jpg");
         storageRef.putFile(imageUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -305,17 +235,3 @@ public class EditProfile extends AppCompatActivity {
     }
 
 }
-
-
-/**
- *     // save updated data and pass it to previous activity which is profile activity
- * //        Intent updated = new Intent();
- * //        updated.putExtra("userName", newUsername);
- * //        updated.putExtra("newBio", newBio);
- * //        setResult(EditProfile.RESULT_OK, updated);
- * //
- * //        finish();
- *         Intent intent = new Intent(EditProfile.this, MainActivityProfile.class);
- *         startActivity(intent);
- *         finish();
- */

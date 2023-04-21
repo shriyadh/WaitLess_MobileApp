@@ -62,9 +62,10 @@ public class MainActivityProfile extends AppCompatActivity {
     private List<String> followIdList;
 
     private String profileId;
-    private final String currentProfileId = "-NRVYvTjwCGKqGm9dUIq"; // TODO: Replace with current user Firebase
+    private String currentProfileId; // (Test USER: -NRVYvTjwCGKqGm9dUIq)
     FirebaseAuth mAuth;
     FirebaseUser mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +77,7 @@ public class MainActivityProfile extends AppCompatActivity {
         assert mUser != null;
         //checking logged in user
         System.out.println(mUser.getEmail());
+        currentProfileId = mUser.getUid();
 
 
         System.out.println("IN HERE");
@@ -131,12 +133,14 @@ public class MainActivityProfile extends AppCompatActivity {
     public void onClick(View view) {
         int buttonId = view.getId();
         if (buttonId == profileSettingsButton.getId()) {
-            // TODO: Add code to go to profile settings page
+            Intent intent = new Intent(getApplicationContext(), EditProfile.class);
+            intent.putExtra("profileId", profileId);
+            intent.putExtra("currProfileId", currentProfileId);
+            startActivity(intent);
             Log.w("Profile", "Profile Settings button clicked");
 
 
         } else if (buttonId == workoutListButton.getId()) {
-            // TODO: Add code to go to workout history page
             Log.w("Profile", "Workout History button clicked");
             Intent intent = new Intent(getApplicationContext(), MainActivityWorkoutList.class);
             Bundle bundle = new Bundle();
@@ -147,13 +151,13 @@ public class MainActivityProfile extends AppCompatActivity {
             }
             intent.putExtras(bundle);
             intent.putExtra("profileId", profileId);
-            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
+            intent.putExtra("currProfileId", currentProfileId);
             startActivity(intent);
 
         } else if (buttonId == followListButton.getId()) {
             Intent intent = new Intent(getApplicationContext(), MainActivityFollowList.class);
             intent.putExtra("profileId", profileId);
-            intent.putExtra("currProfileId", currentProfileId); // TODO: Replace with current user Firebase
+            intent.putExtra("currProfileId", currentProfileId);
             if (followIdList != null) {
                 intent.putStringArrayListExtra("followIdList", (ArrayList<String>) followIdList);
             } else {
@@ -180,15 +184,15 @@ public class MainActivityProfile extends AppCompatActivity {
             DatabaseReference profileRef = FirebaseDatabase
                     .getInstance()
                     .getReference("profiles")
-                    .child(profileId); // TODO: Replace with user's profile id
+                    .child(profileId);
             DatabaseReference workoutRef = FirebaseDatabase
                     .getInstance()
                     .getReference("workouts")
-                    .child(profileId); // TODO: Replace with user's profile id
+                    .child(profileId);
             DatabaseReference followRef = FirebaseDatabase
                     .getInstance()
                     .getReference("follows")
-                    .child(profileId); // TODO: Replace with user's profile id
+                    .child(profileId);
 
             workoutRef.addValueEventListener(new ValueEventListener() {
                 @Override
