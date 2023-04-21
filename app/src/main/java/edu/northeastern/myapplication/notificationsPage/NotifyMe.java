@@ -116,7 +116,7 @@ public class NotifyMe extends AppCompatActivity {
                 // send to profile page
                 Intent profIntent = new Intent(getApplicationContext(), MainActivityProfile.class);
                 profIntent.putExtra("profileId", notifications.get(position).getUserID());
-
+                startActivity(profIntent);
 
             }
         };
