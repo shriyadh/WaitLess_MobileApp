@@ -13,16 +13,24 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.northeastern.myapplication.R;
+import edu.northeastern.myapplication.Workouts.Workout;
 
 public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
 
     private List<Profiles> profiles;
     private RecycleViewClickListener listener;
+    //private List<>
 
     public ProfilesAdapter(List<Profiles> profiles, Context con) {
         this.profiles = profiles;
@@ -45,9 +53,51 @@ public class ProfilesAdapter extends RecyclerView.Adapter<ProfilesViewHolder> {
         Profiles curr = profiles.get(position);
         holder.username.setText(curr.getUsername());
         holder.bio.setText(curr.getBio());
-        holder.friends.setText("FRIENDS \n" + curr.getFriendListSize());
-        holder.workouts.setText("WORKOUTS \n" + curr.getWorkouts());
+
+
+
         String token = curr.getUser_token();
+
+        new Thread(() -> {
+            DatabaseReference workoutRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference("workouts")
+                    .child(token); // TODO: Replace with user's profile id
+            DatabaseReference followRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference("follows")
+                    .child(token); // TODO: Replace with user's profile id
+
+            followRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    long numChildren = snapshot.getChildrenCount();
+                    System.out.println("Number of children: " + numChildren);
+                    holder.friends.setText("FRIENDS \n" + numChildren);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    System.out.println("Error: " + error.getMessage());
+                }
+            });
+
+            workoutRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    long numChildren = snapshot.getChildrenCount();
+                    System.out.println("Number of children: " + numChildren);
+                    holder.workouts.setText("WORKOUTS \n" + numChildren);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    System.out.println("Error: " + error.getMessage());
+                }
+            });
+
+        }).start();
+
         new Thread(() -> {
             FirebaseStorage
                     .getInstance()

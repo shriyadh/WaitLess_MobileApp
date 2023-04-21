@@ -180,7 +180,6 @@ public class Discover extends AppCompatActivity {
         public void run() {
             try {
                 runStories();
-                //runFireBaseforOthers();
             } catch (DatabaseException e) {
                 e.printStackTrace();
             }
@@ -282,7 +281,6 @@ public class Discover extends AppCompatActivity {
     public void runFirebase() {
 
         // first get the list of following for this user
-
         DatabaseReference followRef = FirebaseDatabase
                 .getInstance()
                 .getReference("follows")
@@ -313,15 +311,11 @@ public class Discover extends AppCompatActivity {
                                     if (followIdList == null || !followIdList.contains(userData.getKey())) {
 
                                         String username = userData.child("profileName").getValue().toString();
-                                        //System.out.println(username);
-
                                         String bio = userData.child("profileBio").getValue().toString();
-                                        // String friends = userData.child("friends_count").getValue().toString();
-                                        //String workouts = userData.child("workout_count").getValue().toString();
+
                                         String token = userData.getKey();
 
                                         Profiles newUser = new Profiles(username, bio, token);
-                                        //newUser.setTotal_friends(followIdList);
                                         profilesLst.add(newUser);
                                         mapProfiles.put(token, newUser);
                                     }
@@ -338,38 +332,6 @@ public class Discover extends AppCompatActivity {
                 };
                 userID.addListenerForSingleValueEvent(eventListener);
 
-
-            DatabaseReference friends_following = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference friends_follows = friends_following.child("follows");
-            ValueEventListener eventListenerFriends = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-
-                        for (DataSnapshot userData : snapshot.getChildren()) {
-
-                            if (!userData.getKey().equalsIgnoreCase(loggedInUser)) {
-                                System.out.println(mapProfiles);
-                                if (mapProfiles.containsKey(userData.getKey())) {
-                                    List<String> friend_f = new ArrayList<>();
-                                    for (DataSnapshot followSnapshot : snapshot.getChildren()) {
-                                        //System.out.println("here"+ followSnapshot.getKey());
-                                        friend_f.add(followSnapshot.getKey());
-                                    }
-                                    System.out.println(friend_f);
-                                    mapProfiles.get(userData.getKey()).setTotal_friends(friend_f);
-
-                                }
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            };
-            friends_follows.addListenerForSingleValueEvent(eventListenerFriends);
         }
 
         @Override
@@ -377,29 +339,6 @@ public class Discover extends AppCompatActivity {
                 Log.w("PROFILE_follow", "Failed to read follow value.", error.toException());
             }
         });
-        System.out.println("here1"+ followIdList);
-
-
-
-
-
-        // add workout list
-      /*  workoutRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                workoutList = new ArrayList<>();
-                for (DataSnapshot workoutSnapshot : snapshot.getChildren()) {
-                    workoutList.add(workoutSnapshot.getValue(Workout.class));
-                }
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("PROFILE_WORKOUTS", "Failed to read workouts value.", error.toException());
-            }
-        });*/
-
-
 
 
     }
