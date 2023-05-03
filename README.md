@@ -25,7 +25,7 @@ any longer, download WaitLess today and join the revolution!
 3. Profile Page<br>
 <img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/profile.jpg"  width="300" height="600">
 <img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/workouts.jpg"  width="300" height="600">
-<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/friends.jpg"  width="300" height="600">
+<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/friend.jpg"  width="300" height="600">
 
 
 4. Notifications Page <br>
