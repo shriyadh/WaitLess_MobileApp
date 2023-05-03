@@ -22,9 +22,11 @@ any longer, download WaitLess today and join the revolution!
 2. Queuing Page <br>
 ![alt text](queue.jpg)
 3. Profile Page<br>
-![alt text](profile.jpg)
+![alt text](profile.jpg) ![alt text](followers.jpg) ![alt text](workouts.jpg)
+
+
 4. Notifications Page <br>
-![alt text](notification.jpg)
+![alt text](notifications.jpg)
 
 # Target Users
 The target users for this app consists of fitness enthusiasts who frequent gyms and
