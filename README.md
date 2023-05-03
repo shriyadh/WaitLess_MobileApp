@@ -17,7 +17,7 @@ any longer, download WaitLess today and join the revolution!
 
 # Screens For WaitLess App
 1. Main Screen – Discover Page 
-![alt text](WhatsApp Image 2023-05-03 at 03.17.01.jpg)
+![alt text](discover.jpg)
 
 
 2. Queuing Page
