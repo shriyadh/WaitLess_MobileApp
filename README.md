@@ -16,13 +16,15 @@ enthusiast or just starting out, this app is the perfect tool to help you reach 
 any longer, download WaitLess today and join the revolution!
 
 # Screens For WaitLess App
-1. Main Screen – Discover Page 
-![alt text](discover.jpg)
+1. Main Screen – Discover Page <br>
+!(discover.jpg)
 
-
-2. Queuing Page
-3. Profile Page
-4. Notifications Page
+2. Queuing Page <br>
+!(queue.jpg)
+3. Profile Page<br>
+!(profile.jpg)
+4. Notifications Page <br>
+!(notification.jpg)
 
 # Target Users
 The target users for this app consists of fitness enthusiasts who frequent gyms and
