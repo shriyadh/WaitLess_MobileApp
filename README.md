@@ -17,16 +17,19 @@ any longer, download WaitLess today and join the revolution!
 
 # Screens For WaitLess App
 1. Main Screen – Discover Page <br>
-<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/discover.jpg"  width="300" height="500">
+<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/discover.jpg"  width="300" height="600">
 
 2. Queuing Page <br>
-![alt text](queue.jpg)
+<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/queue.jpg"  width="300" height="600">
+
 3. Profile Page<br>
-![alt text](profile.jpg) ![alt text](followers.jpg) ![alt text](workouts.jpg)
+<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/profile.jpg"  width="300" height="600">
+<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/workouts.jpg"  width="300" height="600">
+<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/friends.jpg"  width="300" height="600">
 
 
 4. Notifications Page <br>
-![alt text](notifications.jpg)
+<img src="https://github.com/shriyadh/WaitLess_MobileApp/blob/main/notifications.jpg"  width="300" height="600">
 
 # Target Users
 The target users for this app consists of fitness enthusiasts who frequent gyms and
