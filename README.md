@@ -17,6 +17,9 @@ any longer, download WaitLess today and join the revolution!
 
 # Screens For WaitLess App
 1. Main Screen – Discover Page 
+![alt text](file_name.png)
+
+
 2. Queuing Page
 3. Profile Page
 4. Notifications Page
