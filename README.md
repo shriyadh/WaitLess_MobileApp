@@ -16,7 +16,7 @@ enthusiast or just starting out, this app is the perfect tool to help you reach 
 any longer, download WaitLess today and join the revolution!
 
 # Screens For WaitLess App
-1. Main Screen – Discover Page
+1. Main Screen – Discover Page 
 2. Queuing Page
 3. Profile Page
 4. Notifications Page
